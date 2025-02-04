@@ -1,0 +1,7 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "regulator")(type "KiCad")(uri "${KIPRJMOD}/regulator.kicad_sym")(options "")(descr ""))
+  (lib (name "gate_driver")(type "KiCad")(uri "${KIPRJMOD}/gate_driver.kicad_sym")(options "")(descr ""))
+  (lib (name "MOSFET")(type "KiCad")(uri "${KIPRJMOD}/MOSFET.kicad_sym")(options "")(descr ""))
+  (lib (name "connector")(type "KiCad")(uri "${KIPRJMOD}/connector.kicad_sym")(options "")(descr ""))
+)

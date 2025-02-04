@@ -1,0 +1,279 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "5cf3dbb2-c53d-4566-bd56-e0778be44afc")
+	(paper "A4")
+	(lib_symbols)
+	(sheet
+		(at 110.49 62.23)
+		(size 71.12 22.86)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "018df226-2f32-4c27-b119-894b8473c90f")
+		(property "Sheetname" "regulator_MCP1826"
+			(at 110.49 61.5184 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "MCP.kicad_sch"
+			(at 110.49 85.6746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "Kicad_Exercice_Maker_David_CONTION"
+				(path "/5cf3dbb2-c53d-4566-bd56-e0778be44afc"
+					(page "8")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 109.22 20.32)
+		(size 77.47 31.75)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "0fb7756f-4579-4e44-8a58-ee8f1e0d5899")
+		(property "Sheetname" "Régulateur 17101380"
+			(at 109.22 19.6084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "regulator.kicad_sch"
+			(at 109.22 52.6546 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "Kicad_Exercice_Maker_David_CONTION"
+				(path "/5cf3dbb2-c53d-4566-bd56-e0778be44afc"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 203.2 22.86)
+		(size 50.8 59.69)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "2aa35825-71bc-4fed-90ea-8f32807a9f75")
+		(property "Sheetname" "MOSFET FDMQ86530L"
+			(at 203.2 22.1484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "mosfet.kicad_sch"
+			(at 203.2 83.1346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "Kicad_Exercice_Maker_David_CONTION"
+				(path "/5cf3dbb2-c53d-4566-bd56-e0778be44afc"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 22.86 20.32)
+		(size 71.12 64.77)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "69014843-2661-455b-af18-1d4757d6455b")
+		(property "Sheetname" "STM32G431CBU6"
+			(at 22.86 19.6084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "untitled.kicad_sch"
+			(at 22.86 85.6746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "Kicad_Exercice_Maker_David_CONTION"
+				(path "/5cf3dbb2-c53d-4566-bd56-e0778be44afc"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 29.21 113.03)
+		(size 66.04 57.15)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "a4b71d72-30d9-4626-b577-3c9229a01377")
+		(property "Sheetname" "IC4606-2YTS-TR"
+			(at 29.21 112.3184 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "driver.kicad_sch"
+			(at 29.21 170.7646 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "Kicad_Exercice_Maker_David_CONTION"
+				(path "/5cf3dbb2-c53d-4566-bd56-e0778be44afc"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 129.54 111.76)
+		(size 41.91 40.64)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "a5ca7be7-d1aa-4561-a2a3-a870398488a5")
+		(property "Sheetname" "Connectors"
+			(at 129.54 111.0484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "connectors.kicad_sch"
+			(at 129.54 152.9846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "Kicad_Exercice_Maker_David_CONTION"
+				(path "/5cf3dbb2-c53d-4566-bd56-e0778be44afc"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 201.93 111.76)
+		(size 45.72 35.56)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "c42e0262-dd78-4ed7-bfb0-ae830988ee96")
+		(property "Sheetname" "Mounting Holes"
+			(at 201.93 111.0484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "mounting-holes.kicad_sch"
+			(at 201.93 147.9046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "Kicad_Exercice_Maker_David_CONTION"
+				(path "/5cf3dbb2-c53d-4566-bd56-e0778be44afc"
+					(page "7")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)
