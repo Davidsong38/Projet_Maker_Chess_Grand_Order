@@ -21,7 +21,7 @@ class Sesshoin_Kiara final : public Queen{
             Pieces_List pieces_root)
             : Queen(startX, startY, white, hero, pieces_root) {
             addAdditionalUIElement(
-                faridTexture,
+                kiaraTexture,
                 glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
                 this
             );

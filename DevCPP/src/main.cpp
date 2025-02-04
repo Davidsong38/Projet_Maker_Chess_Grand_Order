@@ -1,4 +1,5 @@
 #include <chrono>
+#include <keys.h>
 
 #include "GameEngine.h"
 #include "PhysicsEngine.h"
@@ -38,7 +39,7 @@ void waitForNextUpdate() {
 
 int main(int argc, char** argv) {
     init();
-    while (true) {
+    while (GameEngine::getInstance()->get_current_state()!= GAME_CLOSE && get_key(KEY_ESCAPE)->isKeyUp()) {
         update();
         waitForNextUpdate();
     }

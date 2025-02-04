@@ -175,9 +175,9 @@ void init_knights() {
     character = choose_knight();
     add_piece_to_board(0,6,false,character);
     character = choose_knight();
-    add_piece_to_board(BOARD_SIZE-1,1,false,character);
+    add_piece_to_board(BOARD_SIZE-1,1,true,character);
     character = choose_knight();
-    add_piece_to_board(BOARD_SIZE-1,6,false,character);
+    add_piece_to_board(BOARD_SIZE-1,6,true,character);
 }
 
 void init_bishops() {
@@ -186,9 +186,9 @@ void init_bishops() {
     character = choose_bishop();
     add_piece_to_board(0,5,false,character);
     character = choose_bishop();
-    add_piece_to_board(BOARD_SIZE-1,2,false,character);
+    add_piece_to_board(BOARD_SIZE-1,2,true,character);
     character = choose_bishop();
-    add_piece_to_board(BOARD_SIZE-1,5,false,character);
+    add_piece_to_board(BOARD_SIZE-1,5,true,character);
 
 }
 
@@ -198,21 +198,21 @@ void init_rooks() {
     character = choose_rook();
     add_piece_to_board(0,7,false,character);
     character = choose_rook();
-    add_piece_to_board(BOARD_SIZE-1,0,false,character);
+    add_piece_to_board(BOARD_SIZE-1,0,true,character);
     character = choose_rook();
-    add_piece_to_board(BOARD_SIZE-1,7,false,character);
+    add_piece_to_board(BOARD_SIZE-1,7,true,character);
 }
 
 void init_kings() {
     Characters_List character = choose_king();
     add_piece_to_board(0,3,false,character);
     character = choose_king();
-    add_piece_to_board(BOARD_SIZE-1,3,false,character);
+    add_piece_to_board(BOARD_SIZE-1,3,true,character);
 }
 
 void init_queens() {
     Characters_List character = choose_queen();
     add_piece_to_board(0,4,false,character);
     character = choose_queen();
-    add_piece_to_board(BOARD_SIZE-1,4,false,character);
+    add_piece_to_board(BOARD_SIZE-1,4,true,character);
 }
