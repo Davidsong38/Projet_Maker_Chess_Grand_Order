@@ -659,7 +659,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Program Files (x86)/LTR_Engine_II"
+			"value" : "C:/Program Files (x86)/Chess_Grand_Order"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -875,7 +875,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "LTR_Engine_II"
+			"value" : "Chess_Grand_Order"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -1270,7 +1270,7 @@
 			"value" : "FALSE"
 		},
 		{
-			"name" : "LTR_Engine_II_BINARY_DIR",
+			"name" : "Chess_Grand_Order_BINARY_DIR",
 			"properties" : 
 			[
 				{
@@ -1282,7 +1282,7 @@
 			"value" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/cmake-build-debug"
 		},
 		{
-			"name" : "LTR_Engine_II_IS_TOP_LEVEL",
+			"name" : "Chess_Grand_Order_IS_TOP_LEVEL",
 			"properties" : 
 			[
 				{
@@ -1294,7 +1294,7 @@
 			"value" : "ON"
 		},
 		{
-			"name" : "LTR_Engine_II_SOURCE_DIR",
+			"name" : "Chess_Grand_Order_SOURCE_DIR",
 			"properties" : 
 			[
 				{

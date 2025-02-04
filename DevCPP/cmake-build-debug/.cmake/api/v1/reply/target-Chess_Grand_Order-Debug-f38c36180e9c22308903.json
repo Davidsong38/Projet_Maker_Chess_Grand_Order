@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "LTR_Engine_II.exe"
+			"path" : "Chess_Grand_Order.exe"
 		},
 		{
-			"path" : "LTR_Engine_II.pdb"
+			"path" : "Chess_Grand_Order.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -276,7 +276,7 @@
 			"id" : "copy_assets::@6890427a1f51a3e7e1df"
 		}
 	],
-	"id" : "LTR_Engine_II::@6890427a1f51a3e7e1df",
+	"id" : "Chess_Grand_Order::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -301,8 +301,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "LTR_Engine_II",
-	"nameOnDisk" : "LTR_Engine_II.exe",
+	"name" : "Chess_Grand_Order",
+	"nameOnDisk" : "Chess_Grand_Order.exe",
 	"paths" : 
 	{
 		"build" : ".",

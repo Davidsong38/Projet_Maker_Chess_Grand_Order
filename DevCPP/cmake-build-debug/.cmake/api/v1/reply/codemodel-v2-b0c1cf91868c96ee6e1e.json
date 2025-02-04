@@ -28,7 +28,7 @@
 					[
 						0
 					],
-					"name" : "LTR_Engine_II",
+					"name" : "Chess_Grand_Order",
 					"targetIndexes" : 
 					[
 						0,
@@ -40,9 +40,9 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "LTR_Engine_II::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-LTR_Engine_II-Debug-b489b77de02dd727dfe9.json",
-					"name" : "LTR_Engine_II",
+					"id" : "Chess_Grand_Order::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Chess_Grand_Order-Debug-f38c36180e9c22308903.json",
+					"name" : "Chess_Grand_Order",
 					"projectIndex" : 0
 				},
 				{
