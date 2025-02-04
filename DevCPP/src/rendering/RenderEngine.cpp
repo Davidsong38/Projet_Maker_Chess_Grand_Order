@@ -10,10 +10,16 @@
 
 #include <iostream>
 
+RenderEngine* RenderEngine::instance = nullptr;
+glm::ivec2 RenderEngine::windowSize;
+glm::ivec2 RenderEngine::maxWindowSize;
+float RenderEngine::aspectRatio, RenderEngine::inverseAspectRatio;
+
 RenderEngine::RenderEngine() {
     std::cout << "Creating Render Engine" << std::endl;
-    platform_create_window(1080,724,"Grrrrrrr");
-    maxWindowSize = glm::ivec2(1980,1080);
+    platform_create_window(1920,1080,"Grrrrrrr");
+    maxWindowSize = glm::ivec2(1920,1080);
+    updateWindowSize();
     glInit();
 }
 
@@ -30,8 +36,7 @@ RenderEngine* RenderEngine::getInstance() {
 
 void RenderEngine::update(double deltaTime_ms) {
     platform_update_window();
-    windowSize = platform_get_window_size();
-    aspectRatio = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
+    updateWindowSize();
     glRender();
     platform_swap_buffers();
 }
@@ -46,4 +51,14 @@ glm::ivec2 RenderEngine::getMaxWindowSize() {
 
 float RenderEngine::getWindowAspectRatio() {
     return aspectRatio;
+}
+
+float RenderEngine::getWindowInverseAspectRatio() {
+    return inverseAspectRatio;
+}
+
+void RenderEngine::updateWindowSize() {
+    windowSize = platform_get_window_size();
+    aspectRatio = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
+    inverseAspectRatio = static_cast<float>(windowSize.y) / static_cast<float>(windowSize.x);
 }

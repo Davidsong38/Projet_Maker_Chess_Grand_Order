@@ -4,12 +4,16 @@
 
 #include "Sprite.h"
 
+#include <iostream>
+#include <log.h>
+#include <ostream>
 #include <ext/matrix_transform.hpp>
 
 #include "vaos.h"
 #include "shaders.h"
 #include "glFunctions.h"
 #include "RenderEngine.h"
+#include "rendering_cfg.h"
 
 
 Sprite::Sprite(Texture* texture, const glm::vec3 position, const glm::vec2 size) {
@@ -19,6 +23,15 @@ Sprite::Sprite(Texture* texture, const glm::vec3 position, const glm::vec2 size)
     this->position = position;
     this->size = size;
     this->target = nullptr;
+}
+
+Sprite::Sprite(Texture* texture, const glm::vec2 size, SpriteTarget* target) {
+    this->vao = quadVAO;
+    this->texture = texture;
+    this->shader = basicSpriteShader;
+    this->position = glm::vec3(0,0,LAYER_PIECES);
+    this->size = size;
+    this->target = target;
 }
 
 void Sprite::draw() {

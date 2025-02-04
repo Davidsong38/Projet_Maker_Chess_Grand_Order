@@ -5,6 +5,8 @@
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
 
+#include <Context.h>
+
 #include "Engine.h"
 
 
@@ -17,6 +19,7 @@ public:
     void update(double deltaTime_ms) override;
 private:
     inline static GameEngine* instance = nullptr;
+    context_type context{nullptr};
 };
 
 

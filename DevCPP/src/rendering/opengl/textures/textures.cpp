@@ -5,6 +5,7 @@
 #include "textures.h"
 
 #include "RenderEngine.h"
+#include "glFunctions.h"
 
 Texture* faridTexture;
 Texture* ltrTexture;

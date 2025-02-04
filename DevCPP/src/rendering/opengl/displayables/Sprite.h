@@ -15,6 +15,7 @@
 class Sprite : Displayable {
 public:
     Sprite(Texture* texture, glm::vec3 position, glm::vec2 size);
+    Sprite(Texture* texture, glm::vec2 size, SpriteTarget* target);
     void draw() override;
     void load() override;
     void unload() override;

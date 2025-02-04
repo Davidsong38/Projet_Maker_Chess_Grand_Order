@@ -4,8 +4,9 @@
 
 #include "Texture.h"
 #include "stb_image.h"
+#include "glFunctions.h"
 
-Texture::Texture(const GLuint textureID, const glm::ivec2 size, const GLuint format) {
+Texture::Texture(const unsigned int textureID, const glm::ivec2 size, const unsigned int format) {
     this->textureID = textureID;
     this->width = size.x;
     this->height = size.y;
@@ -28,7 +29,7 @@ Texture::Texture(const GLuint textureID, const glm::ivec2 size, const GLuint for
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-Texture::Texture(const GLuint textureID, const std::string &textureName, const GLuint format) {
+Texture::Texture(const unsigned int textureID, const std::string &textureName, const unsigned int format) {
     // Load texture
     std::string path = "assets/textures/" + textureName;
     stbi_set_flip_vertically_on_load(true);
@@ -44,7 +45,7 @@ Texture::Texture(const GLuint textureID, const std::string &textureName, const G
     glTexImage2D(
         GL_TEXTURE_2D,
         0,
-        GL_RGB,
+        GL_RGBA,
         width,
         height,
         0,

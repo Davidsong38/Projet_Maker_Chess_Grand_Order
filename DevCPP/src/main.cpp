@@ -10,9 +10,9 @@
 std::chrono::time_point<std::chrono::high_resolution_clock> t_start = std::chrono::high_resolution_clock::now();
 
 void init() {
-    GameEngine::getInstance();
     PhysicsEngine::getInstance();
     RenderEngine::getInstance();
+    GameEngine::getInstance();
 }
 
 void update() {

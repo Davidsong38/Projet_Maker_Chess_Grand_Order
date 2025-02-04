@@ -1,0 +1,69 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.30"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "LTR_Engine_II",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "LTR_Engine_II::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LTR_Engine_II-Debug-b489b77de02dd727dfe9.json",
+					"name" : "LTR_Engine_II",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "copy_assets::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-copy_assets-Debug-40aeb89c5f4ada0400a1.json",
+					"name" : "copy_assets",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/cmake-build-debug",
+		"source" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

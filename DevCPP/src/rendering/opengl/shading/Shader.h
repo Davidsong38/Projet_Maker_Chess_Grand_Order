@@ -9,8 +9,6 @@
 
 #include "glm.hpp"
 
-#include "glFunctions.h"
-
 #define MAX_SHADER_SIZE 4096
 
 class Shader {
@@ -21,7 +19,7 @@ public:
     void setFloat(const std::string& name, float value) const;
     void setMat4(const std::string& name, glm::mat4 value) const;
 private:
-    GLuint programID;
+    unsigned int programID;
 };
 
 

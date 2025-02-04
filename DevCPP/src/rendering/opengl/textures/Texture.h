@@ -5,18 +5,17 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include "glFunctions.h"
 #include <string>
 #include "glm.hpp"
 
 class Texture {
 public:
-    Texture(GLuint textureID, glm::ivec2 size, GLuint format);
-    Texture(GLuint textureID, const std::string &textureName, GLuint format);
+    Texture(unsigned int textureID, glm::ivec2 size, unsigned int format);
+    Texture(unsigned int textureID, const std::string &textureName, unsigned int format);
     void bind() const;
     void useAsTarget() const;
 private:
-    GLuint textureID;
+    unsigned int textureID;
     int width{0}, height{0}, nrChannels{0};
 };
 

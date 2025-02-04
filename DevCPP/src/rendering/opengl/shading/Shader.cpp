@@ -5,6 +5,7 @@
 #include "type_ptr.hpp"
 
 #include "Shader.h"
+#include "glFunctions.h"
 
 #include <iostream>
 #include <ostream>

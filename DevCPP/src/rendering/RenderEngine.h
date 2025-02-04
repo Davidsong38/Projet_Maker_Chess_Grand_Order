@@ -21,11 +21,13 @@ public:
     static glm::ivec2 getWindowSize();
     static glm::ivec2 getMaxWindowSize();
     static float getWindowAspectRatio();
+    static float getWindowInverseAspectRatio();
 private:
-    inline static RenderEngine* instance = nullptr;
-    inline static glm::ivec2 windowSize;
-    inline static glm::ivec2 maxWindowSize;
-    inline static float aspectRatio;
+    static RenderEngine* instance;
+    static glm::ivec2 windowSize;
+    static glm::ivec2 maxWindowSize;
+    static float aspectRatio, inverseAspectRatio;
+    static void updateWindowSize();
 };
 
 

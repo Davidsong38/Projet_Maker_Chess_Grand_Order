@@ -5,7 +5,7 @@
 #include "VAO.h"
 
 #include <iostream>
-#include <ostream>
+#include "glFunctions.h"
 
 #include "log.h"
 
@@ -79,7 +79,7 @@ void VAO::initAttributes(const int attribCount, const int attribSize[], const GL
             dataType,
             GL_FALSE,
             totalSize,
-            (void*) currentSize
+            reinterpret_cast<void *>(currentSize)
         );
         currentSize += valueSize * attribSize[i];
     }

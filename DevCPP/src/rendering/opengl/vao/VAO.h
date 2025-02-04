@@ -5,7 +5,6 @@
 #ifndef VAO_H
 #define VAO_H
 
-#include "glFunctions.h"
 
 #define VAO_2D_TEXTURE 0
 #define VAO_3D_TEXTURE 1
@@ -15,13 +14,13 @@
 
 class VAO {
 public:
-  VAO(GLuint vaoID, const float buffer[], GLsizeiptr buffer_size, int attribConfig);
-  VAO(GLuint vaoID, const double buffer[], GLsizeiptr buffer_size, int attribConfig);
+  VAO(unsigned int vaoID, const float buffer[], signed long long int buffer_size, int attribConfig);
+  VAO(unsigned int vaoID, const double buffer[], signed long long int buffer_size, int attribConfig);
   void bind() const;
 private:
-  GLuint vaoID, vboID{0};
-  static void initAttributes(int attribConfig, GLuint dataType);
-  static void initAttributes(int attribCount, const int attribSize[], GLuint dataType);
+  unsigned int vaoID, vboID{0};
+  static void initAttributes(int attribConfig, unsigned int dataType);
+  static void initAttributes(int attribCount, const int attribSize[], unsigned int dataType);
 };
 
 
