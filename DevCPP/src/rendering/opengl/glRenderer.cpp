@@ -118,7 +118,6 @@ void glRenderWorld() {
     ///TODO draw world displayables
     glBindFramebuffer(GL_FRAMEBUFFER,0);
     glWorldPostProcessing();
-    glRenderUI();
 }
 
 void glWorldPostProcessing() {

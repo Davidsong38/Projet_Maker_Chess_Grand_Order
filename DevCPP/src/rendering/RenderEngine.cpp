@@ -17,7 +17,7 @@ float RenderEngine::aspectRatio, RenderEngine::inverseAspectRatio;
 
 RenderEngine::RenderEngine() {
     std::cout << "Creating Render Engine" << std::endl;
-    platform_create_window(1920,1080,"Grrrrrrr");
+    platform_create_window(1920,1080,"Open Your Magic Circuit");
     maxWindowSize = glm::ivec2(1920,1080);
     updateWindowSize();
     glInit();
