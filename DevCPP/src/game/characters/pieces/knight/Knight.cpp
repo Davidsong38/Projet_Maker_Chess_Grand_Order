@@ -4,6 +4,8 @@
 
 #include "Knight.h"
 
+#include <iostream>
+
 
 vector<pair<int, int> > Knight::getMoves() const {
     vector<std::pair<int, int>> moves;
@@ -15,6 +17,5 @@ vector<pair<int, int> > Knight::getMoves() const {
         if (coordX - 2 >= 0 && coordY + 1 < 8) moves.emplace_back(coordX - 2, coordY + 1);
         if (coordX + 2 < 8 && coordY- 1 >= 0) moves.emplace_back(coordX + 2, coordY - 1);
         if (coordX - 2 >= 0 && coordY - 1 >= 0) moves.emplace_back(coordX - 2, coordY - 1);
-
     return moves;
 }

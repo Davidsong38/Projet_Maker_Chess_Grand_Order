@@ -53,6 +53,7 @@ class Pieces : public SpriteTarget {
 
         void setIsAlive(bool is_alive);
 
+        [[nodiscard]] bool getIsFirstMove() const;
         [[nodiscard]] string getName();
         [[nodiscard]] int getCoordX() const;
         [[nodiscard]] int getCoordY() const;
@@ -85,6 +86,9 @@ class Pieces : public SpriteTarget {
 
         [[nodiscard]] virtual vector<pair<int, int>> getMoves() const = 0;
         [[nodiscard]] virtual vector<pair<int, int>> getEffectRange(Effect_List effect) const = 0;
+
+
+
         [[nodiscard]] virtual vector<Effect_List> getCasterEffects() const = 0;
         [[nodiscard]] virtual bool isCheating () const {return false;}
         virtual void passive(void* context) = 0;

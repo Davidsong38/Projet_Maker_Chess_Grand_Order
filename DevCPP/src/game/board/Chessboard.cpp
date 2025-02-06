@@ -80,31 +80,63 @@ bool Chessboard::isPathClear(int startX, int startY, int endX, int endY, Pieces*
 vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
     vector<pair<int, int>> valid_moves;
     vector<pair<int, int>> piece_moves = piece->getMoves();
-    for (const auto& move : piece_moves) {
-        int to_coordX = move.first;
-        int to_coordY = move.second;
-        if (isInGrid(to_coordX, to_coordY) && (grid[to_coordX][to_coordY] == nullptr || !isAlly(piece,grid[to_coordX][to_coordY]))
-            && isPathClear(piece->getCoordX(),piece->getCoordY(),to_coordX,to_coordY,piece)) {
-            valid_moves.emplace_back(move);
-
-        }
-    }
+    cout << "moves : " <<piece_moves.size() << endl;
     if (piece->isPawn()) {
         int pawnDirection = piece->getIsWhite() ? -1 : 1;
         int currentX = piece->getCoordX();
         int currentY = piece->getCoordY();
-
+        bool FirstMove = piece->getIsFirstMove();
+        if (piece->getIsWhite()) {
+            if (currentX - 1 < 8 && isPathClear(currentX, currentY,currentX - 1,currentY,piece)
+                && grid[currentX - 1][currentY] == nullptr ) valid_moves.emplace_back(currentX - 1, currentY );
+            if (FirstMove && currentX - 2 < 8 && isPathClear(currentX - 2, currentY,currentX - 1,currentY,piece)
+                && grid[currentX - 2][currentY] == nullptr) valid_moves.emplace_back(currentX - 2, currentY);
+        } else {
+            if (currentX + 1 < 8 && isPathClear(currentX, currentY,currentX + 1,currentY,piece)
+                && grid[currentX + 1][currentY] == nullptr) valid_moves.emplace_back(currentX + 1, currentY);
+            if (FirstMove && currentX + 2 < 8 && isPathClear(currentX, currentY,currentX + 2,currentY,piece)
+                && grid[currentX + 2][currentY] == nullptr) valid_moves.emplace_back(currentX + 2, currentY);
+        }
         vector<pair<int, int>> diagonalattack = {{pawnDirection, -1}, {pawnDirection, 1}};
-
         for (const auto& offset : diagonalattack) {
             int diagX = currentX + offset.first;
             int diagY = currentY + offset.second;
-
             if (isInGrid(diagX, diagY) && grid[diagX][diagY] != nullptr && !isAlly(piece, grid[diagX][diagY])) {
                 valid_moves.emplace_back(diagX, diagY);
             }
         }
+        return valid_moves;
     }
+
+    for (const auto& move : piece_moves) {
+        int to_coordX = move.first;
+        int to_coordY = move.second;
+
+
+        cout << "coordX : " <<move.first << endl;
+        cout << "coordY : " <<move.second << endl;
+
+
+
+        if (piece == nullptr) {
+            cout << "piece pas la" << endl;
+        }
+        if (isInGrid(to_coordX, to_coordY) && (grid[to_coordX][to_coordY] == nullptr || grid[to_coordX][to_coordY] != nullptr && !isAlly(piece,grid[to_coordX][to_coordY]))
+            && isPathClear(piece->getCoordX(),piece->getCoordY(),to_coordX,to_coordY,piece) && !piece->isKnight()) {
+            valid_moves.emplace_back(move);
+            cout << "help";
+        }
+        if (isInGrid(to_coordX, to_coordY) && (grid[to_coordX][to_coordY] == nullptr || grid[to_coordX][to_coordY] != nullptr && !isAlly(piece,grid[to_coordX][to_coordY]))
+            && piece->isKnight()) {
+            valid_moves.emplace_back(move);
+
+
+            cout << "je suis la " << endl;
+
+        }
+    }
+    cout << " valid moves : " <<valid_moves.size() << endl;
+
     return valid_moves;
 }
 

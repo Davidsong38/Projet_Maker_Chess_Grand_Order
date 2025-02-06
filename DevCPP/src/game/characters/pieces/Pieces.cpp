@@ -42,6 +42,10 @@ bool Pieces::getIsWhite() const {
     return isWhite;
 }
 
+bool Pieces::getIsFirstMove() const{
+    return isFirstMove;
+}
+
 int Pieces::getCoordX() const {
     return coordX;
 }
@@ -72,6 +76,8 @@ Characters_List Pieces::getCharacters() const {
 Pieces_List Pieces::getPiecesOrigin() const {
     return pieces_origin;
 }
+
+
 //void Pieces::affectCharacter(const Character_Instance& character_instance) {
 //    characters.emplace_back(character_instance);
 //}
