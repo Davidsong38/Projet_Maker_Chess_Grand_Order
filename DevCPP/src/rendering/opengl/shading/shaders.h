@@ -10,6 +10,7 @@
 extern Shader* postProcessingShader;
 extern Shader* skyboxShader;
 extern Shader* basicSpriteShader;
+extern Shader* basicSpriteShaderWithFilter;
 
 void initShaders();
 

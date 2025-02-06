@@ -7,9 +7,11 @@
 Shader* postProcessingShader;
 Shader* skyboxShader;
 Shader* basicSpriteShader;
+Shader* basicSpriteShaderWithFilter;
 
 void initShaders() {
   postProcessingShader = new Shader("postProcessing");
   skyboxShader = new Shader("skybox");
   basicSpriteShader = new Shader("basicSprite");
+  basicSpriteShaderWithFilter = new Shader("basicSpriteWithFilter");
 }

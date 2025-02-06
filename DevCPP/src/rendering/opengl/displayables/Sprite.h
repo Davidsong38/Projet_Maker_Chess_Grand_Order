@@ -25,7 +25,8 @@ protected:
     Shader* shader;
     glm::vec3 position{};
     glm::vec2 size{};
-    SpriteTarget* target;
+    float rotation{};
+    SpriteTarget* spriteTarget;
 };
 
 

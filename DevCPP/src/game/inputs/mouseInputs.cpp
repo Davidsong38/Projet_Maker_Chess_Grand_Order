@@ -4,6 +4,9 @@
 
 #include "mouseInputs.h"
 
+#include <Chessboard.h>
+#include <GameEngine.h>
+
 #include "log.h"
 #include <iostream>
 #include "platform.h"
@@ -27,6 +30,11 @@ void leftClickUp(glm::vec2 mousePos) {
 
 void leftClickDown(glm::vec2 mousePos) {
     isLeftClickHeld = true;
+    auto posInBoard = glm::ivec2();
+    if (Chessboard::getInstance()->getPosInBoard(mousePos, posInBoard)) {
+        //cout << posInBoard.x << ", " << posInBoard.y << endl;
+        GameEngine::getInstance()->clickBoardAtPos(posInBoard.x, posInBoard.y);
+    }
 }
 
 void rightClickUp(glm::vec2 mousePos) {

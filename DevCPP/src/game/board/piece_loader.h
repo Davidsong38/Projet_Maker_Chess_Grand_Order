@@ -10,12 +10,12 @@
 
 extern bool didPiecesGetInitiated;
 
-Characters_List choose_pawn();
-Characters_List choose_knight();
-Characters_List choose_bishop();
-Characters_List choose_rook();
-Characters_List choose_king();
-Characters_List choose_queen();
+Characters_List choose_pawn(bool isWhite);
+Characters_List choose_knight(bool isWhite, bool isRight);
+Characters_List choose_bishop(bool isWhite, bool isRight);
+Characters_List choose_rook(bool isWhite, bool isRight);
+Characters_List choose_king(bool isWhite);
+Characters_List choose_queen(bool isWhite);
 
 void add_piece_to_board(int x, int y, bool isWhite, Characters_List character);
 Pieces* get_piece(int x, int y, bool isWhite, Characters_List character);

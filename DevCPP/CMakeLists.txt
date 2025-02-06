@@ -58,6 +58,7 @@ target_sources(Chess_Grand_Order PRIVATE
         src/rendering/opengl/vao/VAO.cpp
         src/rendering/opengl/vao/vaos.cpp
         src/rendering/opengl/displayables/Sprite.cpp
+        src/rendering/opengl/displayables/SpriteWithFilter.cpp
         src/rendering/opengl/ui/uiElements.cpp
         src/utils/logging/log.cpp
         src/utils/file_io/fileIO.cpp

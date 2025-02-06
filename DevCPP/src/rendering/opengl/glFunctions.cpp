@@ -15,6 +15,7 @@ static PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation_ptr;
 static PFNGLUNIFORM1FPROC glUniform1f_ptr;
 static PFNGLUNIFORM2FVPROC glUniform2fv_ptr;
 static PFNGLUNIFORM3FVPROC glUniform3fv_ptr;
+static PFNGLUNIFORM4FVPROC glUniform4fv_ptr;
 static PFNGLUNIFORM1IPROC glUniform1i_ptr;
 static PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv_ptr;
 static PFNGLVERTEXATTRIBDIVISORPROC glVertexAttribDivisor_ptr;
@@ -79,6 +80,7 @@ void load_gl_functions() {
   glUniform1f_ptr = (PFNGLUNIFORM1FPROC) platform_load_gl_function((char*)"glUniform1f");
   glUniform2fv_ptr = (PFNGLUNIFORM2FVPROC) platform_load_gl_function((char*)"glUniform2fv");
   glUniform3fv_ptr = (PFNGLUNIFORM3FVPROC) platform_load_gl_function((char*)"glUniform3fv");
+  glUniform4fv_ptr = (PFNGLUNIFORM4FVPROC) platform_load_gl_function((char*)"glUniform4fv");
   glUniform1i_ptr = (PFNGLUNIFORM1IPROC) platform_load_gl_function((char*)"glUniform1i");
   glUniformMatrix4fv_ptr = (PFNGLUNIFORMMATRIX4FVPROC) platform_load_gl_function((char*)"glUniformMatrix4fv");
   glVertexAttribDivisor_ptr = (PFNGLVERTEXATTRIBDIVISORPROC) platform_load_gl_function((char*)"glVertexAttribDivisor");
@@ -180,6 +182,11 @@ void glUniform2fv(GLint location, GLsizei count, const GLfloat* value)
 void glUniform3fv(GLint location, GLsizei count, const GLfloat* value)
 {
     glUniform3fv_ptr(location, count, value);
+}
+
+void glUniform4fv(GLint location, GLsizei count, const GLfloat* value)
+{
+    glUniform4fv_ptr(location, count, value);
 }
 
 void glUniform1i(GLint location, GLint v0)

@@ -41,14 +41,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "Chess_Grand_Order::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Chess_Grand_Order-Debug-f38c36180e9c22308903.json",
+					"jsonFile" : "target-Chess_Grand_Order-Debug-fbf9fb0092f1dd8bab09.json",
 					"name" : "Chess_Grand_Order",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "copy_assets::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-copy_assets-Debug-40aeb89c5f4ada0400a1.json",
+					"jsonFile" : "target-copy_assets-Debug-00b591d1189b70c4a22f.json",
 					"name" : "copy_assets",
 					"projectIndex" : 0
 				}

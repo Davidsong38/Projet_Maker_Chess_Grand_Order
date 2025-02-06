@@ -32,6 +32,7 @@ class Pieces : public SpriteTarget {
         string name;
 
     public:
+        bool selected = false;
 
 
         explicit Pieces(int startX, int startY, bool white, Characters_List hero, Pieces_List pieces_root)
@@ -43,6 +44,10 @@ class Pieces : public SpriteTarget {
 
         float getSpriteX() override;
         float getSpriteY() override;
+        float getSpriteRotation() override;
+        glm::vec3 getFilterColor() override;
+        glm::vec4 getDefaultColor() override;
+
 
         [[nodiscard]] string getName();
         [[nodiscard]] int getCoordX() const;

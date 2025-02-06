@@ -6,6 +6,7 @@
 #include "Characters_List.h"
 #include "Pawn.h"
 #include "game_cfg.h"
+#include "RenderEngine.h"
 
 Chessboard* Chessboard::instance = nullptr;
 
@@ -197,5 +198,20 @@ void Chessboard::displayBoard() const {
     }
 }
 
-
-
+bool Chessboard::getPosInBoard(const glm::vec2 screenPos, glm::ivec2 &boardPos) const {
+    auto transformed_screenPos = glm::vec2(
+        screenPos.x * RenderEngine::getWindowAspectRatio(),
+        screenPos.y
+    );
+    transformed_screenPos.x *= static_cast<float>(size);
+    float offsetX = (1 - RenderEngine::getWindowInverseAspectRatio()) * static_cast<float>(size);
+    offsetX += RenderEngine::getWindowAspectRatio() + 1;
+    offsetX *= 0.5f;
+    transformed_screenPos.x -= offsetX;
+    transformed_screenPos.y *= static_cast<float>(size);
+    boardPos.y = static_cast<int>(floor(transformed_screenPos.x));
+    boardPos.x = static_cast<int>(floor(transformed_screenPos.y));
+    if (boardPos.y < 0 || boardPos.y >= size || boardPos.x < 0 || boardPos.x >= size)
+        return false;
+    return true;
+}

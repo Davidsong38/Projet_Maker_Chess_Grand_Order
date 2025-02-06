@@ -3,6 +3,9 @@
 //
 
 #include "uiElements.h"
+
+#include <SpriteWithFilter.h>
+
 #include "textures.h"
 #include "rendering_cfg.h"
 #include "RenderEngine.h"
@@ -31,5 +34,5 @@ void addAdditionalUIElement(Sprite* sprite) {
 }
 
 void addAdditionalUIElement(Texture* texture, glm::vec2 size, SpriteTarget* target) {
-  addAdditionalUIElement(new Sprite(texture, size, target));
+  addAdditionalUIElement(reinterpret_cast<Sprite *>(new SpriteWithFilter(texture, size, target)));
 }

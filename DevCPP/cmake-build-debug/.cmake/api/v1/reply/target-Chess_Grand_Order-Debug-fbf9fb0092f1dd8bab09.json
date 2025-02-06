@@ -44,7 +44,7 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 112,
+				"line" : 113,
 				"parent" : 0
 			},
 			{
@@ -56,7 +56,7 @@
 			{
 				"command" : 4,
 				"file" : 0,
-				"line" : 78,
+				"line" : 79,
 				"parent" : 0
 			},
 			{
@@ -74,7 +74,7 @@
 			{
 				"command" : 5,
 				"file" : 0,
-				"line" : 67,
+				"line" : 68,
 				"parent" : 0
 			}
 		]
@@ -265,7 +265,8 @@
 				38,
 				39,
 				40,
-				41
+				41,
+				42
 			]
 		}
 	],
@@ -354,7 +355,8 @@
 				38,
 				39,
 				40,
-				41
+				41,
+				42
 			]
 		},
 		{
@@ -592,6 +594,12 @@
 			"backtrace" : 7,
 			"compileGroupIndex" : 0,
 			"path" : "src/rendering/opengl/displayables/Sprite.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "src/rendering/opengl/displayables/SpriteWithFilter.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
