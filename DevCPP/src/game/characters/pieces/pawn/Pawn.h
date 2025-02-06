@@ -8,8 +8,6 @@
 
 
 class Pawn : public Pieces{
-    protected:
-        bool isFirstMove = true;
     public:
         Pawn(int startX, int startY, bool white, Characters_List hero, Pieces_List pieces_root)
             : Pieces(startX, startY, white, hero, pieces_root) {

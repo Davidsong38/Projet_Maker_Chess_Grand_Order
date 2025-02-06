@@ -8,11 +8,11 @@ vector<pair<int, int> > Pawn::getMoves() const {
     vector<std::pair<int, int>> moves;
 
     if (getIsWhite()) {
-        if (coordY - 1 < 8) moves.emplace_back(coordX, coordY - 1);
-        if (isFirstMove && coordY - 2 < 8) moves.emplace_back(coordX, coordY -2);
+        if (coordX - 1 < 8) moves.emplace_back(coordX - 1, coordY );
+        if (isFirstMove && coordX - 2 < 8) moves.emplace_back(coordX - 2, coordY);
     } else {
-        if (coordY + 1 < 8) moves.emplace_back(coordX, coordY + 1);
-        if (isFirstMove && coordY + 2 < 8) moves.emplace_back(coordX, coordY + 2);
+        if (coordX + 1 < 8) moves.emplace_back(coordX + 1, coordY);
+        if (isFirstMove && coordX + 2 < 8) moves.emplace_back(coordX + 2, coordY);
     }
     return moves;
 }

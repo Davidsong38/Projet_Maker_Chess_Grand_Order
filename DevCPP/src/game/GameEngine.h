@@ -37,11 +37,9 @@ public:
     void run(void * arg);
     [[nodiscard]] GameState get_current_state() const;
     void clickBoardAtPos(int x, int y);
-    void clickDifferentOfLastPos(int x, int y);
 private:
     int lastClickX{-1}, lastClickY{-1};
     bool receivedClick = false;
-    bool differentClick = true;
     int NB_Turn = 0;
     GameState current_state;
     inline static GameEngine* instance = nullptr;

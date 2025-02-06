@@ -22,6 +22,8 @@ void SpriteWithFilter::draw() {
         this->rotation = spriteTarget->getSpriteRotation();
         filterColor = spriteTarget->getFilterColor();
         defaultColor = spriteTarget->getDefaultColor();
+        if (spriteTarget->isHidden())
+            return;
     }
     this->vao->bind();
     this->texture->bind();

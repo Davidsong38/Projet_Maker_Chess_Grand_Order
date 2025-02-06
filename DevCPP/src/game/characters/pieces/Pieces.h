@@ -25,6 +25,8 @@ class Pieces : public SpriteTarget {
         int coordY;
         bool isWhite = false;
         bool evolved = false;
+        bool isFirstMove = true;
+        bool isAlive = true;
         vector<EffectInstance> activeEffects ;
         //vector<Character_Instance> characters ;
         Characters_List characters;
@@ -47,7 +49,9 @@ class Pieces : public SpriteTarget {
         float getSpriteRotation() override;
         glm::vec3 getFilterColor() override;
         glm::vec4 getDefaultColor() override;
+        bool isHidden() override;
 
+        void setIsAlive(bool is_alive);
 
         [[nodiscard]] string getName();
         [[nodiscard]] int getCoordX() const;

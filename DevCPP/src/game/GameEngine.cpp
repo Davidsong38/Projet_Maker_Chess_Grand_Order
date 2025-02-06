@@ -9,7 +9,7 @@
 #include "pieces_List.h"
 #include "piece_loader.h"
 #include  "keys.h"
-
+#include "log.h"
 #include <iostream>
 #include <VAO.h>
 
@@ -67,22 +67,23 @@ void GameEngine::handleStartWhitePhase() {
             setState(SELECT_WHITE_PHASE);
         }
     }
-    setState(SELECT_WHITE_PHASE);
-
-
 }
 void GameEngine::handleSelectWhitePhase() {
-    if (differentClick) {
-        setState(MOVING_WHITE_PHASE);
-    } else {
-        if (context->piece != nullptr) {
-            context->piece->selected = false;
-            context->piece = nullptr;
-            lastClickX = lastClickY = -1;
-            receivedClick = false;
-        }
-        setState(START_WHITE_PHASE);
+    if (!receivedClick)
+        return;
+    receivedClick = false;
+    if (context->piece == nullptr) {
+        log(LOG_ERROR,"Impossible state in GameEngine::handleSelectWhitePhase()");
+        return;
     }
+    if (context->piece->getCoordX() == lastClickX && context->piece->getCoordY() == lastClickY) {
+        context->piece->selected = false;
+        context->piece = nullptr;
+        setState(START_WHITE_PHASE);
+        return;
+    }
+    Chessboard::getInstance()->movePiece(context->piece, lastClickX, lastClickY);    ///TODO Move
+    //setState(MOVING_WHITE_PHASE);
 }
 
 void GameEngine::handleMovingWhitePhase() {
@@ -107,7 +108,7 @@ void GameEngine::handleStartBlackPhase() {
 }
 
 void GameEngine::handleSelectBlackPhase() {
-    if (differentClick) {
+    if (true) {
         setState(MOVING_BLACK_PHASE);
     } else {
         setState(START_BLACK_PHASE);
@@ -159,19 +160,11 @@ void GameEngine::update(double deltaTime_ms) {
 }
 
 void GameEngine::clickBoardAtPos(int x, int y) {
-    clickDifferentOfLastPos(x,y);
     receivedClick = true;
     lastClickX = x;
     lastClickY = y;
 }
 
-void GameEngine::clickDifferentOfLastPos(int x, int y) {
-    if (lastClickX != x || lastClickY != y) {
-        differentClick = true;
-    } else {
-        differentClick = false;
-    }
-}
 
 
 

@@ -39,6 +39,8 @@ void Sprite::draw() {
         this->position.x = spriteTarget->getSpriteX();
         this->position.y = spriteTarget->getSpriteY();
         this->rotation = spriteTarget->getSpriteRotation();
+        if (spriteTarget->isHidden())
+            return;
     }
     this->vao->bind();
     this->texture->bind();

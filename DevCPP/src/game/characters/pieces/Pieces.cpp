@@ -51,6 +51,15 @@ int Pieces::getCoordY() const {
 void Pieces::setPosition(int newX, int newY) {
     coordX = newX;
     coordY = newY;
+    isFirstMove = false;
+}
+
+bool Pieces::isHidden() {
+    return !isAlive;
+}
+
+void Pieces::setIsAlive(bool is_alive) {
+    isAlive = is_alive;
 }
 
 void Pieces::addEffectStatus(EffectInstance effect_instance) {
