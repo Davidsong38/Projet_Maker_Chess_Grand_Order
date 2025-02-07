@@ -30,17 +30,27 @@ public:
     void placePiece(int coordX, int coordY, Pieces* piece);
     bool isMovePossible(Pieces* piece,int to_coordX, int to_coordY) const; // vérifie si le movement est dans le plateau, qu'il n'est pas sur un allié et que la pièce possède ce movement
     vector<pair<int, int>> getValidMoves(Pieces* piece) const;
-    void movePiece(Pieces* piece,int to_coordX,int to_coordY);
+    bool movePiece(Pieces* piece,int to_coordX,int to_coordY);
     bool KillCheck(Pieces* piece,Pieces* target_piece);
     void displayBoard() const;
     static bool isKillable(Pieces* piece) ; // vérifie si la pièce peut être tué ( ne possède pas d'effet qui la protège)
     static bool isMoveable(Pieces* piece) ; // vérifie si la pièce n'est pas affecté par des effets d'immobilisation
     bool isKilled(Pieces* piece) const; // vérifie si la pièce est morte
     static bool isAlly(Pieces* piece, Pieces* target_piece);
+    bool isPathClear(int endX, int endY, Pieces* piece) const ;
     bool isPathClear(int startX, int startY, int endX, int endY, Pieces* piece) const ;
+    bool isPathAllClear(int endX, int endY, Pieces* piece) const ;
+    [[nodiscard]] bool isPathAllClear(int startX, int startY, int endX, int endY) const ;
     [[nodiscard]] bool isInGrid(int to_coordX, int to_coordY) const;
     [[nodiscard]] vector<vector<Pieces *>> getGrid() const;
     bool getPosInBoard(glm::vec2 screenPos, glm::ivec2 &boardPos) const;
+    bool isEndangeredByWhite(pair<int, int> cell);
+    bool isEndangeredByBlack(pair<int, int> cell);
+    bool canLittleRoque(Pieces* piece);
+    bool canBigRoque(Pieces* piece);
+    bool bigRoque(Pieces* piece);
+    bool littleRoque(Pieces* piece);
+    vector<Pieces*> getAllPieces();
 };
 
 

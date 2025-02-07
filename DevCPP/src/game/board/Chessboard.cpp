@@ -4,6 +4,7 @@
 
 #include "Chessboard.h"
 
+#include <King.h>
 #include <log.h>
 
 #include "Characters_List.h"
@@ -45,6 +46,10 @@ bool Chessboard::isInGrid(int to_coordX, int to_coordY) const {
     return false;
 }
 
+bool Chessboard::isPathClear(int endX, int endY, Pieces* piece) const {
+    return isPathClear(piece->getCoordX(), piece->getCoordY(), endX, endY, piece);
+}
+
 bool Chessboard::isPathClear(int startX, int startY, int endX, int endY, Pieces* piece) const {
     int dx = (endX - startX) == 0 ? 0 : (endX - startX) / abs(endX - startX);  // Direction en X
     int dy = (endY - startY) == 0 ? 0 : (endY - startY) / abs(endY - startY);  // Direction en Y
@@ -57,7 +62,7 @@ bool Chessboard::isPathClear(int startX, int startY, int endX, int endY, Pieces*
         Pieces* currentPiece = grid[x][y];
 
         // Si la case contient une pièce
-        if (currentPiece != nullptr && !piece->isCheating()) {
+        if (currentPiece != nullptr) {
             // Si c'est une pièce alliée, on bloque le mouvement
             if (isAlly(piece, currentPiece)) {
                 return false;
@@ -76,24 +81,191 @@ bool Chessboard::isPathClear(int startX, int startY, int endX, int endY, Pieces*
     return true;  // Le chemin est libre
 }
 
+bool Chessboard::isPathAllClear(int endX, int endY, Pieces* piece) const {
+    return isPathAllClear(piece->getCoordX(), piece->getCoordY(), endX, endY);
+}
+
+
+bool Chessboard::isPathAllClear(int startX, int startY, int endX, int endY) const {
+    int dx = (endX - startX) == 0 ? 0 : (endX - startX) / abs(endX - startX);  // Direction en X
+    int dy = (endY - startY) == 0 ? 0 : (endY - startY) / abs(endY - startY);  // Direction en Y
+
+    int x = startX + dx;
+    int y = startY + dy;
+
+    while (x != endX || y != endY) {
+        Pieces* currentPiece = grid[x][y];
+        if (currentPiece != nullptr) {
+                return false;
+        }
+        x += dx;
+        y += dy;
+    }
+
+    return true;
+}
+
+vector<Pieces*> Chessboard::getAllPieces() {
+    vector<Pieces*> piecesList;
+    for (const auto &row : grid) {
+        for (const auto &cell : row) {
+            if (cell != nullptr) {
+                piecesList.emplace_back(cell);
+            }
+        }
+    }
+    return piecesList;
+}
+
+
+
+bool Chessboard::isEndangeredByWhite(pair<int, int> cell) {
+    vector<Pieces*> piecesList = getAllPieces();
+    for (const auto character : piecesList) {
+        if (character->getIsWhite()) {
+            getValidMoves(character);
+            for (const auto move : getValidMoves(character)) {
+                if (move == cell) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool Chessboard::isEndangeredByBlack(pair<int, int> cell) {
+    vector<Pieces*> piecesList = getAllPieces();
+    for (const auto character : piecesList) {
+        if (!character->getIsWhite()) {
+            getValidMoves(character);
+            for (const auto move : getValidMoves(character)) {
+                if (move == cell) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool Chessboard::canLittleRoque(Pieces* piece) {
+    int coordX = piece->getCoordX();
+    int coordY = piece->getCoordY();
+    vector<pair<int, int>> coords;
+    if (grid[7][7] != nullptr && piece->getIsWhite() == grid[7][7]->getIsWhite() == true) {
+        if (piece->isKing() && piece->getIsFirstMove() && grid[7][7]->isRook() &&grid[7][7]->getIsFirstMove() && isPathAllClear(coordX, coordY + 2, piece)) {
+            coords.emplace_back(coordX, coordY);
+            coords.emplace_back(coordX, coordY + 1);
+            coords.emplace_back(coordX, coordY + 2);
+            for (const auto move : coords) {
+                if (isEndangeredByBlack(move)) {
+                    return false;
+                }
+                return true;
+            }
+        }
+    }
+    if (grid[0][7] != nullptr && piece->getIsWhite() == grid[0][7]->getIsWhite() == false) {
+        if (piece->isKing() && piece->getIsFirstMove() && grid[0][7]->isRook() && grid[0][7]->getIsFirstMove() && isPathAllClear(coordX, coordY + 2, piece)) {
+            coords.emplace_back(coordX, coordY);
+            coords.emplace_back(coordX, coordY + 1);
+            coords.emplace_back(coordX, coordY + 2);
+            for (const auto move : coords) {
+                if (isEndangeredByWhite(move)) {
+                    return false;
+                }
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
+bool Chessboard::canBigRoque(Pieces* piece) {
+    int coordX = piece->getCoordX();
+    int coordY = piece->getCoordY();
+    vector<pair<int, int>>coords;
+    if (grid[7][0] != nullptr && piece->getIsWhite() == grid[7][0]->getIsWhite() == true) {
+        if (piece->isKing() && piece->getIsFirstMove() && grid[7][0]->isRook() && grid[7][0]->getIsFirstMove() && isPathAllClear(coordX,coordY - 3, piece)) {
+            coords.emplace_back(coordX, coordY);
+            coords.emplace_back(coordX, coordY - 1);
+            coords.emplace_back(coordX, coordY - 2);
+            for (const auto move : coords) {
+                if (isEndangeredByBlack(move)) {
+                    return false;
+                }
+                return true;
+            }
+
+        }
+    }
+    if (grid[0][0] != nullptr && piece->getIsWhite() == grid[0][0]->getIsWhite() == false) {
+        if (piece->isKing() && piece->getIsFirstMove() && grid[0][0]->isRook() && grid[0][0]->getIsFirstMove() && isPathAllClear(coordX,coordY - 3, piece)) {
+            coords.emplace_back(coordX, coordY);
+            coords.emplace_back(coordX, coordY - 1);
+            coords.emplace_back(coordX, coordY - 2);
+            for (const auto move : coords) {
+                if (isEndangeredByWhite(move)) {
+                    return false;
+                }
+                return true;
+            }
+
+        }
+    }
+    return false;
+}
+
+bool Chessboard::bigRoque(Pieces* piece) {
+    if (canBigRoque(piece)) {
+        if (piece->getIsWhite() == true) {
+            movePiece(piece,7,2);
+            movePiece(grid[7][0],7,3);
+            return true;
+        }
+        if (piece->getIsWhite() == false) {
+            movePiece(piece,0,2);
+            movePiece(grid[0][0],0,3);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Chessboard::littleRoque(Pieces* piece) {
+    if (canBigRoque(piece)) {
+        if (piece->getIsWhite() == true) {
+            movePiece(piece,7,6);
+            movePiece(grid[7][7],7,5);
+            return true;
+        }
+        if (piece->getIsWhite() == false) {
+            movePiece(piece,0,6);
+            movePiece(grid[0][7],0,5);
+            return true;
+        }
+    }
+    return false;
+}
+
 
 vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
     vector<pair<int, int>> valid_moves;
     vector<pair<int, int>> piece_moves = piece->getMoves();
-    cout << "moves : " <<piece_moves.size() << endl;
+    //cout << "moves : " <<piece_moves.size() << endl;
     if (piece->isPawn()) {
         int pawnDirection = piece->getIsWhite() ? -1 : 1;
         int currentX = piece->getCoordX();
         int currentY = piece->getCoordY();
         bool FirstMove = piece->getIsFirstMove();
         if (piece->getIsWhite()) {
-            if (currentX - 1 < 8 && isPathClear(currentX, currentY,currentX - 1,currentY,piece)
-                && grid[currentX - 1][currentY] == nullptr ) valid_moves.emplace_back(currentX - 1, currentY );
-            if (FirstMove && currentX - 2 < 8 && isPathClear(currentX - 2, currentY,currentX - 1,currentY,piece)
+            if (currentX - 1 >= 0 && grid[currentX - 1][currentY] == nullptr ) valid_moves.emplace_back(currentX - 1, currentY );
+            if (FirstMove && currentX - 2 >= 0 && isPathClear(currentX, currentY,currentX - 2,currentY,piece)
                 && grid[currentX - 2][currentY] == nullptr) valid_moves.emplace_back(currentX - 2, currentY);
         } else {
-            if (currentX + 1 < 8 && isPathClear(currentX, currentY,currentX + 1,currentY,piece)
-                && grid[currentX + 1][currentY] == nullptr) valid_moves.emplace_back(currentX + 1, currentY);
+            if (currentX + 1 < 8 && grid[currentX + 1][currentY] == nullptr) valid_moves.emplace_back(currentX + 1, currentY);
             if (FirstMove && currentX + 2 < 8 && isPathClear(currentX, currentY,currentX + 2,currentY,piece)
                 && grid[currentX + 2][currentY] == nullptr) valid_moves.emplace_back(currentX + 2, currentY);
         }
@@ -107,36 +279,29 @@ vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
         }
         return valid_moves;
     }
+    if (piece->isKing()) {
+
+    }
 
     for (const auto& move : piece_moves) {
         int to_coordX = move.first;
         int to_coordY = move.second;
-
-
-        cout << "coordX : " <<move.first << endl;
-        cout << "coordY : " <<move.second << endl;
-
-
-
-        if (piece == nullptr) {
-            cout << "piece pas la" << endl;
-        }
-        if (isInGrid(to_coordX, to_coordY) && (grid[to_coordX][to_coordY] == nullptr || grid[to_coordX][to_coordY] != nullptr && !isAlly(piece,grid[to_coordX][to_coordY]))
-            && isPathClear(piece->getCoordX(),piece->getCoordY(),to_coordX,to_coordY,piece) && !piece->isKnight()) {
+        bool inGrid = isInGrid(to_coordX, to_coordY);
+        bool emptySquare = grid[to_coordX][to_coordY] == nullptr;
+        bool isTargetAlly = false;
+        if (!emptySquare)
+            isTargetAlly = isAlly(piece,grid[to_coordX][to_coordY]);
+        bool knight = piece->isKnight();
+        bool pathClear = true;
+        if (!knight)
+            pathClear = isPathClear(to_coordX,to_coordY, piece);
+        if (inGrid && (emptySquare || !isTargetAlly) && pathClear && !knight) {
             valid_moves.emplace_back(move);
-            cout << "help";
         }
-        if (isInGrid(to_coordX, to_coordY) && (grid[to_coordX][to_coordY] == nullptr || grid[to_coordX][to_coordY] != nullptr && !isAlly(piece,grid[to_coordX][to_coordY]))
-            && piece->isKnight()) {
+        if (inGrid && (emptySquare || !isTargetAlly) && knight) {
             valid_moves.emplace_back(move);
-
-
-            cout << "je suis la " << endl;
-
         }
     }
-    cout << " valid moves : " <<valid_moves.size() << endl;
-
     return valid_moves;
 }
 
@@ -151,16 +316,16 @@ bool Chessboard::isMovePossible(Pieces* piece,int to_coordX, int to_coordY) cons
     return false;
 }
 
-void Chessboard::movePiece(Pieces* piece, int to_coordX, int to_coordY) {
+bool Chessboard::movePiece(Pieces* piece, int to_coordX, int to_coordY) {
     int coordX = piece->getCoordX();
     int coordY = piece->getCoordY();
     if (!isMoveable(piece)) {
-        log(LOG_ERROR, "Chessboard::movePiece: move is not possible for piece");
-        return;
+       // log(LOG_ERROR, "Chessboard::movePiece: move is not possible for piece");
+        return false;
     }
     if (!isMovePossible(piece,to_coordX,to_coordY)) {
-        log(LOG_ERROR, "Chessboard::movePiece: move is not possible on board");
-        return;
+        //log(LOG_ERROR, "Chessboard::movePiece: move is not possible on board");
+        return false;
     }
     Pieces* target_piece = grid[to_coordX][to_coordY];
     if (target_piece == nullptr) {
@@ -170,8 +335,9 @@ void Chessboard::movePiece(Pieces* piece, int to_coordX, int to_coordY) {
     } else {
         KillCheck(piece,target_piece);
     }
-    std::cout << "Piece moved from (" << coordX << ", " << coordY
+    std::cout << (piece->getIsWhite()? "White " : "Black ")<<piece->getName()<<" moved from (" << coordX << ", " << coordY
               << ") to (" << to_coordX << ", " << to_coordY << ")." << std::endl;
+    return true;
 }
 
 
@@ -195,7 +361,8 @@ bool Chessboard::KillCheck(Pieces *piece, Pieces *target_piece) {
         grid[coordX2][coordY2] = piece;
         grid[coordX1][coordY1] = nullptr;
         piece->setPosition(coordX2,coordY2);
-        std::cout << piece->getName() << " killed " << target_piece->getName() << std::endl;
+        std::cout << (piece->getIsWhite()? "White " : "Black ")<< piece->getName() << " killed "
+        << (target_piece->getIsWhite()? "White " : "Black ") <<target_piece->getName() << std::endl;
         target_piece->setIsAlive(false);
         return true;
     }

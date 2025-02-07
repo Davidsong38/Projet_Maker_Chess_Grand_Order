@@ -34,13 +34,16 @@ public:
     ~GameEngine() override;
     static GameEngine* getInstance();
     void update(double deltaTime_ms) override;
-    void run(void * arg);
     [[nodiscard]] GameState get_current_state() const;
     void clickBoardAtPos(int x, int y);
+
+    void setBlackKing(Pieces* piece) const;
+    void setWhiteKing(Pieces* piece) const;
+
 private:
     int lastClickX{-1}, lastClickY{-1};
     bool receivedClick = false;
-    int NB_Turn = 0;
+    int NB_Turn = 1;
     GameState current_state;
     inline static GameEngine* instance = nullptr;
     context_type* context = new context_type();

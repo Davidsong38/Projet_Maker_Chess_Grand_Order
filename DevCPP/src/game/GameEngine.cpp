@@ -36,6 +36,15 @@ void GameEngine::setState(GameState state) {
     current_state = state;
 }
 
+void GameEngine::setBlackKing(Pieces *piece) const {
+    context->black_king = piece;
+}
+
+void GameEngine::setWhiteKing(Pieces *piece) const {
+    context->white_king = piece;
+}
+
+
 GameState GameEngine::get_current_state() const {
     return current_state;
 }
@@ -46,7 +55,9 @@ void GameEngine::handleInitialisation() {
     loadPiecesList();
     context->chessboard = Chessboard::getInstance();
     init_pieces();
+    std::cout<< "---------------------------------------------------WHITE TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
     setState(START_WHITE_PHASE);
+
 }
 
 
@@ -82,8 +93,8 @@ void GameEngine::handleSelectWhitePhase() {
         setState(START_WHITE_PHASE);
         return;
     }
-    Chessboard::getInstance()->movePiece(context->piece, lastClickX, lastClickY);    ///TODO Move
-    //setState(MOVING_WHITE_PHASE);
+    if (Chessboard::getInstance()->movePiece(context->piece, lastClickX, lastClickY))
+        setState(MOVING_WHITE_PHASE);
 }
 
 void GameEngine::handleMovingWhitePhase() {
@@ -96,23 +107,46 @@ void GameEngine::handleCheckingWhitePhase() {
 }
 
 void GameEngine::handleEndWhitePhase() {
-    if (context->chessboard->isKilled(context->target_piece) && context->target_piece->isKing() ) {
+    if (context->black_king->isHidden()) {
+        std::cout<<"White has win!" << std::endl;
         setState(END_GAME);
     } else {
+        std::cout<< "---------------------------------------------------BLACK TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
         setState(START_BLACK_PHASE);
     }
 }
 
 void GameEngine::handleStartBlackPhase() {
-    setState(MOVING_BLACK_PHASE);
+    if (receivedClick) {
+        receivedClick = false;
+        Pieces* selectedPiece = Chessboard::getInstance()->getGrid()[lastClickX][lastClickY];
+        if (selectedPiece != nullptr && !selectedPiece->getIsWhite()) {
+            selectedPiece->selected = true;
+            if (context->piece != nullptr) {
+                context->piece->selected = false;
+            }
+            context->piece = selectedPiece;
+            setState(SELECT_BLACK_PHASE);
+        }
+    }
 }
 
 void GameEngine::handleSelectBlackPhase() {
-    if (true) {
-        setState(MOVING_BLACK_PHASE);
-    } else {
-        setState(START_BLACK_PHASE);
+    if (!receivedClick)
+        return;
+    receivedClick = false;
+    if (context->piece == nullptr) {
+        log(LOG_ERROR,"Impossible state in GameEngine::handleSelectBlackPhase()");
+        return;
     }
+    if (context->piece->getCoordX() == lastClickX && context->piece->getCoordY() == lastClickY) {
+        context->piece->selected = false;
+        context->piece = nullptr;
+        setState(START_BLACK_PHASE);
+        return;
+    }
+    if (Chessboard::getInstance()->movePiece(context->piece, lastClickX, lastClickY))
+        setState(MOVING_BLACK_PHASE);
 }
 
 void GameEngine::handleMovingBlackPhase() {
@@ -125,9 +159,12 @@ void GameEngine::handleCheckingBlackPhase() {
 
 
 void GameEngine::handleEndBlackPhase() {
-    if (context->chessboard->isKilled(context->target_piece) && context->target_piece->isKing() ) {
+    if (context->white_king->isHidden()) {
+        std::cout<<"Black has win!" << std::endl;
         setState(END_GAME);
     } else {
+        NB_Turn++;
+        std::cout<< "---------------------------------------------------WHITE TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
         setState(START_WHITE_PHASE);
     }
 }

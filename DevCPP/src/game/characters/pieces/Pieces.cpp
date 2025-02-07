@@ -29,9 +29,12 @@ glm::vec3 Pieces::getFilterColor() {
 
 glm::vec4 Pieces::getDefaultColor() {
     if (selected)
-        return glm::vec4(0.25f, 0.875f, 1.0f, 0.3f);
+        if (isWhite)
+            return glm::vec4(0.25f, 0.875f, 1.0f, 0.3f);
+        else
+            return glm::vec4(1.0f, 0.3f, 0.3f, 0.3f);
     else
-        return glm::vec4();
+            return glm::vec4();
 }
 
 string Pieces::getName() {
