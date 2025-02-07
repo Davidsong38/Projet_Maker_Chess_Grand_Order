@@ -48,8 +48,9 @@ public:
     bool isEndangeredByBlack(pair<int, int> cell);
     bool canLittleRoque(Pieces* piece);
     bool canBigRoque(Pieces* piece);
-    bool bigRoque(Pieces* piece);
-    bool littleRoque(Pieces* piece);
+    bool bigRoque(Pieces* piece, int to_coordX, int to_coordY);
+    bool littleRoque(Pieces* piece, int to_coordX, int to_coordY);
+    bool pawnMenacingLittleRoque();
     vector<Pieces*> getAllPieces();
 };
 

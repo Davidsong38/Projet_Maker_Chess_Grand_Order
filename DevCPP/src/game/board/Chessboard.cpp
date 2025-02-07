@@ -123,7 +123,6 @@ bool Chessboard::isEndangeredByWhite(pair<int, int> cell) {
     vector<Pieces*> piecesList = getAllPieces();
     for (const auto character : piecesList) {
         if (character->getIsWhite()) {
-            getValidMoves(character);
             for (const auto move : getValidMoves(character)) {
                 if (move == cell) {
                     return true;
@@ -137,8 +136,7 @@ bool Chessboard::isEndangeredByWhite(pair<int, int> cell) {
 bool Chessboard::isEndangeredByBlack(pair<int, int> cell) {
     vector<Pieces*> piecesList = getAllPieces();
     for (const auto character : piecesList) {
-        if (!character->getIsWhite()) {
-            getValidMoves(character);
+        if (!character->getIsWhite() && character->isBishop()) {
             for (const auto move : getValidMoves(character)) {
                 if (move == cell) {
                     return true;
@@ -153,7 +151,7 @@ bool Chessboard::canLittleRoque(Pieces* piece) {
     int coordX = piece->getCoordX();
     int coordY = piece->getCoordY();
     vector<pair<int, int>> coords;
-    if (grid[7][7] != nullptr && piece->getIsWhite() == grid[7][7]->getIsWhite() == true) {
+    if (grid[7][7] != nullptr && piece->getIsWhite() && grid[7][7]->getIsWhite()) {
         if (piece->isKing() && piece->getIsFirstMove() && grid[7][7]->isRook() &&grid[7][7]->getIsFirstMove() && isPathAllClear(coordX, coordY + 2, piece)) {
             coords.emplace_back(coordX, coordY);
             coords.emplace_back(coordX, coordY + 1);
@@ -162,11 +160,11 @@ bool Chessboard::canLittleRoque(Pieces* piece) {
                 if (isEndangeredByBlack(move)) {
                     return false;
                 }
-                return true;
             }
+            return true;
         }
     }
-    if (grid[0][7] != nullptr && piece->getIsWhite() == grid[0][7]->getIsWhite() == false) {
+    if (grid[0][7] != nullptr && !piece->getIsWhite() && !grid[0][7]->getIsWhite()) {
         if (piece->isKing() && piece->getIsFirstMove() && grid[0][7]->isRook() && grid[0][7]->getIsFirstMove() && isPathAllClear(coordX, coordY + 2, piece)) {
             coords.emplace_back(coordX, coordY);
             coords.emplace_back(coordX, coordY + 1);
@@ -175,8 +173,9 @@ bool Chessboard::canLittleRoque(Pieces* piece) {
                 if (isEndangeredByWhite(move)) {
                     return false;
                 }
-                return true;
+
             }
+            return true;
         }
     }
     return false;
@@ -187,7 +186,7 @@ bool Chessboard::canBigRoque(Pieces* piece) {
     int coordX = piece->getCoordX();
     int coordY = piece->getCoordY();
     vector<pair<int, int>>coords;
-    if (grid[7][0] != nullptr && piece->getIsWhite() == grid[7][0]->getIsWhite() == true) {
+    if (grid[7][0] != nullptr && piece->getIsWhite() && grid[7][0]->getIsWhite()) {
         if (piece->isKing() && piece->getIsFirstMove() && grid[7][0]->isRook() && grid[7][0]->getIsFirstMove() && isPathAllClear(coordX,coordY - 3, piece)) {
             coords.emplace_back(coordX, coordY);
             coords.emplace_back(coordX, coordY - 1);
@@ -196,12 +195,12 @@ bool Chessboard::canBigRoque(Pieces* piece) {
                 if (isEndangeredByBlack(move)) {
                     return false;
                 }
-                return true;
-            }
 
+            }
+            return true;
         }
     }
-    if (grid[0][0] != nullptr && piece->getIsWhite() == grid[0][0]->getIsWhite() == false) {
+    if (grid[0][0] != nullptr && !piece->getIsWhite() && !grid[0][0]->getIsWhite()) {
         if (piece->isKing() && piece->getIsFirstMove() && grid[0][0]->isRook() && grid[0][0]->getIsFirstMove() && isPathAllClear(coordX,coordY - 3, piece)) {
             coords.emplace_back(coordX, coordY);
             coords.emplace_back(coordX, coordY - 1);
@@ -210,41 +209,98 @@ bool Chessboard::canBigRoque(Pieces* piece) {
                 if (isEndangeredByWhite(move)) {
                     return false;
                 }
-                return true;
+
             }
-
-        }
-    }
-    return false;
-}
-
-bool Chessboard::bigRoque(Pieces* piece) {
-    if (canBigRoque(piece)) {
-        if (piece->getIsWhite() == true) {
-            movePiece(piece,7,2);
-            movePiece(grid[7][0],7,3);
-            return true;
-        }
-        if (piece->getIsWhite() == false) {
-            movePiece(piece,0,2);
-            movePiece(grid[0][0],0,3);
             return true;
         }
     }
     return false;
 }
 
-bool Chessboard::littleRoque(Pieces* piece) {
+bool Chessboard::bigRoque(Pieces* piece, int to_coordX, int to_coordY) {
     if (canBigRoque(piece)) {
-        if (piece->getIsWhite() == true) {
-            movePiece(piece,7,6);
-            movePiece(grid[7][7],7,5);
+        if (piece->getIsWhite() == true && to_coordX == 7 && to_coordY == 2) {
+            grid[7][2] = piece ;
+            grid[piece->getCoordX()][piece->getCoordY()] = nullptr;
+            piece->setPosition(7, 2);
+            Pieces* ally_piece = grid[7][0];
+            grid[7][3] = ally_piece;
+            grid[ally_piece->getCoordX()][ally_piece->getCoordY()] = nullptr;
+            ally_piece->setPosition(7, 3);
+            //movePiece(piece,7,2);
+            //movePiece(grid[7][0],7,3);
             return true;
         }
-        if (piece->getIsWhite() == false) {
-            movePiece(piece,0,6);
-            movePiece(grid[0][7],0,5);
+        if (piece->getIsWhite() == false && to_coordX == 0 && to_coordY == 2) {
+            grid[0][2] = piece ;
+            grid[piece->getCoordX()][piece->getCoordY()] = nullptr;
+            piece->setPosition(0, 2);
+            Pieces* ally_piece = grid[0][0];
+            grid[0][3] = ally_piece;
+            grid[ally_piece->getCoordX()][ally_piece->getCoordY()] = nullptr;
+            ally_piece->setPosition(0, 3);
+            //movePiece(piece,0,2);
+            //movePiece(grid[0][0],0,3);
             return true;
+        }
+    }
+    return false;
+}
+
+bool Chessboard::littleRoque(Pieces* piece, int to_coordX, int to_coordY) {
+    if (canLittleRoque(piece) && !pawnMenacingLittleRoque()) {
+        if (piece->getIsWhite() == true && to_coordX == 7 && to_coordY == 6) {
+            grid[7][6] = piece ;
+            grid[piece->getCoordX()][piece->getCoordY()] = nullptr;
+            piece->setPosition(7, 6);
+            Pieces* ally_piece = grid[7][7];
+            grid[7][5] = ally_piece;
+            grid[ally_piece->getCoordX()][ally_piece->getCoordY()] = nullptr;
+            ally_piece->setPosition(7, 5);
+            //movePiece(piece,7,6);
+            //movePiece(grid[7][7],7,5);
+            return true;
+        }
+        if (piece->getIsWhite() == false && to_coordX == 0 && to_coordY == 6) {
+            grid[0][6] = piece ;
+            grid[piece->getCoordX()][piece->getCoordY()] = nullptr;
+            piece->setPosition(0, 6);
+            Pieces* ally_piece = grid[0][7];
+            grid[0][5] = ally_piece;
+            grid[ally_piece->getCoordX()][ally_piece->getCoordY()] = nullptr;
+            ally_piece->setPosition(0, 5);
+            //movePiece(piece,0,6);
+            //movePiece(grid[0][7],0,5);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Chessboard::pawnMenacingLittleRoque() {
+    vector<Pieces*> piecesList = getAllPieces();
+    for (const auto character : piecesList) {
+        if (character->isPawn()) {
+            int coordX = character->getCoordX();
+            int coordY = character->getCoordY();
+            if (character->getIsWhite() &&
+                (coordX == 1 && coordY == 7
+                || coordX == 1 && coordY == 6
+                || coordX == 1 && coordY == 5
+                || coordX == 1 && coordY == 4
+                || coordX == 1 && coordY == 3)) {
+                return true;
+
+            }
+            if (!character ->getIsWhite() &&
+                (coordX == 7 && coordY == 7
+                || coordX == 7 && coordY == 6
+                || coordX == 7 && coordY == 5
+                || coordX == 7 && coordY == 4
+                || coordX == 7 && coordY == 3)){
+                return true;
+
+            }
         }
     }
     return false;
@@ -319,6 +375,10 @@ bool Chessboard::isMovePossible(Pieces* piece,int to_coordX, int to_coordY) cons
 bool Chessboard::movePiece(Pieces* piece, int to_coordX, int to_coordY) {
     int coordX = piece->getCoordX();
     int coordY = piece->getCoordY();
+    if (littleRoque(piece,to_coordX,to_coordY))
+        return true;
+    if (bigRoque(piece,to_coordX,to_coordY))
+        return true;
     if (!isMoveable(piece)) {
        // log(LOG_ERROR, "Chessboard::movePiece: move is not possible for piece");
         return false;
