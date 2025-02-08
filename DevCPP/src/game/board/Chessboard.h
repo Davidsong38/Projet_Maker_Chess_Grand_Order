@@ -5,6 +5,7 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 #include <iostream>
+#include <Pawn.h>
 #include <vec2.hpp>
 #include <vector>
 
@@ -50,7 +51,10 @@ public:
     bool canBigRoque(Pieces* piece);
     bool bigRoque(Pieces* piece, int to_coordX, int to_coordY);
     bool littleRoque(Pieces* piece, int to_coordX, int to_coordY);
-    bool pawnMenacingLittleRoque();
+    bool pawnMenacingLittleRoque(Pieces* king);
+    bool pawnMenacingBigRoque(Pieces* king);
+    bool hasJustFirstMove(Pieces* piece);
+    bool isPassable(Pieces* piece);
     vector<Pieces*> getAllPieces();
 };
 

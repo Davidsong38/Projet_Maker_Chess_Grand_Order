@@ -27,6 +27,8 @@ class Pieces : public SpriteTarget {
         bool evolved = false;
         bool isFirstMove = true;
         bool isAlive = true;
+        bool canGetPassed = false;
+
         vector<EffectInstance> activeEffects ;
         //vector<Character_Instance> characters ;
         Characters_List characters;
@@ -35,7 +37,7 @@ class Pieces : public SpriteTarget {
 
     public:
         bool selected = false;
-
+        int CNTMove = 0;
 
         explicit Pieces(int startX, int startY, bool white, Characters_List hero, Pieces_List pieces_root)
         : coordX(startX), coordY(startY),isWhite(white) , characters(hero) , pieces_origin(pieces_root), name(Characters_List_to_string[characters]) {}
@@ -78,7 +80,7 @@ class Pieces : public SpriteTarget {
         [[nodiscard]] bool isQueen() const;
         [[nodiscard]] bool isKing() const;
 
-
+        //[[nodiscard]] int getCNTMove() const;
 
         // [[nodiscard]] vector<Character_Instance> getCharacters() const {
       //     return characters;
@@ -90,7 +92,7 @@ class Pieces : public SpriteTarget {
 
 
         [[nodiscard]] virtual vector<Effect_List> getCasterEffects() const = 0;
-        [[nodiscard]] virtual bool isCheating () const {return false;}
+        [[nodiscard]] virtual bool isCheating() const {return false;}
         virtual void passive(void* context) = 0;
         virtual bool canEvolve(void* context) = 0;
         virtual void evolvedForm(void* context) = 0;

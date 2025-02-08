@@ -218,15 +218,17 @@ bool Chessboard::canBigRoque(Pieces* piece) {
 }
 
 bool Chessboard::bigRoque(Pieces* piece, int to_coordX, int to_coordY) {
-    if (canBigRoque(piece)) {
+    if (canBigRoque(piece) && !pawnMenacingBigRoque(piece)) {
         if (piece->getIsWhite() == true && to_coordX == 7 && to_coordY == 2) {
             grid[7][2] = piece ;
             grid[piece->getCoordX()][piece->getCoordY()] = nullptr;
             piece->setPosition(7, 2);
+            (piece->CNTMove)++;
             Pieces* ally_piece = grid[7][0];
             grid[7][3] = ally_piece;
             grid[ally_piece->getCoordX()][ally_piece->getCoordY()] = nullptr;
             ally_piece->setPosition(7, 3);
+            (ally_piece->CNTMove)++;
             //movePiece(piece,7,2);
             //movePiece(grid[7][0],7,3);
             return true;
@@ -235,10 +237,12 @@ bool Chessboard::bigRoque(Pieces* piece, int to_coordX, int to_coordY) {
             grid[0][2] = piece ;
             grid[piece->getCoordX()][piece->getCoordY()] = nullptr;
             piece->setPosition(0, 2);
+            (piece->CNTMove)++;
             Pieces* ally_piece = grid[0][0];
             grid[0][3] = ally_piece;
             grid[ally_piece->getCoordX()][ally_piece->getCoordY()] = nullptr;
             ally_piece->setPosition(0, 3);
+            (ally_piece->CNTMove)++;
             //movePiece(piece,0,2);
             //movePiece(grid[0][0],0,3);
             return true;
@@ -248,15 +252,17 @@ bool Chessboard::bigRoque(Pieces* piece, int to_coordX, int to_coordY) {
 }
 
 bool Chessboard::littleRoque(Pieces* piece, int to_coordX, int to_coordY) {
-    if (canLittleRoque(piece) && !pawnMenacingLittleRoque()) {
+    if (canLittleRoque(piece) && !pawnMenacingLittleRoque(piece)) {
         if (piece->getIsWhite() == true && to_coordX == 7 && to_coordY == 6) {
             grid[7][6] = piece ;
             grid[piece->getCoordX()][piece->getCoordY()] = nullptr;
             piece->setPosition(7, 6);
+            (piece->CNTMove)++;
             Pieces* ally_piece = grid[7][7];
             grid[7][5] = ally_piece;
             grid[ally_piece->getCoordX()][ally_piece->getCoordY()] = nullptr;
             ally_piece->setPosition(7, 5);
+            (ally_piece->CNTMove)++;
             //movePiece(piece,7,6);
             //movePiece(grid[7][7],7,5);
             return true;
@@ -265,10 +271,12 @@ bool Chessboard::littleRoque(Pieces* piece, int to_coordX, int to_coordY) {
             grid[0][6] = piece ;
             grid[piece->getCoordX()][piece->getCoordY()] = nullptr;
             piece->setPosition(0, 6);
+            (piece->CNTMove)++;
             Pieces* ally_piece = grid[0][7];
             grid[0][5] = ally_piece;
             grid[ally_piece->getCoordX()][ally_piece->getCoordY()] = nullptr;
             ally_piece->setPosition(0, 5);
+            (ally_piece->CNTMove)++;
             //movePiece(piece,0,6);
             //movePiece(grid[0][7],0,5);
             return true;
@@ -277,13 +285,13 @@ bool Chessboard::littleRoque(Pieces* piece, int to_coordX, int to_coordY) {
     return false;
 }
 
-bool Chessboard::pawnMenacingLittleRoque() {
+bool Chessboard::pawnMenacingLittleRoque(Pieces* king) {
     vector<Pieces*> piecesList = getAllPieces();
     for (const auto character : piecesList) {
         if (character->isPawn()) {
             int coordX = character->getCoordX();
             int coordY = character->getCoordY();
-            if (character->getIsWhite() &&
+            if (character->getIsWhite() && !king->getIsWhite() &&
                 (coordX == 1 && coordY == 7
                 || coordX == 1 && coordY == 6
                 || coordX == 1 && coordY == 5
@@ -292,18 +300,62 @@ bool Chessboard::pawnMenacingLittleRoque() {
                 return true;
 
             }
-            if (!character ->getIsWhite() &&
-                (coordX == 7 && coordY == 7
-                || coordX == 7 && coordY == 6
-                || coordX == 7 && coordY == 5
-                || coordX == 7 && coordY == 4
-                || coordX == 7 && coordY == 3)){
+            if (!character ->getIsWhite() && king->getIsWhite() &&
+                (coordX == 6 && coordY == 7
+                || coordX == 6 && coordY == 6
+                || coordX == 6 && coordY == 5
+                || coordX == 6 && coordY == 4
+                || coordX == 6 && coordY == 3)){
                 return true;
 
             }
         }
     }
     return false;
+}
+
+bool Chessboard::pawnMenacingBigRoque(Pieces* king) {
+    vector<Pieces*> piecesList = getAllPieces();
+    for (const auto character : piecesList) {
+        if (character->isPawn()) {
+            int coordX = character->getCoordX();
+            int coordY = character->getCoordY();
+            if (character->getIsWhite() && !king->getIsWhite() &&
+                (coordX == 1 && coordY == 1
+                || coordX == 1 && coordY == 2
+                || coordX == 1 && coordY == 3
+                || coordX == 1 && coordY == 4
+                || coordX == 1 && coordY == 5)) {
+                return true;
+
+                }
+            if (!character ->getIsWhite() && king->getIsWhite() &&
+                (coordX == 6 && coordY == 1
+                || coordX == 6 && coordY == 2
+                || coordX == 6 && coordY == 3
+                || coordX == 6 && coordY == 4
+                || coordX == 6 && coordY == 5)){
+                return true;
+
+                }
+        }
+    }
+    return false;
+}
+
+bool Chessboard::hasJustFirstMove(Pieces* piece) {
+    if (piece->CNTMove == 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool Chessboard::isPassable(Pieces* piece) {
+    if (piece->isPawn()) {
+        if (piece->getIsFirstMove())
+            return true;
+    }
 }
 
 
@@ -392,6 +444,7 @@ bool Chessboard::movePiece(Pieces* piece, int to_coordX, int to_coordY) {
         grid[to_coordX][to_coordY] = piece ;      // Place la pièce dans la nouvelle case
         grid[coordX][coordY] = nullptr; // Libère l'ancienne case
         piece->setPosition(to_coordX, to_coordY);
+        (piece->CNTMove)++;
     } else {
         KillCheck(piece,target_piece);
     }
