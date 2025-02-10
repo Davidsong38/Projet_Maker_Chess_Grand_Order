@@ -53,8 +53,8 @@ public:
     bool littleRoque(Pieces* piece, int to_coordX, int to_coordY);
     bool pawnMenacingLittleRoque(Pieces* king);
     bool pawnMenacingBigRoque(Pieces* king);
-    bool hasJustFirstMove(Pieces* piece);
-    bool isPassable(Pieces* piece);
+    static static bool hasJustFirstMove(Pieces* piece);
+    static bool isPassable(Pieces* piece);
     vector<Pieces*> getAllPieces();
 };
 

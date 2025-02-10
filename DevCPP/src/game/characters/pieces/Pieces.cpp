@@ -53,6 +53,10 @@ bool Pieces::getFirstMoveLastTurn() const {
     return firstMoveLastTurn;
 }
 
+void Pieces::setFirstMoveLastTurn(bool first_move_last_turn) {
+    firstMoveLastTurn = first_move_last_turn;
+}
+
 int Pieces::getCNTMove() const {
     return CNTMove;
 }

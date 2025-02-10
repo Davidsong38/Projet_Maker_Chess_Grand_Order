@@ -27,7 +27,7 @@ class Pieces : public SpriteTarget {
         bool evolved = false;
         bool isFirstMove = true;
         bool isAlive = true;
-        bool canGetPassed = false;
+        //bool canGetPassed = false;
         bool firstMoveLastTurn = false;
 
         vector<EffectInstance> activeEffects ;
@@ -59,6 +59,8 @@ class Pieces : public SpriteTarget {
         [[nodiscard]] bool getIsFirstMove() const;
 
         [[nodiscard]] bool getFirstMoveLastTurn() const;
+
+        void setFirstMoveLastTurn(bool first_move_last_turn);
 
         [[nodiscard]] string getName();
         [[nodiscard]] int getCoordX() const;
