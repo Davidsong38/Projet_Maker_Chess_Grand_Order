@@ -53,8 +53,16 @@ bool Pieces::getFirstMoveLastTurn() const {
     return firstMoveLastTurn;
 }
 
+int Pieces::getTurnStamp() const {
+    return TurnStamp;
+}
+
 void Pieces::setFirstMoveLastTurn(bool first_move_last_turn) {
     firstMoveLastTurn = first_move_last_turn;
+}
+
+void Pieces::setTurnStamp(int turn_stamp) {
+    TurnStamp = turn_stamp;
 }
 
 int Pieces::getCNTMove() const {
@@ -80,6 +88,7 @@ bool Pieces::isHidden() {
 void Pieces::setIsAlive(bool is_alive) {
     isAlive = is_alive;
 }
+
 
 void Pieces::addEffectStatus(EffectInstance effect_instance) {
     activeEffects.emplace_back(effect_instance.getEffect(),effect_instance.getEffectDuration(),effect_instance.getEffectDuration());

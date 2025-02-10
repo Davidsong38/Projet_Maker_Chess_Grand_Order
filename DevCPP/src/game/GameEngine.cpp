@@ -111,6 +111,10 @@ void GameEngine::handleEndWhitePhase() {
         std::cout<<"White has win!" << std::endl;
         setState(END_GAME);
     } else {
+        for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
+            if (!piece->getIsFirstMove() && piece->getIsWhite())
+                piece->setTurnStamp(piece->getTurnStamp() + 1);
+        }
         std::cout<< "---------------------------------------------------BLACK TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
         setState(START_BLACK_PHASE);
     }
@@ -164,6 +168,10 @@ void GameEngine::handleEndBlackPhase() {
         setState(END_GAME);
     } else {
         NB_Turn++;
+        for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
+            if (!piece->getIsFirstMove() && !piece->getIsWhite())
+                piece->setTurnStamp(piece->getTurnStamp() + 1);
+        }
         std::cout<< "---------------------------------------------------WHITE TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
         setState(START_WHITE_PHASE);
     }

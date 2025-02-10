@@ -33,6 +33,8 @@ public:
     vector<pair<int, int>> getValidMoves(Pieces* piece) const;
     bool movePiece(Pieces* piece,int to_coordX,int to_coordY);
     bool KillCheck(Pieces* piece,Pieces* target_piece);
+    bool KillInPassing(Pieces *piece, int to_coordX, int to_coordY);
+
     void displayBoard() const;
     static bool isKillable(Pieces* piece) ; // vérifie si la pièce peut être tué ( ne possède pas d'effet qui la protège)
     static bool isMoveable(Pieces* piece) ; // vérifie si la pièce n'est pas affecté par des effets d'immobilisation
@@ -53,7 +55,7 @@ public:
     bool littleRoque(Pieces* piece, int to_coordX, int to_coordY);
     bool pawnMenacingLittleRoque(Pieces* king);
     bool pawnMenacingBigRoque(Pieces* king);
-    static static bool hasJustFirstMove(Pieces* piece);
+    static bool hasJustFirstMove(Pieces* piece);
     static bool isPassable(Pieces* piece);
     vector<Pieces*> getAllPieces();
 };

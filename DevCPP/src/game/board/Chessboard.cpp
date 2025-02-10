@@ -343,12 +343,13 @@ bool Chessboard::pawnMenacingBigRoque(Pieces* king) {
     return false;
 }
 
+
 bool Chessboard::hasJustFirstMove(Pieces* piece) {
-    if (piece->getIsFirstMove() && !piece->getFirstMoveLastTurn()) {
-        piece->setFirstMoveLastTurn(true);
+    if (piece->getTurnStamp() == 1)
         return true;
-    } else {
-        piece->setFirstMoveLastTurn(false);
+
+    else {
+        //piece->setFirstMoveLastTurn(false);
         return false;
     }
 }
@@ -372,7 +373,6 @@ vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
         int currentX = piece->getCoordX();
         int currentY = piece->getCoordY();
         bool FirstMove = piece->getIsFirstMove();
-        bool FirstMoveLastTurn = piece->getFirstMoveLastTurn();
         if (piece->getIsWhite()) {
             if (currentX - 1 >= 0 && grid[currentX - 1][currentY] == nullptr ) valid_moves.emplace_back(currentX - 1, currentY );
             if (FirstMove && currentX - 2 >= 0 && isPathClear(currentX, currentY,currentX - 2,currentY,piece)
@@ -388,10 +388,10 @@ vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
             if (FirstMove && currentX + 2 < 8 && isPathClear(currentX, currentY,currentX + 2,currentY,piece)
                 && grid[currentX + 2][currentY] == nullptr) valid_moves.emplace_back(currentX + 2, currentY);
             if (currentX == 4 && grid[currentX][currentY-1] != nullptr && grid[currentX][currentY-1]->isPawn()
-                && !grid[currentX][currentY-1]->getIsWhite() && isPassable(grid[currentX][currentY-1]))
+                && grid[currentX][currentY-1]->getIsWhite() && isPassable(grid[currentX][currentY-1]))
                 valid_moves.emplace_back(currentX+1 , currentY-1);
             if (currentX == 4 && grid[currentX][currentY+1] != nullptr && grid[currentX][currentY+1]->isPawn()
-                && !grid[currentX][currentY+1]->getIsWhite() && isPassable(grid[currentX][currentY+1]))
+                && grid[currentX][currentY+1]->getIsWhite() && isPassable(grid[currentX][currentY+1]))
                 valid_moves.emplace_back(currentX+1 , currentY+1);
         }
         vector<pair<int, int>> diagonalattack = {{pawnDirection, -1}, {pawnDirection, 1}};
@@ -457,6 +457,8 @@ bool Chessboard::movePiece(Pieces* piece, int to_coordX, int to_coordY) {
         return false;
     }
     Pieces* target_piece = grid[to_coordX][to_coordY];
+    if (KillInPassing(piece,to_coordX,to_coordY))
+            return true;
     if (target_piece == nullptr) {
         grid[to_coordX][to_coordY] = piece ;      // Place la pièce dans la nouvelle case
         grid[coordX][coordY] = nullptr; // Libère l'ancienne case
@@ -497,6 +499,48 @@ bool Chessboard::KillCheck(Pieces *piece, Pieces *target_piece) {
         return true;
     }
     return false;
+}
+
+bool Chessboard::KillInPassing(Pieces *piece, int to_coordX, int to_coordY) {
+    int coordX1 = piece->getCoordX();
+    int coordY1 = piece->getCoordY();
+    if (piece->isPawn()) {
+        if (piece->getIsWhite()) {
+            int coordX2 = to_coordX + 1;
+            int coordY2 = to_coordY;
+            Pieces* realTargetPiece = grid[coordX2][coordY2];
+            if (realTargetPiece != nullptr && isKillable(realTargetPiece)&& !isAlly(piece,realTargetPiece) && realTargetPiece->isPawn()
+                && coordX1 == 3 && coordX2 == 3 && isPassable(realTargetPiece)) {
+                grid[coordX2][coordY2] = nullptr;
+                grid[to_coordX][to_coordY] = piece;
+                grid[coordX1][coordY1] = nullptr;
+                piece->setPosition(to_coordX,to_coordY);
+                (piece->CNTMove)++;
+                std::cout << (piece->getIsWhite()? "White " : "Black ")<< piece->getName() << " killed "
+                << (realTargetPiece->getIsWhite()? "White " : "Black ") <<realTargetPiece->getName() << std::endl;
+                realTargetPiece->setIsAlive(false);
+                return true;
+            }
+        } else {
+            int coordX2 = to_coordX - 1;
+            int coordY2 = to_coordY;
+            Pieces* realTargetPiece = grid[coordX2][coordY2];
+            if (realTargetPiece != nullptr && isKillable(realTargetPiece)&& !isAlly(piece,realTargetPiece) && realTargetPiece->isPawn()
+                && coordX1 == 4 && coordX2 == 4 && isPassable(realTargetPiece)) {
+                grid[coordX2][coordY2] = nullptr;
+                grid[to_coordX][to_coordY] = piece;
+                grid[coordX1][coordY1] = nullptr;
+                piece->setPosition(to_coordX,to_coordY);
+                (piece->CNTMove)++;
+                std::cout << (piece->getIsWhite()? "White " : "Black ")<< piece->getName() << " killed "
+                << (realTargetPiece->getIsWhite()? "White " : "Black ") <<realTargetPiece->getName() << std::endl;
+                realTargetPiece->setIsAlive(false);
+                return true;
+            }
+        }
+    }
+    return false;
+
 }
 
 bool Chessboard::isKilled(Pieces *piece) const {

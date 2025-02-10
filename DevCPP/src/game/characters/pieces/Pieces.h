@@ -39,6 +39,7 @@ class Pieces : public SpriteTarget {
     public:
         bool selected = false;
         int CNTMove = 0;
+        int TurnStamp = 0;
 
         explicit Pieces(int startX, int startY, bool white, Characters_List hero, Pieces_List pieces_root)
         : coordX(startX), coordY(startY),isWhite(white) , characters(hero) , pieces_origin(pieces_root), name(Characters_List_to_string[characters]) {}
@@ -57,9 +58,10 @@ class Pieces : public SpriteTarget {
         void setIsAlive(bool is_alive);
 
         [[nodiscard]] bool getIsFirstMove() const;
-
         [[nodiscard]] bool getFirstMoveLastTurn() const;
+        [[nodiscard]] int getTurnStamp() const;
 
+        void setTurnStamp(int turn_stamp);
         void setFirstMoveLastTurn(bool first_move_last_turn);
 
         [[nodiscard]] string getName();
