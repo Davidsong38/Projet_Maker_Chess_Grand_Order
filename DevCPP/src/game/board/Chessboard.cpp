@@ -136,7 +136,7 @@ bool Chessboard::isEndangeredByWhite(pair<int, int> cell) {
 bool Chessboard::isEndangeredByBlack(pair<int, int> cell) {
     vector<Pieces*> piecesList = getAllPieces();
     for (const auto character : piecesList) {
-        if (!character->getIsWhite() && character->isBishop()) {
+        if (!character->getIsWhite()) {
             for (const auto move : getValidMoves(character)) {
                 if (move == cell) {
                     return true;
@@ -344,7 +344,8 @@ bool Chessboard::pawnMenacingBigRoque(Pieces* king) {
 }
 
 bool Chessboard::hasJustFirstMove(Pieces* piece) {
-    if (piece->CNTMove == 1) {
+    if (piece->getIsFirstMove()) {
+        
         return true;
     } else {
         return false;
@@ -353,7 +354,7 @@ bool Chessboard::hasJustFirstMove(Pieces* piece) {
 
 bool Chessboard::isPassable(Pieces* piece) {
     if (piece->isPawn()) {
-        if (piece->getIsFirstMove())
+        if (hasJustFirstMove(piece))
             return true;
     }
 }

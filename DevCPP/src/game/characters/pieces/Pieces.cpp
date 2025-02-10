@@ -49,9 +49,13 @@ bool Pieces::getIsFirstMove() const{
     return isFirstMove;
 }
 
-//int Pieces::getCNTMove() const {
-//    return CNTMove;
-//}
+bool Pieces::getFirstMoveLastTurn() const {
+    return firstMoveLastTurn;
+}
+
+int Pieces::getCNTMove() const {
+    return CNTMove;
+}
 
 int Pieces::getCoordX() const {
     return coordX;

@@ -28,6 +28,7 @@ class Pieces : public SpriteTarget {
         bool isFirstMove = true;
         bool isAlive = true;
         bool canGetPassed = false;
+        bool firstMoveLastTurn = false;
 
         vector<EffectInstance> activeEffects ;
         //vector<Character_Instance> characters ;
@@ -56,6 +57,9 @@ class Pieces : public SpriteTarget {
         void setIsAlive(bool is_alive);
 
         [[nodiscard]] bool getIsFirstMove() const;
+
+        [[nodiscard]] bool getFirstMoveLastTurn() const;
+
         [[nodiscard]] string getName();
         [[nodiscard]] int getCoordX() const;
         [[nodiscard]] int getCoordY() const;
@@ -80,7 +84,7 @@ class Pieces : public SpriteTarget {
         [[nodiscard]] bool isQueen() const;
         [[nodiscard]] bool isKing() const;
 
-        //[[nodiscard]] int getCNTMove() const;
+        [[nodiscard]] int getCNTMove() const;
 
         // [[nodiscard]] vector<Character_Instance> getCharacters() const {
       //     return characters;
