@@ -30,13 +30,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ba82fa2-512b-4253-af3b-1ba77aac3bc6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/effects/effect_List.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/effect_List.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/effects/effect_List.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/effect_List.h" afterDir="false" />
-    </list>
+    <list default="true" id="5ba82fa2-512b-4253-af3b-1ba77aac3bc6" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -337,7 +331,8 @@
       <workItem from="1739219395980" duration="9900000" />
       <workItem from="1739241284919" duration="1360000" />
       <workItem from="1739242665940" duration="926000" />
-      <workItem from="1739266268748" duration="3449000" />
+      <workItem from="1739266268748" duration="3730000" />
+      <workItem from="1739286796599" duration="18000" />
     </task>
     <servers />
   </component>
