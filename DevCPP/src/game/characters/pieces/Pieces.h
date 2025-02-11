@@ -64,6 +64,8 @@ class Pieces : public SpriteTarget {
         void setTurnStamp(int turn_stamp);
         void setFirstMoveLastTurn(bool first_move_last_turn);
 
+        void setPiecesOrigin(Pieces_List pieces_origin);
+
         [[nodiscard]] string getName();
         [[nodiscard]] int getCoordX() const;
         [[nodiscard]] int getCoordY() const;

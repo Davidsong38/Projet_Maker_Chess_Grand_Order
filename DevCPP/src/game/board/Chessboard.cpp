@@ -368,6 +368,7 @@ vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
     vector<pair<int, int>> valid_moves;
     vector<pair<int, int>> piece_moves = piece->getMoves();
     //cout << "moves : " <<piece_moves.size() << endl;
+    PawnReachingEndOfBoard(piece);
     if (piece->isPawn()) {
         int pawnDirection = piece->getIsWhite() ? -1 : 1;
         int currentX = piece->getCoordX();
@@ -542,6 +543,20 @@ bool Chessboard::KillInPassing(Pieces *piece, int to_coordX, int to_coordY) {
     return false;
 
 }
+
+void Chessboard::PawnReachingEndOfBoard(Pieces *piece) {
+    int coordX = piece->getCoordX();
+    if (piece->isPawn()) {
+        if (piece->getIsWhite()) {
+            if (coordX == 0)
+                piece->setPiecesOrigin(QUEEN);
+        } else {
+            if (coordX == 7)
+                piece->setPiecesOrigin(QUEEN);
+        }
+    }
+}
+
 
 bool Chessboard::isKilled(Pieces *piece) const {
     for (const auto &row : grid) {

@@ -153,6 +153,9 @@ vector<EffectInstance> Pieces::getActive_effects() const {
     return activeEffects;
 }
 
+void Pieces::setPiecesOrigin(Pieces_List pieces_origin) {
+            this->pieces_origin = pieces_origin;
+        }
 
 bool Pieces::isPawn() const {
     if (pieces_origin == PAWN){
