@@ -47,7 +47,7 @@ vector<pair<int, int> > Artoria::getEffectRange(Effect_List effect) const {
 void Artoria::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
     if (context->chessboard->KillCheck(context->piece,context->target_piece)) {
-        EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2},*context->chessboard);
+        EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2});
         CNT_StunEffect++;
 
 

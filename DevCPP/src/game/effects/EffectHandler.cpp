@@ -3,6 +3,10 @@
 //
 
 #include "EffectHandler.h"
+
+#include <chrono>
+#include <random>
+
 #include "Chessboard.h"
 #include <utility>
 
@@ -51,28 +55,35 @@ bool EffectHandler::validTargetGettingEffect(Pieces *caster_piece, Pieces * targ
     return false;
 }
 
-bool EffectHandler::isEffectTargetInGrid(Pieces * target_piece, Chessboard &board) {
+bool EffectHandler::isEffectTargetInGrid(Pieces * target_piece) {
     int coordX = target_piece->getCoordX();
     int coordY = target_piece->getCoordY();
-    if (coordX >= 0 && coordX < board.getGrid().size() && coordY >= 0 && coordY < board.getGrid().size()) {
+    if (coordX >= 0 && coordX < Chessboard::getInstance()->getGrid().size() && coordY >= 0 && coordY < Chessboard::getInstance()->getGrid().size()) {
         return true;
     }
     return false;
 }
 
-void EffectHandler::applyEffectToTargets(Pieces *caster_piece, EffectInstance effect_instance, Chessboard &board) {
+
+void EffectHandler::applyEffectToTargets(Pieces *caster_piece, EffectInstance effect_instance) {
     vector<pair<int,int>> effect_range = caster_piece->getEffectRange(effect_instance.getEffect());
+    unsigned num = chrono::system_clock::now().time_since_epoch().count();
+    shuffle (effect_range.begin(), effect_range.end(), default_random_engine(num));
+    int CNT_target = 1;
     for (const auto &range: effect_range) {
-        int targetX = range.first;
-        int targetY = range.second;
-        Pieces* target_piece =  board.getGrid()[targetX][targetY];
-        if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece,board)) {
-            if (isTriggerEffect(effect_instance.getEffect())) {
-                executeEffect(effect_instance.getEffect(), target_piece);
-            } else {
-                target_piece->addEffectStatus(effect_instance);
+        if (CNT_target <= effect_instance.getNB_Target() && effect_instance.getNB_Target() != -1) {
+            int targetX = range.first;
+            int targetY = range.second;
+            Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
+            if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)) {
+                if (isTriggerEffect(effect_instance.getEffect())) {
+                    executeEffect(effect_instance.getEffect(), target_piece);
+                } else {
+                    target_piece->addEffectStatus(effect_instance);
+                }
+                std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
+                CNT_target++;
             }
-            std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
         }
     }
 }

@@ -50,7 +50,7 @@ struct EffectInstance {
     int effect_amount;
     int NB_Target;
 
-    explicit EffectInstance(Effect_List effect, int effect_duration = -1, int effect_amount = -1, int NB_Target = 0);
+    explicit EffectInstance(Effect_List effect, int effect_duration = -1, int effect_amount = -1, int NB_Target = -1);
 
     [[nodiscard]] Effect_List getEffect() const {
         return effect;
