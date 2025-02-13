@@ -57,9 +57,23 @@ int Pieces::getTurnStamp() const {
     return TurnStamp;
 }
 
+bool Pieces::getCanActivateEffects() const {
+    return canActivateEffects;
+}
+
+bool Pieces::getHasJustKilled() const {
+    return hasJustKilled;
+}
+
+void Pieces::setHasJustKilled(bool has_just_killed) {
+    hasJustKilled = has_just_killed;
+}
+
 void Pieces::setFirstMoveLastTurn(bool first_move_last_turn) {
     firstMoveLastTurn = first_move_last_turn;
 }
+
+
 
 void Pieces::setTurnStamp(int turn_stamp) {
     TurnStamp = turn_stamp;
@@ -79,6 +93,10 @@ void Pieces::setPosition(int newX, int newY) {
     coordX = newX;
     coordY = newY;
     isFirstMove = false;
+}
+
+void Pieces::setCanActivateEffects(bool can_activate_effects) {
+    canActivateEffects = can_activate_effects;
 }
 
 bool Pieces::isHidden() {

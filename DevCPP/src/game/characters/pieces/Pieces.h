@@ -29,6 +29,8 @@ class Pieces : public SpriteTarget {
         bool isAlive = true;
         //bool canGetPassed = false;
         bool firstMoveLastTurn = false;
+        bool canActivateEffects = false;
+        bool hasJustKilled = false;
 
         vector<EffectInstance> activeEffects ;
         //vector<Character_Instance> characters ;
@@ -60,7 +62,11 @@ class Pieces : public SpriteTarget {
         [[nodiscard]] bool getIsFirstMove() const;
         [[nodiscard]] bool getFirstMoveLastTurn() const;
         [[nodiscard]] int getTurnStamp() const;
+        [[nodiscard]] bool getCanActivateEffects() const;
+        [[nodiscard]] bool getHasJustKilled() const;
 
+        void setHasJustKilled(bool has_just_killed);
+        void setCanActivateEffects(bool can_activate_effects);
         void setTurnStamp(int turn_stamp);
         void setFirstMoveLastTurn(bool first_move_last_turn);
 
@@ -106,6 +112,7 @@ class Pieces : public SpriteTarget {
         virtual void passive(void* context) = 0;
         virtual bool canEvolve(void* context) = 0;
         virtual void evolvedForm(void* context) = 0;
+        virtual void SpellActivationCheck(void* context) = 0;
 
 
 };

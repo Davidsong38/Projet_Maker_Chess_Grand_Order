@@ -24,18 +24,18 @@ void EffectHandler::addEffectBehavior(Effect_List effect, function<void()> behav
         effectBehaviors[effect] = std::move(behavior);
 }
 
-void EffectHandler::configureEffectHandler(Chessboard &board, Pieces *piece) {
-        addEffectBehavior(ALLY_TELEPORT, [&board,piece]() {
+void EffectHandler::configureEffectHandler(Pieces *piece) {
+    Chessboard* board = Chessboard::getInstance();
+    addEffectBehavior(ALLY_TELEPORT, [board,piece]() {
         int toX = 0;
         int toY = 0;
         std::cout << "donnes les coord!!!";
         std::cin >> toX >> toY;
-        if (toX >= 0 && toX < board.getGrid().size() && toY >= 0 && toY < board.getGrid().size()) {
+        if (toX >= 0 && toX < board->getGrid().size() && toY >= 0 && toY < board->getGrid().size()) {
             piece->setPosition(toX, toY);
         }
-
-
     });
+
 
 }
 

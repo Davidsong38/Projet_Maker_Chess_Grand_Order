@@ -43,15 +43,18 @@ vector<pair<int, int> > Nemo_Marine::getEffectRange(Effect_List effect) const {
     return effect_range;
 }
 
+void Nemo_Marine::SpellActivationCheck(void *arg) {
+    auto * context = static_cast<context_type *>(arg);
+    if (context->piece->getHasJustKilled())
+        passive(context);
+}
+
 
 void Nemo_Marine::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (context->chessboard->KillCheck(context->piece,context->target_piece)) {
-        EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2});
-        CNT_StunEffect++;
+    EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2,1});
+    CNT_StunEffect++;
 
-
-    }
 }
 
 bool Nemo_Marine::canEvolve(void *arg) {

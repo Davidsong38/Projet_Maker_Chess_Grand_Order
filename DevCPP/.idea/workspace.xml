@@ -31,20 +31,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ba82fa2-512b-4253-af3b-1ba77aac3bc6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rendering/opengl/displayables/SpriteGroup.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rendering/opengl/displayables/SpriteGroup.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rendering/opengl/displayables/spritePositioner.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/GameEngine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/GameEngine.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/board/piece_loader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/piece_loader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Arceuid.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Arceuid.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Arceuid.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Arceuid.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/effects/EffectHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/EffectHandler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/effects/effect_List.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/effect_List.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -348,7 +360,8 @@
       <workItem from="1739242665940" duration="926000" />
       <workItem from="1739266268748" duration="3730000" />
       <workItem from="1739286796599" duration="18000" />
-      <workItem from="1739327297661" duration="4941000" />
+      <workItem from="1739327297661" duration="5093000" />
+      <workItem from="1739452502541" duration="13236000" />
     </task>
     <servers />
   </component>

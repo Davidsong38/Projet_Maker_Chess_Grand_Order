@@ -17,7 +17,7 @@ class EffectHandler {
     public:
         static void executeEffect(Effect_List Effect,Pieces* pieces);
         static void addEffectBehavior(Effect_List effect, function<void()> behavior);
-        static void configureEffectHandler(Chessboard& board, Pieces* piece);
+        static void configureEffectHandler(Pieces *piece);
         static void applyEffectToTargets(Pieces *caster_piece, EffectInstance effect_instance);
         static bool validTargetGettingEffect(Pieces *caster_piece, Pieces * target_piece, EffectInstance effect_instance);
         static bool isEffectTargetInGrid(Pieces *target_piece);

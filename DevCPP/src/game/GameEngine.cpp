@@ -103,6 +103,9 @@ void GameEngine::handleMovingWhitePhase() {
 }
 
 void GameEngine::handleCheckingWhitePhase() {
+    context->piece->canEvolve(context);
+    context->piece->SpellActivationCheck(context);
+    context->piece->setHasJustKilled(false);
     setState(END_WHITE_PHASE);
 }
 
@@ -114,6 +117,8 @@ void GameEngine::handleEndWhitePhase() {
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
             if (!piece->getIsFirstMove() && piece->getIsWhite())
                 piece->setTurnStamp(piece->getTurnStamp() + 1);
+            if (!piece->getIsWhite())
+                piece->updateEffectStatus();
         }
         std::cout<< "---------------------------------------------------BLACK TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
         setState(START_BLACK_PHASE);
@@ -158,6 +163,9 @@ void GameEngine::handleMovingBlackPhase() {
 }
 
 void GameEngine::handleCheckingBlackPhase() {
+    context->piece->canEvolve(context);
+    context->piece->SpellActivationCheck(context);
+    context->piece->setHasJustKilled(false);
     setState(END_BLACK_PHASE);
 }
 
@@ -171,6 +179,8 @@ void GameEngine::handleEndBlackPhase() {
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
             if (!piece->getIsFirstMove() && !piece->getIsWhite())
                 piece->setTurnStamp(piece->getTurnStamp() + 1);
+            if (piece->getIsWhite())
+                piece->updateEffectStatus();
         }
         std::cout<< "---------------------------------------------------WHITE TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
         setState(START_WHITE_PHASE);

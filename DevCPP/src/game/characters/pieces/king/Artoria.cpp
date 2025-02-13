@@ -43,15 +43,18 @@ vector<pair<int, int> > Artoria::getEffectRange(Effect_List effect) const {
     return effect_range;
 }
 
+void Artoria::SpellActivationCheck(void *arg) {
+    auto * context = static_cast<context_type *>(arg);
+    if (context->piece->getHasJustKilled())
+        passive(context);
+}
+
 
 void Artoria::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (context->chessboard->KillCheck(context->piece,context->target_piece)) {
-        EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2});
+        EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2,1});
         CNT_StunEffect++;
 
-
-    }
 }
 
 bool Artoria::canEvolve(void *arg) {

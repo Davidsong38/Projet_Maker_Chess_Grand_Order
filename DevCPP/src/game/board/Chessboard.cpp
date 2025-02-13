@@ -496,6 +496,7 @@ bool Chessboard::KillCheck(Pieces *piece, Pieces *target_piece) {
         piece->setPosition(coordX2,coordY2);
         std::cout << (piece->getIsWhite()? "White " : "Black ")<< piece->getName() << " killed "
         << (target_piece->getIsWhite()? "White " : "Black ") <<target_piece->getName() << std::endl;
+        piece->setHasJustKilled(true);
         target_piece->setIsAlive(false);
         return true;
     }

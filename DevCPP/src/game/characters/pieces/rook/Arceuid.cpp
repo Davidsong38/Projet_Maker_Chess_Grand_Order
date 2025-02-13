@@ -43,15 +43,16 @@ vector<pair<int, int> > Arceuid::getEffectRange(Effect_List effect) const {
     return effect_range;
 }
 
+void Arceuid::SpellActivationCheck(void *arg) {
+    auto * context = static_cast<context_type *>(arg);
+    if (context->piece->getHasJustKilled())
+        passive(context);
+}
 
 void Arceuid::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (context->chessboard->KillCheck(context->piece,context->target_piece)) {
-        EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2});
+        EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2,1});
         CNT_StunEffect++;
-
-
-    }
 }
 
 bool Arceuid::canEvolve(void *arg) {

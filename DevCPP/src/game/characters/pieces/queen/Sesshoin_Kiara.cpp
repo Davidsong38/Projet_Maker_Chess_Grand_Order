@@ -43,15 +43,17 @@ vector<pair<int, int> > Sesshoin_Kiara::getEffectRange(Effect_List effect) const
     return effect_range;
 }
 
+void Sesshoin_Kiara::SpellActivationCheck(void *arg) {
+    auto * context = static_cast<context_type *>(arg);
+    if (context->piece->getHasJustKilled())
+        passive(context);
+}
+
 
 void Sesshoin_Kiara::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (context->chessboard->KillCheck(context->piece,context->target_piece)) {
-        EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2});
+        EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2,1});
         CNT_StunEffect++;
-
-
-    }
 }
 
 bool Sesshoin_Kiara::canEvolve(void *arg) {

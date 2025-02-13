@@ -32,6 +32,8 @@ class Ushiwakamaru final : public Knight {
         void passive(void* arg) override;
         bool canEvolve(void* arg) override;
         void evolvedForm(void* arg) override;
+        void SpellActivationCheck(void *arg) override;
+
 
 
 };
