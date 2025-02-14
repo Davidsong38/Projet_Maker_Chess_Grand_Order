@@ -20,7 +20,7 @@ vector<pair<int, int> > Medusa_Saber::getEffectRange(Effect_List effect) const {
 
     vector<std::pair<int, int>> effect_range;
 
-    if (effect == STUN) {
+    if (effect == STUN && evolved==false) {
         if (coordX + 1 < 8 && coordY + 1 < 8) effect_range.emplace_back(coordX + 1, coordY + 1);
         if (coordX - 1 >= 0 && coordY + 1 < 8) effect_range.emplace_back(coordX - 1, coordY + 1);
         if (coordX + 1 < 8 && coordY - 1 >= 0) effect_range.emplace_back(coordX + 1, coordY - 1);
@@ -46,19 +46,23 @@ vector<pair<int, int> > Medusa_Saber::getEffectRange(Effect_List effect) const {
 
 void Medusa_Saber::SpellActivationCheck(void *arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (context->piece->getHasJustKilled())
+    if (hasJustKilled) {
         passive(context);
+        if (evolved)
+            evolvedForm(context);
+    }
 }
 
 
 void Medusa_Saber::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2,1});
+    EffectHandler::applyEffectToTargets(this,EffectInstance{STUN,1,1,1});
     CNT_StunEffect++;
 
 }
 
 bool Medusa_Saber::canEvolve(void *arg) {
+    std::cout <<CNT_StunEffect<<std::endl;
     if (evolved == false && CNT_StunEffect>1) {
         std::cout <<"Ready to evolve!!!"<<std::endl;
         return true;
@@ -68,6 +72,10 @@ bool Medusa_Saber::canEvolve(void *arg) {
 }
 
 void Medusa_Saber::evolvedForm(void *arg) {
+    auto * context = static_cast<context_type *>(arg);
     evolved = true;
+    EffectHandler::applyEffectToTargets(this,EffectInstance{AOE,1,1,-1});
+
+
 
 }

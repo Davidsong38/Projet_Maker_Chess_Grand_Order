@@ -103,9 +103,10 @@ void GameEngine::handleMovingWhitePhase() {
 }
 
 void GameEngine::handleCheckingWhitePhase() {
-    context->piece->canEvolve(context);
     context->piece->SpellActivationCheck(context);
     context->piece->setHasJustKilled(false);
+    if (context->piece->canEvolve(context))
+        context->piece->evolvedForm(context);
     setState(END_WHITE_PHASE);
 }
 
@@ -115,10 +116,11 @@ void GameEngine::handleEndWhitePhase() {
         setState(END_GAME);
     } else {
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
-            if (!piece->getIsFirstMove() && piece->getIsWhite())
-                piece->setTurnStamp(piece->getTurnStamp() + 1);
-            if (!piece->getIsWhite())
+            if (piece->getIsWhite()) {
                 piece->updateEffectStatus();
+                if (!piece->getIsFirstMove())
+                    piece->setTurnStamp(piece->getTurnStamp() + 1);
+            }
         }
         std::cout<< "---------------------------------------------------BLACK TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
         setState(START_BLACK_PHASE);
@@ -163,9 +165,10 @@ void GameEngine::handleMovingBlackPhase() {
 }
 
 void GameEngine::handleCheckingBlackPhase() {
-    context->piece->canEvolve(context);
     context->piece->SpellActivationCheck(context);
     context->piece->setHasJustKilled(false);
+    if (context->piece->canEvolve(context))
+        context->piece->evolvedForm(context);
     setState(END_BLACK_PHASE);
 }
 
@@ -177,10 +180,11 @@ void GameEngine::handleEndBlackPhase() {
     } else {
         NB_Turn++;
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
-            if (!piece->getIsFirstMove() && !piece->getIsWhite())
-                piece->setTurnStamp(piece->getTurnStamp() + 1);
-            if (piece->getIsWhite())
+            if (!piece->getIsWhite()) {
                 piece->updateEffectStatus();
+                if (!piece->getIsFirstMove())
+                    piece->setTurnStamp(piece->getTurnStamp() + 1);
+            }
         }
         std::cout<< "---------------------------------------------------WHITE TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
         setState(START_WHITE_PHASE);

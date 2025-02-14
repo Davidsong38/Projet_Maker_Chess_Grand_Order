@@ -378,20 +378,20 @@ vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
             if (currentX - 1 >= 0 && grid[currentX - 1][currentY] == nullptr ) valid_moves.emplace_back(currentX - 1, currentY );
             if (FirstMove && currentX - 2 >= 0 && isPathClear(currentX, currentY,currentX - 2,currentY,piece)
                 && grid[currentX - 2][currentY] == nullptr) valid_moves.emplace_back(currentX - 2, currentY);
-            if (currentX == 3 && grid[currentX][currentY-1] != nullptr && grid[currentX][currentY-1]->isPawn()
+            if (currentX == 3 && isInGrid(currentX,currentY-1)&& grid[currentX][currentY-1] != nullptr && grid[currentX][currentY-1]->isPawn()
                 && !grid[currentX][currentY-1]->getIsWhite() && isPassable(grid[currentX][currentY-1]))
                 valid_moves.emplace_back(currentX-1 , currentY-1);
-            if (currentX == 3 && grid[currentX][currentY+1] != nullptr && grid[currentX][currentY+1]->isPawn()
+            if (currentX == 3 && isInGrid(currentX,currentY+1)&& grid[currentX][currentY+1] != nullptr && grid[currentX][currentY+1]->isPawn()
                 && !grid[currentX][currentY+1]->getIsWhite() && isPassable(grid[currentX][currentY+1]))
                 valid_moves.emplace_back(currentX-1 , currentY+1);
         } else {
             if (currentX + 1 < 8 && grid[currentX + 1][currentY] == nullptr) valid_moves.emplace_back(currentX + 1, currentY);
             if (FirstMove && currentX + 2 < 8 && isPathClear(currentX, currentY,currentX + 2,currentY,piece)
                 && grid[currentX + 2][currentY] == nullptr) valid_moves.emplace_back(currentX + 2, currentY);
-            if (currentX == 4 && grid[currentX][currentY-1] != nullptr && grid[currentX][currentY-1]->isPawn()
+            if (currentX == 4 && isInGrid(currentX,currentY-1)&& grid[currentX][currentY-1] != nullptr && grid[currentX][currentY-1]->isPawn()
                 && grid[currentX][currentY-1]->getIsWhite() && isPassable(grid[currentX][currentY-1]))
                 valid_moves.emplace_back(currentX+1 , currentY-1);
-            if (currentX == 4 && grid[currentX][currentY+1] != nullptr && grid[currentX][currentY+1]->isPawn()
+            if (currentX == 4 && isInGrid(currentX,currentY+1)&& grid[currentX][currentY+1] != nullptr && grid[currentX][currentY+1]->isPawn()
                 && grid[currentX][currentY+1]->getIsWhite() && isPassable(grid[currentX][currentY+1]))
                 valid_moves.emplace_back(currentX+1 , currentY+1);
         }

@@ -35,6 +35,17 @@ void EffectHandler::configureEffectHandler(Pieces *piece) {
             piece->setPosition(toX, toY);
         }
     });
+    addEffectBehavior(AOE, [board,piece]() {
+        for (const auto& e : piece->getActive_effects()) {
+            if (e.effect == SHIELD || e.effect == IMMORTALITY || e.effect == IMMUNITY_AOE ) {
+                piece->activateEffect(e.effect);
+                break;
+            }
+        }
+        board->getGrid()[piece->getCoordX()][piece->getCoordY()] = nullptr;
+        piece->setIsAlive(false);
+
+    });
 
 
 }
@@ -71,18 +82,21 @@ void EffectHandler::applyEffectToTargets(Pieces *caster_piece, EffectInstance ef
     shuffle (effect_range.begin(), effect_range.end(), default_random_engine(num));
     int CNT_target = 1;
     for (const auto &range: effect_range) {
-        if (CNT_target <= effect_instance.getNB_Target() && effect_instance.getNB_Target() != -1) {
+        std::cout << "(" << range.first << ", " << range.second << ")" << std::endl;
+        if (effect_instance.getNB_Target() == -1 || CNT_target <= effect_instance.getNB_Target()) {
             int targetX = range.first;
             int targetY = range.second;
             Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
             if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)) {
                 if (isTriggerEffect(effect_instance.getEffect())) {
                     executeEffect(effect_instance.getEffect(), target_piece);
+                    std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
                 } else {
                     target_piece->addEffectStatus(effect_instance);
                 }
                 std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
-                CNT_target++;
+                if (effect_instance.getNB_Target() != -1)
+                    CNT_target++;
             }
         }
     }
