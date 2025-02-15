@@ -4,6 +4,7 @@
 
 #ifndef PIECES_H
 #define PIECES_H
+#include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -31,6 +32,7 @@ class Pieces : public SpriteTarget {
         bool firstMoveLastTurn = false;
         bool canActivateEffects = false;
         bool hasJustKilled = false;
+        int pieceGameMode = 0;
 
         vector<EffectInstance> activeEffects ;
         //vector<Character_Instance> characters ;
@@ -64,7 +66,11 @@ class Pieces : public SpriteTarget {
         [[nodiscard]] int getTurnStamp() const;
         [[nodiscard]] bool getCanActivateEffects() const;
         [[nodiscard]] bool getHasJustKilled() const;
+        [[nodiscard]] int getPieceGameMode() const;
 
+
+
+        void setPieceGameMode(){ std::cout << "bibabous" << std::endl; };
         void setHasJustKilled(bool has_just_killed);
         void setCanActivateEffects(bool can_activate_effects);
         void setTurnStamp(int turn_stamp);
@@ -102,7 +108,7 @@ class Pieces : public SpriteTarget {
       //     return characters;
       // }
 
-        [[nodiscard]] virtual vector<pair<int, int>> getMoves() const = 0;
+        [[nodiscard]] virtual vector<pair<int, int>> getMoves() = 0;
         [[nodiscard]] virtual vector<pair<int, int>> getEffectRange(Effect_List effect) const = 0;
 
 

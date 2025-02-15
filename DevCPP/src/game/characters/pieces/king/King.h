@@ -19,7 +19,7 @@ class King : public Pieces{
                 GameEngine::getInstance()->setBlackKing(this);
         }
 
-        [[nodiscard]] vector<pair<int, int>> getMoves() const override;
+        [[nodiscard]] vector<pair<int, int>> getMoves() override;
 
 };
 

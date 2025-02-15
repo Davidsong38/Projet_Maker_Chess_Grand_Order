@@ -65,6 +65,13 @@ bool Pieces::getHasJustKilled() const {
     return hasJustKilled;
 }
 
+int Pieces::getPieceGameMode() const {
+    return pieceGameMode;
+}
+
+
+
+
 void Pieces::setHasJustKilled(bool has_just_killed) {
     hasJustKilled = has_just_killed;
 }

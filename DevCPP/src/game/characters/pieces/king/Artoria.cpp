@@ -6,12 +6,12 @@
 #include "Context.h"
 
 
-vector<Effect_List> Artoria::getCasterEffects() const {
-    if (evolved==true) {
-        return {STUN,AOE};
-    }
-    return {STUN};
-}
+//vector<Effect_List> Artoria::getCasterEffects() const {
+//    if (evolved==true) {
+//        return {STUN,AOE};
+//    }
+//    return {STUN};
+//}
 
 
 

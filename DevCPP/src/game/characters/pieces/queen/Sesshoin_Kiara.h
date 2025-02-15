@@ -15,7 +15,7 @@
 
 class Sesshoin_Kiara final : public Queen{
     protected :
-        int CNT_StunEffect = 0;
+    bool selectCharm = false;
     public:
         Sesshoin_Kiara(int startX, int startY, bool white, Characters_List hero,
             Pieces_List pieces_root)
@@ -27,13 +27,14 @@ class Sesshoin_Kiara final : public Queen{
             );
         }
 
-        [[nodiscard]] vector<Effect_List> getCasterEffects() const override;
+        [[nodiscard]] vector<pair<int, int>> getMoves() override;
+        //[[nodiscard]] vector<Effect_List> getCasterEffects() const override;
         [[nodiscard]] vector<pair<int, int>> getEffectRange(Effect_List effect) const override;
         void passive(void* arg) override;
         bool canEvolve(void* arg) override;
         void evolvedForm(void* arg) override;
         void SpellActivationCheck(void *arg) override;
-
+        void setPieceGameMode();
 
 };
 

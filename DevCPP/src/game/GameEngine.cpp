@@ -87,6 +87,8 @@ void GameEngine::handleSelectWhitePhase() {
         log(LOG_ERROR,"Impossible state in GameEngine::handleSelectWhitePhase()");
         return;
     }
+    std::cout << "ababababala" << std::endl;
+    context->piece->setPieceGameMode();
     if (context->piece->getCoordX() == lastClickX && context->piece->getCoordY() == lastClickY) {
         context->piece->selected = false;
         context->piece = nullptr;
@@ -143,6 +145,8 @@ void GameEngine::handleStartBlackPhase() {
 }
 
 void GameEngine::handleSelectBlackPhase() {
+    if (auto* piece = context->piece)
+        piece->setPieceGameMode();
     if (!receivedClick)
         return;
     receivedClick = false;
@@ -150,6 +154,7 @@ void GameEngine::handleSelectBlackPhase() {
         log(LOG_ERROR,"Impossible state in GameEngine::handleSelectBlackPhase()");
         return;
     }
+
     if (context->piece->getCoordX() == lastClickX && context->piece->getCoordY() == lastClickY) {
         context->piece->selected = false;
         context->piece = nullptr;

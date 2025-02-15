@@ -6,12 +6,12 @@
 #include <iostream>
 #include "Context.h"
 
-vector<Effect_List> Arceuid::getCasterEffects() const {
-    if (evolved==true) {
-        return {STUN,AOE};
-    }
-    return {STUN};
-}
+//vector<Effect_List> Arceuid::getCasterEffects() const {
+//    if (evolved==true) {
+//        return {STUN,AOE};
+//    }
+//    return {STUN};
+//}
 
 
 

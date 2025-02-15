@@ -6,38 +6,51 @@
 #include "Context.h"
 
 
-vector<Effect_List> Sesshoin_Kiara::getCasterEffects() const {
-    if (evolved==true) {
-        return {STUN,AOE};
-    }
-    return {STUN};
+//vector<Effect_List> Sesshoin_Kiara::getCasterEffects() const {
+//    if (evolved==true) {
+//        return {STUN,AOE};
+//    }
+//    return {STUN};
+//}
+
+void Sesshoin_Kiara::setPieceGameMode() {
+    int piece_game_mode = 0;
+    std::cout << "Choose piece game mode:" << std::endl;
+    std::cin >> piece_game_mode;
+    pieceGameMode = piece_game_mode;
 }
 
 
+vector<pair<int, int> > Sesshoin_Kiara::getMoves(){
+    vector<std::pair<int, int>> moves;
+    int selectionMode = 0;
+    std::cout << "Choose to Charm?" << std::endl;
+    std::cin >> selectionMode;
+    if (getPieceGameMode() == 0) {
+        for (int i = 1; i < 8; ++i) {
+            if (coordX + i < 8 && coordY + i < 8) moves.emplace_back(coordX + i, coordY + i);
+            if (coordX - i >= 0 && coordY + i < 8) moves.emplace_back(coordX - i, coordY + i);
+            if (coordX + i < 8 && coordY- i >= 0) moves.emplace_back(coordX + i, coordY - i);
+            if (coordX - i >= 0 && coordY - i >= 0) moves.emplace_back(coordX - i, coordY - i);
+            if (coordX + i < 8) moves.emplace_back(coordX + i, coordY);
+            if (coordX - i >= 0) moves.emplace_back(coordX - i, coordY);
+            if (coordY - i >= 0) moves.emplace_back(coordX, coordY - i);
+            if (coordY + i < 8) moves.emplace_back(coordX, coordY + i);
+        }
+    }
+    return moves;
+}
 
 vector<pair<int, int> > Sesshoin_Kiara::getEffectRange(Effect_List effect) const {
 
     vector<std::pair<int, int>> effect_range;
 
-    if (effect == STUN) {
-        if (coordX + 1 < 8 && coordY + 1 < 8) effect_range.emplace_back(coordX + 1, coordY + 1);
-        if (coordX - 1 >= 0 && coordY + 1 < 8) effect_range.emplace_back(coordX - 1, coordY + 1);
-        if (coordX + 1 < 8 && coordY - 1 >= 0) effect_range.emplace_back(coordX + 1, coordY - 1);
-        if (coordX - 1 >= 0 && coordY - 1 >= 0) effect_range.emplace_back(coordX - 1, coordY - 1);
-    }
-    if (evolved==true) {
-        if (effect == STUN) {
-            if (coordX + 1 < 8) effect_range.emplace_back(coordX + 1, coordY);
-            if (coordX - 1 >= 0) effect_range.emplace_back(coordX - 1, coordY);
-            if (coordY - 1 >= 0) effect_range.emplace_back(coordX, coordY - 1);
-            if (coordY + 1 < 8) effect_range.emplace_back(coordX, coordY + 1);
-
-        }
-        if (effect == AOE) {
-            if (coordX + 1 < 8 && coordY + 1 < 8) effect_range.emplace_back(coordX + 1, coordY + 1);
-            if (coordX - 1 >= 0 && coordY + 1 < 8) effect_range.emplace_back(coordX - 1, coordY + 1);
-            if (coordX + 1 < 8 && coordY - 1 >= 0) effect_range.emplace_back(coordX + 1, coordY - 1);
-            if (coordX - 1 >= 0 && coordY - 1 >= 0) effect_range.emplace_back(coordX - 1, coordY - 1);
+    if (effect == CHANGE_CONTROL) {
+        for (int i = 1; i < 2; ++i) {
+            if (coordX + i < 8) effect_range.emplace_back(coordX + i, coordY);
+            if (coordX - i >= 0) effect_range.emplace_back(coordX - i, coordY);
+            if (coordY - i >= 0) effect_range.emplace_back(coordX, coordY - i);
+            if (coordY + i < 8) effect_range.emplace_back(coordX, coordY + i);
         }
     }
     return effect_range;
@@ -45,20 +58,20 @@ vector<pair<int, int> > Sesshoin_Kiara::getEffectRange(Effect_List effect) const
 
 void Sesshoin_Kiara::SpellActivationCheck(void *arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (context->piece->getHasJustKilled())
+    if (context->piece->getPieceGameMode() == 1)
         passive(context);
 }
 
 
 void Sesshoin_Kiara::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-        EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2,1});
-        CNT_StunEffect++;
+        EffectHandler::applyEffectToTargets(this,EffectInstance{CHANGE_CONTROL,2,1,1});
+
 }
 
 bool Sesshoin_Kiara::canEvolve(void *arg) {
-    if (evolved == false && CNT_StunEffect>1) {
-        std::cout << CNT_StunEffect << "Ready to evolve!!!"<<std::endl;
+    if (evolved == false) {
+        std::cout << "Ready to evolve!!!"<<std::endl;
         return true;
     }
     return false;

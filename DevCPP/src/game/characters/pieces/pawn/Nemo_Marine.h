@@ -27,7 +27,7 @@ class Nemo_Marine final: public Pawn  {
             );
         }
 
-        [[nodiscard]] vector<Effect_List> getCasterEffects() const override;
+       // [[nodiscard]] vector<Effect_List> getCasterEffects() const override;
         [[nodiscard]] vector<pair<int, int>> getEffectRange(Effect_List effect) const override;
         void passive(void* arg) override;
         bool canEvolve(void* arg) override;

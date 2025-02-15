@@ -4,7 +4,7 @@
 
 #include "Pawn.h"
 
-vector<pair<int, int> > Pawn::getMoves() const {
+vector<pair<int, int> > Pawn::getMoves() {
     vector<std::pair<int, int>> moves;
     if (pieces_origin == QUEEN) {
         for (int i = 1; i < 8; ++i) {
