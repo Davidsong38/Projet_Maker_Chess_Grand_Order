@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/cmake-build-debug"
+			"value" : "c:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -575,7 +575,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -647,7 +647,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP"
+			"value" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1279,7 +1279,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/cmake-build-debug"
+			"value" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/cmake-build-debug"
 		},
 		{
 			"name" : "Chess_Grand_Order_IS_TOP_LEVEL",
@@ -1303,7 +1303,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP"
+			"value" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP"
 		},
 		{
 			"name" : "_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED",

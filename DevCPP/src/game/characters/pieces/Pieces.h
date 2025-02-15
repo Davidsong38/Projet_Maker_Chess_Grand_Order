@@ -70,7 +70,9 @@ class Pieces : public SpriteTarget {
 
 
 
-        void setPieceGameMode(){ std::cout << "bibabous" << std::endl; };
+        virtual void setPieceGameMode() = 0;
+
+        void setIsWhite(bool is_white);
         void setHasJustKilled(bool has_just_killed);
         void setCanActivateEffects(bool can_activate_effects);
         void setTurnStamp(int turn_stamp);

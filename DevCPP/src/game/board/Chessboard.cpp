@@ -489,12 +489,27 @@ bool Chessboard::isKillable(Pieces *piece) {
     return true;
 }
 
+bool Chessboard::PieceHaveThisEffect(Pieces *piece, Effect_List chosenEffect) {
+    for (const auto& e : piece->getActive_effects()) {
+        if (e.effect == chosenEffect) {
+            return true;
+        }
+
+    }
+    return false;
+}
+
 bool Chessboard::KillCheck(Pieces *piece, Pieces *target_piece) {
     int coordX1 = piece->getCoordX();
     int coordY1 = piece->getCoordY();
     int coordX2 = target_piece->getCoordX();
     int coordY2 = target_piece->getCoordY();
     if (isKillable(target_piece)&& !isAlly(piece,target_piece)) {
+        if (PieceHaveThisEffect(target_piece,CHANGE_CONTROL)) {
+            target_piece->setIsWhite(not target_piece->getIsWhite());
+            std::cout << "je reviens dans mon camp" << std::endl;
+            return true;
+        }
         grid[coordX2][coordY2] = piece;
         grid[coordX1][coordY1] = nullptr;
         piece->setPosition(coordX2,coordY2);

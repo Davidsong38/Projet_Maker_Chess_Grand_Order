@@ -14,6 +14,9 @@
 //    return {STUN};
 //}
 
+void Medusa_Saber::setPieceGameMode() {
+    return;
+}
 
 
 vector<pair<int, int> > Medusa_Saber::getEffectRange(Effect_List effect) const {

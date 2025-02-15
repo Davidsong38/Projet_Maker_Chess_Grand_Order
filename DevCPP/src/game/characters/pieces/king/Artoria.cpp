@@ -12,7 +12,9 @@
 //    }
 //    return {STUN};
 //}
-
+void Artoria::setPieceGameMode() {
+    return;
+}
 
 
 vector<pair<int, int> > Artoria::getEffectRange(Effect_List effect) const {

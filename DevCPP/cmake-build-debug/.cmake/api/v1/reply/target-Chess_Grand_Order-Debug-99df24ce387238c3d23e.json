@@ -103,115 +103,115 @@
 			[
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/game"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/game"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/board"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/board"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces/bishop"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces/bishop"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces/king"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces/king"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces/knight"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces/knight"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces/pawn"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces/pawn"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces/queen"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces/queen"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces/rook"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/characters/pieces/rook"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/effects"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/effects"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/inputs"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/game/inputs"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/physics"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/physics"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering/opengl"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering/opengl"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering/opengl/shading"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering/opengl/shading"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering/opengl/textures"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering/opengl/textures"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering/opengl/vao"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering/opengl/vao"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering/opengl/displayables"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering/opengl/displayables"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering/opengl/ui"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/rendering/opengl/ui"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/utils"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/utils"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/utils/config"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/utils/config"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/utils/logging"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/utils/logging"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/utils/file_io"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/utils/file_io"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/platform"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/platform"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/third_party"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/third_party"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/third_party/glm"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/third_party/glm"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet-Maker-echiquier/Projet_Maker_Chess_Grand_Order/DevCPP/src/third_party/glm/gtc"
+					"path" : "C:/Users/david/OneDrive/Bureau/Chess_Grand_Order/Projet_Maker_Chess_Grand_Order/DevCPP/src/third_party/glm/gtc"
 				}
 			],
 			"language" : "CXX",

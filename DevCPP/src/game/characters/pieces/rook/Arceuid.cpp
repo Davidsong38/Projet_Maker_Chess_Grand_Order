@@ -13,7 +13,9 @@
 //    return {STUN};
 //}
 
-
+void Arceuid::setPieceGameMode() {
+    return;
+}
 
 vector<pair<int, int> > Arceuid::getEffectRange(Effect_List effect) const {
 

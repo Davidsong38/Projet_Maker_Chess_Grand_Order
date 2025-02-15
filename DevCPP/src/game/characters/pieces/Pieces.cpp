@@ -45,6 +45,10 @@ bool Pieces::getIsWhite() const {
     return isWhite;
 }
 
+void Pieces::setIsWhite(bool is_white) {
+    isWhite = is_white;
+}
+
 bool Pieces::getIsFirstMove() const{
     return isFirstMove;
 }
@@ -145,6 +149,8 @@ bool Pieces::hasEffectStatus(Effect_List effect) const {
 
 void Pieces::updateEffectStatus() {
     for (auto effect=activeEffects.begin(); effect!=activeEffects.end();) {
+        if (effect->effect == CHANGE_CONTROL && effect->effect_duration == 1)
+            this->setIsWhite(not this->getIsWhite());
         effect->decrement_duration();
         if (effect->isExpired()) {
             effect= activeEffects.erase(effect);

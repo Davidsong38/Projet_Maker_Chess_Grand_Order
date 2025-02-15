@@ -12,7 +12,9 @@
 //    }
 //    return {STUN};
 //}
-
+void Nemo_Marine::setPieceGameMode() {
+    return;
+}
 
 
 vector<pair<int, int> > Nemo_Marine::getEffectRange(Effect_List effect) const {

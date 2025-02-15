@@ -87,7 +87,7 @@ void GameEngine::handleSelectWhitePhase() {
         log(LOG_ERROR,"Impossible state in GameEngine::handleSelectWhitePhase()");
         return;
     }
-    std::cout << "ababababala" << std::endl;
+    //std::cout << "ababababala" << std::endl;
     context->piece->setPieceGameMode();
     if (context->piece->getCoordX() == lastClickX && context->piece->getCoordY() == lastClickY) {
         context->piece->selected = false;
@@ -95,6 +95,11 @@ void GameEngine::handleSelectWhitePhase() {
         setState(START_WHITE_PHASE);
         return;
     }
+    if (context->piece->getPieceGameMode() != 0) {
+        setState((CHECKING_WHITE_PHASE));
+        return;
+    }
+
     if (Chessboard::getInstance()->movePiece(context->piece, lastClickX, lastClickY))
         setState(MOVING_WHITE_PHASE);
 }
@@ -145,8 +150,6 @@ void GameEngine::handleStartBlackPhase() {
 }
 
 void GameEngine::handleSelectBlackPhase() {
-    if (auto* piece = context->piece)
-        piece->setPieceGameMode();
     if (!receivedClick)
         return;
     receivedClick = false;
@@ -154,11 +157,16 @@ void GameEngine::handleSelectBlackPhase() {
         log(LOG_ERROR,"Impossible state in GameEngine::handleSelectBlackPhase()");
         return;
     }
+    context->piece->setPieceGameMode();
 
     if (context->piece->getCoordX() == lastClickX && context->piece->getCoordY() == lastClickY) {
         context->piece->selected = false;
         context->piece = nullptr;
         setState(START_BLACK_PHASE);
+        return;
+    }
+    if (context->piece->getPieceGameMode() != 0) {
+        setState((CHECKING_BLACK_PHASE));
         return;
     }
     if (Chessboard::getInstance()->movePiece(context->piece, lastClickX, lastClickY))

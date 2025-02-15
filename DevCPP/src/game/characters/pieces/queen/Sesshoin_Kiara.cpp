@@ -21,32 +21,12 @@ void Sesshoin_Kiara::setPieceGameMode() {
 }
 
 
-vector<pair<int, int> > Sesshoin_Kiara::getMoves(){
-    vector<std::pair<int, int>> moves;
-    int selectionMode = 0;
-    std::cout << "Choose to Charm?" << std::endl;
-    std::cin >> selectionMode;
-    if (getPieceGameMode() == 0) {
-        for (int i = 1; i < 8; ++i) {
-            if (coordX + i < 8 && coordY + i < 8) moves.emplace_back(coordX + i, coordY + i);
-            if (coordX - i >= 0 && coordY + i < 8) moves.emplace_back(coordX - i, coordY + i);
-            if (coordX + i < 8 && coordY- i >= 0) moves.emplace_back(coordX + i, coordY - i);
-            if (coordX - i >= 0 && coordY - i >= 0) moves.emplace_back(coordX - i, coordY - i);
-            if (coordX + i < 8) moves.emplace_back(coordX + i, coordY);
-            if (coordX - i >= 0) moves.emplace_back(coordX - i, coordY);
-            if (coordY - i >= 0) moves.emplace_back(coordX, coordY - i);
-            if (coordY + i < 8) moves.emplace_back(coordX, coordY + i);
-        }
-    }
-    return moves;
-}
-
 vector<pair<int, int> > Sesshoin_Kiara::getEffectRange(Effect_List effect) const {
 
     vector<std::pair<int, int>> effect_range;
 
     if (effect == CHANGE_CONTROL) {
-        for (int i = 1; i < 2; ++i) {
+        for (int i = 1; i < 3; ++i) {
             if (coordX + i < 8) effect_range.emplace_back(coordX + i, coordY);
             if (coordX - i >= 0) effect_range.emplace_back(coordX - i, coordY);
             if (coordY - i >= 0) effect_range.emplace_back(coordX, coordY - i);
@@ -58,19 +38,20 @@ vector<pair<int, int> > Sesshoin_Kiara::getEffectRange(Effect_List effect) const
 
 void Sesshoin_Kiara::SpellActivationCheck(void *arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (context->piece->getPieceGameMode() == 1)
+    if (context->piece->getPieceGameMode() != 0)
         passive(context);
 }
 
 
 void Sesshoin_Kiara::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-        EffectHandler::applyEffectToTargets(this,EffectInstance{CHANGE_CONTROL,2,1,1});
+        if (EffectHandler::applyEffectToTargets(this,EffectInstance{CHANGE_CONTROL,2,1,1}))
+            CNT_Charm++;
 
 }
 
 bool Sesshoin_Kiara::canEvolve(void *arg) {
-    if (evolved == false) {
+    if (evolved == false && CNT_Charm > 2) {
         std::cout << "Ready to evolve!!!"<<std::endl;
         return true;
     }

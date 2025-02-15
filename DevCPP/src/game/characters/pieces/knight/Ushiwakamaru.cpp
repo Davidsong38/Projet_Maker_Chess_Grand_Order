@@ -13,7 +13,9 @@
 //    return {STUN};
 //}
 
-
+void Ushiwakamaru::setPieceGameMode() {
+    return;
+}
 
 vector<pair<int, int> > Ushiwakamaru::getEffectRange(Effect_List effect) const {
 

@@ -33,6 +33,8 @@ class Nemo_Marine final: public Pawn  {
         bool canEvolve(void* arg) override;
         void evolvedForm(void* arg) override;
         void SpellActivationCheck(void *arg) override;
+        void setPieceGameMode() override;
+
 
 
 

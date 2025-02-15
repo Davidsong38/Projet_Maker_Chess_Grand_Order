@@ -59,7 +59,7 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
         });
     }
     if (current_effect == STUN) {
-        success = addEffectBehavior(STUN, [board,piece, effect_instance]() {
+        success = addEffectBehavior(STUN, [piece, effect_instance]() {
             for (const auto& e : piece->getActive_effects()) {
                 if (e.effect == IMMUNITY_AOE ) {
                     piece->activateEffect(e.effect);
@@ -67,6 +67,19 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
                 }
             }
             piece->addEffectStatus(effect_instance);
+            return true;
+        });
+    }
+    if (current_effect == CHANGE_CONTROL) {
+        success = addEffectBehavior(CHANGE_CONTROL,[piece,effect_instance]() {
+            for (const auto& e : piece->getActive_effects()) {
+                if (e.effect == IMMUNITY_AOE ) {
+                    piece->activateEffect(e.effect);
+                    return false;
+                }
+            }
+            piece->addEffectStatus(effect_instance);
+            piece->setIsWhite(not piece->getIsWhite());
             return true;
         });
     }

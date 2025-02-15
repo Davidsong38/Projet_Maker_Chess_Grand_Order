@@ -33,6 +33,7 @@ class Medusa_Saber final : public Bishop{
         bool canEvolve(void* arg) override;
         void evolvedForm(void* arg) override;
         void SpellActivationCheck(void *arg) override;
+        void setPieceGameMode() override;
 
 
 

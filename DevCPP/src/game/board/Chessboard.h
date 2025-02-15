@@ -38,6 +38,8 @@ public:
     static void PawnReachingEndOfBoard(Pieces *piece);
     void displayBoard() const;
     static bool isKillable(Pieces* piece) ; // vérifie si la pièce peut être tué ( ne possède pas d'effet qui la protège)
+    static bool PieceHaveThisEffect(Pieces *piece, Effect_List chosenEffect);
+
     static bool isMoveable(Pieces* piece) ; // vérifie si la pièce n'est pas affecté par des effets d'immobilisation
     bool isKilled(Pieces* piece) const; // vérifie si la pièce est morte
     static bool isAlly(Pieces* piece, Pieces* target_piece);
