@@ -106,7 +106,7 @@ void GameEngine::handleCheckingWhitePhase() {
     context->piece->SpellActivationCheck(context);
     context->piece->setHasJustKilled(false);
     if (context->piece->canEvolve(context))
-        context->piece->evolvedForm(context);
+        std::cout << (context->piece->getIsWhite()? "White " : "Black ") << context->piece->getName() << " has evolved!" << std::endl;
     setState(END_WHITE_PHASE);
 }
 
@@ -168,7 +168,7 @@ void GameEngine::handleCheckingBlackPhase() {
     context->piece->SpellActivationCheck(context);
     context->piece->setHasJustKilled(false);
     if (context->piece->canEvolve(context))
-        context->piece->evolvedForm(context);
+        std::cout << (context->piece->getIsWhite()? "White " : "Black ") << context->piece->getName() << " has evolved!" << std::endl;
     setState(END_BLACK_PHASE);
 }
 

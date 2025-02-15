@@ -7,12 +7,12 @@
 #include "Context.h"
 
 
-vector<Effect_List> Medusa_Saber::getCasterEffects() const {
-    if (evolved==true) {
-        return {STUN,AOE};
-    }
-    return {STUN};
-}
+//vector<Effect_List> Medusa_Saber::getCasterEffects() const {
+//    if (evolved==true) {
+//        return {STUN,AOE};
+//    }
+//    return {STUN};
+//}
 
 
 
@@ -56,15 +56,16 @@ void Medusa_Saber::SpellActivationCheck(void *arg) {
 
 void Medusa_Saber::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    EffectHandler::applyEffectToTargets(this,EffectInstance{STUN,1,1,1});
-    CNT_StunEffect++;
+    if (EffectHandler::applyEffectToTargets(this,EffectInstance{STUN,1,1,1}))
+        CNT_StunEffect++;
 
 }
 
 bool Medusa_Saber::canEvolve(void *arg) {
-    std::cout <<CNT_StunEffect<<std::endl;
+    //std::cout <<CNT_StunEffect<<std::endl;
     if (evolved == false && CNT_StunEffect>1) {
-        std::cout <<"Ready to evolve!!!"<<std::endl;
+        evolved = true;
+        //std::cout <<"Ready to evolve!!!"<<std::endl;
         return true;
     }
     return false;

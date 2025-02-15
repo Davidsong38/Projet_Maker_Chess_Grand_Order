@@ -107,7 +107,7 @@ class Pieces : public SpriteTarget {
 
 
 
-        [[nodiscard]] virtual vector<Effect_List> getCasterEffects() const = 0;
+        //[[nodiscard]] virtual vector<Effect_List> getCasterEffects() const = 0;
         [[nodiscard]] virtual bool isCheating() const {return false;}
         virtual void passive(void* context) = 0;
         virtual bool canEvolve(void* context) = 0;

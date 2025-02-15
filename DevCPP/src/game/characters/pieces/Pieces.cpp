@@ -109,6 +109,7 @@ void Pieces::setIsAlive(bool is_alive) {
 
 
 void Pieces::addEffectStatus(EffectInstance effect_instance) {
+
     activeEffects.emplace_back(effect_instance.getEffect(),effect_instance.getEffectDuration(),effect_instance.getEffectDuration());
 }
 
@@ -146,13 +147,13 @@ void Pieces::updateEffectStatus() {
     }
 }
 void Pieces::activateEffect(Effect_List effect) {
-    std::cout << "Yaharo0000"<<std::endl;
+    //std::cout << "Yaharo0000"<<std::endl;
     for ( auto& e : activeEffects) {
-        std::cout << Effect_List_to_string[e.effect] << "Yaharo"<<std::endl;
+        //std::cout << Effect_List_to_string[e.effect] << "Yaharo"<<std::endl;
         if (e.effect == effect && !e.isExpired()) {
-            std::cout << Effect_List_to_string[e.effect] << std::endl;
+            //std::cout << Effect_List_to_string[e.effect] << std::endl;
             e.activation();
-            std::cout << "Effect " << Effect_List_to_string[e.effect] << " activated on piece!" << std::endl;
+            //std::cout << "Effect " << Effect_List_to_string[e.effect] << " activated on piece!" << std::endl;
 
         }
     }

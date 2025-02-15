@@ -77,7 +77,7 @@ Characters_List choose_queen(bool isWhite) {
 
 void add_piece_to_board(int x, int y, bool isWhite, Characters_List character) {
     auto* piece = get_piece(x,y,isWhite,character);
-    EffectHandler::configureEffectHandler(piece);
+    //EffectHandler::configureEffectHandler(piece);
     Chessboard::getInstance()->placePiece(x,y,piece);
 }
 
@@ -165,7 +165,6 @@ void init_pieces() {
     init_rooks();
     init_kings();
     init_queens();
-
     didPiecesGetInitiated = true;
 }
 

@@ -47,6 +47,9 @@ public:
     [[nodiscard]] bool isPathAllClear(int startX, int startY, int endX, int endY) const ;
     [[nodiscard]] bool isInGrid(int to_coordX, int to_coordY) const;
     [[nodiscard]] vector<vector<Pieces *>> getGrid() const;
+
+    void deletePiece(Pieces *piece);
+
     bool getPosInBoard(glm::vec2 screenPos, glm::ivec2 &boardPos) const;
     bool isEndangeredByWhite(pair<int, int> cell);
     bool isEndangeredByBlack(pair<int, int> cell);

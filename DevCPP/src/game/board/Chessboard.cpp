@@ -31,6 +31,10 @@ vector<vector<Pieces *>> Chessboard::getGrid() const {
     return grid;
 }
 
+void Chessboard::deletePiece (Pieces* piece) {
+    grid[piece->getCoordX()][piece->getCoordY()] = nullptr;
+}
+
 bool Chessboard::isAlly(Pieces *piece, Pieces *target_piece) {
     if (piece->getIsWhite() == target_piece->getIsWhite()) {
         return true;

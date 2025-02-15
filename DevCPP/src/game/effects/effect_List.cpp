@@ -30,7 +30,7 @@ void loadEffectList() {
     Effect_List_to_string[SUPP_LUCK] = "suppLuck";
     isBuff_List[STUN] = false;
     isBuff_List[CHANGE_CONTROL] = false; ;
-    isBuff_List[AOE] = true;
+    isBuff_List[AOE] = false;
     isBuff_List[GIVING_AOE] = true;
     isBuff_List[SHIELD] = true;
     isBuff_List[IMMUNITY_EFFECT] = true;
