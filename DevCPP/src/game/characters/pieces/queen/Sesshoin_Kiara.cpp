@@ -24,6 +24,13 @@ void Sesshoin_Kiara::setPieceGameMode() {
 vector<pair<int, int> > Sesshoin_Kiara::getEffectRange(Effect_List effect) const {
 
     vector<std::pair<int, int>> effect_range;
+    if (evolved && effect == CHANGE_CONTROL_ADVANCE){
+        for (int i = 0; i < 7; ++i){
+            for (int j = 0; j < 7; ++j){
+                effect_range.emplace_back(i, j);
+            }
+        }
+    }
 
     if (effect == CHANGE_CONTROL) {
         for (int i = 1; i < 3; ++i) {
@@ -38,28 +45,36 @@ vector<pair<int, int> > Sesshoin_Kiara::getEffectRange(Effect_List effect) const
 
 void Sesshoin_Kiara::SpellActivationCheck(void *arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (context->piece->getPieceGameMode() != 0)
+    if (context->piece->getPieceGameMode() != 0){
+        if (canEvolve(context)){
+            evolvedForm(context);
+            return;
+        }
         passive(context);
+    }
+
+
 }
 
 
 void Sesshoin_Kiara::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-        if (EffectHandler::applyEffectToTargets(this,EffectInstance{CHANGE_CONTROL,2,1,1}))
+        if (EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{CHANGE_CONTROL,3,1,1}))
             CNT_Charm++;
 
 }
 
 bool Sesshoin_Kiara::canEvolve(void *arg) {
+    auto * context = static_cast<context_type *>(arg);
     if (evolved == false && CNT_Charm > 2) {
-        std::cout << "Ready to evolve!!!"<<std::endl;
+        //std::cout << "Ready to evolve!!!"<<std::endl;
         return true;
     }
     return false;
-
 }
 
 void Sesshoin_Kiara::evolvedForm(void *arg) {
+    auto * context = static_cast<context_type *>(arg);
     evolved = true;
-
+    EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{CHANGE_CONTROL_ADVANCE,3,1,1});
 }

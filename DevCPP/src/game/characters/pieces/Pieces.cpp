@@ -41,6 +41,10 @@ string Pieces::getName() {
     return name;
 }
 
+bool Pieces::getIsEvolved() const{
+    return evolved;
+}
+
 bool Pieces::getIsWhite() const {
     return isWhite;
 }

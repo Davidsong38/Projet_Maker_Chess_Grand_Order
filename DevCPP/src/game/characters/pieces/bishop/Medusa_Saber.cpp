@@ -51,7 +51,7 @@ void Medusa_Saber::SpellActivationCheck(void *arg) {
     auto * context = static_cast<context_type *>(arg);
     if (hasJustKilled) {
         passive(context);
-        if (evolved)
+        if (canEvolve(context))
             evolvedForm(context);
     }
 }
@@ -67,7 +67,6 @@ void Medusa_Saber::passive(void* arg) {
 bool Medusa_Saber::canEvolve(void *arg) {
     //std::cout <<CNT_StunEffect<<std::endl;
     if (evolved == false && CNT_StunEffect>1) {
-        evolved = true;
         //std::cout <<"Ready to evolve!!!"<<std::endl;
         return true;
     }

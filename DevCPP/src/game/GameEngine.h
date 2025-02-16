@@ -13,11 +13,13 @@
 enum GameState{
     INITIALISATION,
     START_WHITE_PHASE,
+    SELECT_PIECE_GAMEMODE_WHITE_PHASE,
     SELECT_WHITE_PHASE,
     MOVING_WHITE_PHASE,
     CHECKING_WHITE_PHASE,
     END_WHITE_PHASE,
     START_BLACK_PHASE,
+    SELECT_PIECE_GAMEMODE_BLACK_PHASE,
     SELECT_BLACK_PHASE,
     MOVING_BLACK_PHASE,
     CHECKING_BLACK_PHASE,
@@ -39,7 +41,8 @@ public:
     int NB_Turn = 1;
     void setBlackKing(Pieces* piece) const;
     void setWhiteKing(Pieces* piece) const;
-
+    [[nodiscard]] int getLastClickX() const;
+    [[nodiscard]] int getLastClickY() const;
 private:
     int lastClickX{-1}, lastClickY{-1};
     bool receivedClick = false;
@@ -52,11 +55,13 @@ private:
     void setState(GameState state);
     void handleInitialisation();
     void handleStartWhitePhase();
+    void handleSelectPieceGamemodeWhitePhase();
     void handleSelectWhitePhase();
     void handleMovingWhitePhase();
     void handleCheckingWhitePhase();
     void handleEndWhitePhase();
     void handleStartBlackPhase();
+    void handleSelectPieceGamemodeBlackPhase();
     void handleSelectBlackPhase();
     void handleMovingBlackPhase();
     void handleCheckingBlackPhase();
@@ -64,8 +69,8 @@ private:
     void handleEndGame();
     static void handleGameClose();
 
-    void CheckEffect();
-    void CheckKill();
+    //void CheckEffect();
+    //void CheckKill();
 
 
 };

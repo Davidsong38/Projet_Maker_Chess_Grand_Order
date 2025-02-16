@@ -14,6 +14,7 @@ using namespace std;
 enum Effect_List{
      STUN,
      CHANGE_CONTROL,
+     CHANGE_CONTROL_ADVANCE,
      AOE,
      GIVING_AOE,
      SHIELD,

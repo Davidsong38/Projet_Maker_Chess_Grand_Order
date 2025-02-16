@@ -16,11 +16,13 @@
 GameEngine::GameEngine() : current_state(INITIALISATION) {
         state_handlers[INITIALISATION] = [this]() { handleInitialisation(); };
         state_handlers[START_WHITE_PHASE] = [this]() { handleStartWhitePhase(); };
+        state_handlers[SELECT_PIECE_GAMEMODE_WHITE_PHASE] = [this](){handleSelectPieceGamemodeWhitePhase(); };
         state_handlers[SELECT_WHITE_PHASE] = [this]() { handleSelectWhitePhase(); };
         state_handlers[MOVING_WHITE_PHASE] = [this]() { handleMovingWhitePhase(); };
         state_handlers[CHECKING_WHITE_PHASE] = [this]() { handleCheckingWhitePhase(); };
         state_handlers[END_WHITE_PHASE] = [this]() { handleEndWhitePhase(); };
         state_handlers[START_BLACK_PHASE] = [this]() { handleStartBlackPhase(); };
+        state_handlers[SELECT_PIECE_GAMEMODE_BLACK_PHASE] = [this](){handleSelectPieceGamemodeBlackPhase(); };
         state_handlers[SELECT_BLACK_PHASE] = [this]() { handleSelectBlackPhase(); };
         state_handlers[MOVING_BLACK_PHASE] = [this]() { handleMovingBlackPhase(); };
         state_handlers[CHECKING_BLACK_PHASE] = [this]() { handleCheckingBlackPhase(); };
@@ -60,8 +62,6 @@ void GameEngine::handleInitialisation() {
 
 }
 
-
-
 void GameEngine::handleStartWhitePhase() {
     //std::cout << "Select White Piece to move" << std::endl;
     //int x =
@@ -75,10 +75,18 @@ void GameEngine::handleStartWhitePhase() {
                 context->piece->selected = false;
             }
             context->piece = selectedPiece;
-            setState(SELECT_WHITE_PHASE);
+
+            setState(SELECT_PIECE_GAMEMODE_WHITE_PHASE);
         }
     }
 }
+
+void GameEngine::handleSelectPieceGamemodeWhitePhase()
+{
+    context->piece->setPieceGameMode();
+    setState(SELECT_WHITE_PHASE);
+}
+
 void GameEngine::handleSelectWhitePhase() {
     if (!receivedClick)
         return;
@@ -88,7 +96,7 @@ void GameEngine::handleSelectWhitePhase() {
         return;
     }
     //std::cout << "ababababala" << std::endl;
-    context->piece->setPieceGameMode();
+
     if (context->piece->getCoordX() == lastClickX && context->piece->getCoordY() == lastClickY) {
         context->piece->selected = false;
         context->piece = nullptr;
@@ -112,7 +120,7 @@ void GameEngine::handleMovingWhitePhase() {
 void GameEngine::handleCheckingWhitePhase() {
     context->piece->SpellActivationCheck(context);
     context->piece->setHasJustKilled(false);
-    if (context->piece->canEvolve(context))
+    if (context->piece->getIsEvolved())
         std::cout << (context->piece->getIsWhite()? "White " : "Black ") << context->piece->getName() << " has evolved!" << std::endl;
     setState(END_WHITE_PHASE);
 }
@@ -144,10 +152,17 @@ void GameEngine::handleStartBlackPhase() {
                 context->piece->selected = false;
             }
             context->piece = selectedPiece;
-            setState(SELECT_BLACK_PHASE);
+            setState(SELECT_PIECE_GAMEMODE_BLACK_PHASE);
         }
     }
 }
+
+void GameEngine::handleSelectPieceGamemodeBlackPhase()
+{
+    context->piece->setPieceGameMode();
+    setState(SELECT_BLACK_PHASE);
+}
+
 
 void GameEngine::handleSelectBlackPhase() {
     if (!receivedClick)
@@ -157,7 +172,6 @@ void GameEngine::handleSelectBlackPhase() {
         log(LOG_ERROR,"Impossible state in GameEngine::handleSelectBlackPhase()");
         return;
     }
-    context->piece->setPieceGameMode();
 
     if (context->piece->getCoordX() == lastClickX && context->piece->getCoordY() == lastClickY) {
         context->piece->selected = false;
@@ -180,7 +194,7 @@ void GameEngine::handleMovingBlackPhase() {
 void GameEngine::handleCheckingBlackPhase() {
     context->piece->SpellActivationCheck(context);
     context->piece->setHasJustKilled(false);
-    if (context->piece->canEvolve(context))
+    if (context->piece->getIsEvolved())
         std::cout << (context->piece->getIsWhite()? "White " : "Black ") << context->piece->getName() << " has evolved!" << std::endl;
     setState(END_BLACK_PHASE);
 }
@@ -237,7 +251,12 @@ void GameEngine::clickBoardAtPos(int x, int y) {
     lastClickY = y;
 }
 
+int GameEngine::getLastClickX() const {
+    return lastClickX;
+}
 
-
+int GameEngine::getLastClickY() const {
+    return lastClickY;
+}
 
 

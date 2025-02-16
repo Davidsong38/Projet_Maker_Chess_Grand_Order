@@ -10,6 +10,7 @@ bool isTriggerEffect_List[EFFECT_COUNT];
 void loadEffectList() {
     Effect_List_to_string[STUN] = "stun";
     Effect_List_to_string[CHANGE_CONTROL] = "changeControl";
+    Effect_List_to_string[CHANGE_CONTROL_ADVANCE] = "changeControlAdvance";
     Effect_List_to_string[AOE] = "aoe";
     Effect_List_to_string[GIVING_AOE] = "giveAoe";
     Effect_List_to_string[SHIELD] = "shield";
@@ -29,7 +30,8 @@ void loadEffectList() {
     Effect_List_to_string[EVOLVE] = "evolve";
     Effect_List_to_string[SUPP_LUCK] = "suppLuck";
     isBuff_List[STUN] = false;
-    isBuff_List[CHANGE_CONTROL] = false; ;
+    isBuff_List[CHANGE_CONTROL] = false;
+    isBuff_List[CHANGE_CONTROL_ADVANCE] = false;
     isBuff_List[AOE] = false;
     isBuff_List[GIVING_AOE] = true;
     isBuff_List[SHIELD] = true;
@@ -50,6 +52,7 @@ void loadEffectList() {
     isBuff_List[SUPP_LUCK] = true;
     isTriggerEffect_List[STUN] = false;
     isTriggerEffect_List[CHANGE_CONTROL] = true;
+    isTriggerEffect_List[CHANGE_CONTROL_ADVANCE] = true;
     isTriggerEffect_List[AOE] = true;
     isTriggerEffect_List[GIVING_AOE] = false;
     isTriggerEffect_List[SHIELD] = false;

@@ -67,7 +67,7 @@ class Pieces : public SpriteTarget {
         [[nodiscard]] bool getCanActivateEffects() const;
         [[nodiscard]] bool getHasJustKilled() const;
         [[nodiscard]] int getPieceGameMode() const;
-
+        [[nodiscard]] bool getIsEvolved() const;
 
 
         virtual void setPieceGameMode() = 0;

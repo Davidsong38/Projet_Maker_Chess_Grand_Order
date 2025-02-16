@@ -5,6 +5,7 @@
 #include "EffectHandler.h"
 
 #include <chrono>
+#include <GameEngine.h>
 #include <random>
 
 #include "Chessboard.h"
@@ -83,6 +84,20 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
             return true;
         });
     }
+
+    if (current_effect == CHANGE_CONTROL_ADVANCE) {
+        success = addEffectBehavior(CHANGE_CONTROL_ADVANCE,[piece,effect_instance]() {
+            for (const auto& e : piece->getActive_effects()) {
+                if (e.effect == IMMUNITY_AOE ) {
+                    piece->activateEffect(e.effect);
+                    return false;
+                }
+            }
+            piece->addEffectStatus(effect_instance);
+            piece->setIsWhite(not piece->getIsWhite());
+            return true;
+        });
+    }
     return success;
 }
 
@@ -129,13 +144,30 @@ int EffectHandler::applyEffectToTargets(Pieces *caster_piece, EffectInstance eff
                     NB_targetTouched++;
                     executeEffect(effect_instance.getEffect(), target_piece);
                     std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
-                //} else {
-                //    target_piece->addEffectStatus(effect_instance);
-                //    std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
                 }
 
                 if (effect_instance.getNB_Target() != -1)
                     CNT_target++;
+            }
+        }
+    }
+    return NB_targetTouched;
+}
+
+
+int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectInstance effect_instance){
+    vector<pair<int,int>> effect_range = caster_piece->getEffectRange(effect_instance.getEffect());
+    int NB_targetTouched = 0;
+    for (const auto &range: effect_range) {
+        int targetX = GameEngine::getInstance()->getLastClickX();
+        int targetY = GameEngine::getInstance()->getLastClickY();
+        Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
+        if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)
+            && targetX == range.first && targetY == range.second) {
+            if (configureEffectHandler(target_piece,effect_instance)) {
+                NB_targetTouched++;
+                executeEffect(effect_instance.getEffect(), target_piece);
+                std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
             }
         }
     }

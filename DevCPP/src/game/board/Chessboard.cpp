@@ -505,7 +505,7 @@ bool Chessboard::KillCheck(Pieces *piece, Pieces *target_piece) {
     int coordX2 = target_piece->getCoordX();
     int coordY2 = target_piece->getCoordY();
     if (isKillable(target_piece)&& !isAlly(piece,target_piece)) {
-        if (PieceHaveThisEffect(target_piece,CHANGE_CONTROL)) {
+        if (PieceHaveThisEffect(target_piece,CHANGE_CONTROL)){
             target_piece->setIsWhite(not target_piece->getIsWhite());
             std::cout << "je reviens dans mon camp" << std::endl;
             return true;
