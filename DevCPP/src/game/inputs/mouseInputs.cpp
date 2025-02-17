@@ -43,6 +43,9 @@ void rightClickUp(glm::vec2 mousePos) {
 
 void rightClickDown(glm::vec2 mousePos) {
     isRightClickHeld = true;
+    std::cout << "glabitou" << std::endl;
+    GameEngine::getInstance()->inputRightClick();
+
 }
 
 void middleClickUp(glm::vec2 mousePos) {

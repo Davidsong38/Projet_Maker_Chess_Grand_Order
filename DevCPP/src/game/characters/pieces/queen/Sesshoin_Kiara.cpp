@@ -3,6 +3,9 @@
 //
 
 #include "Sesshoin_Kiara.h"
+
+#include <GameEngine.h>
+
 #include "Context.h"
 
 
@@ -13,10 +16,7 @@
 //    return {STUN};
 //}
 
-void Sesshoin_Kiara::setPieceGameMode() {
-    int piece_game_mode = 0;
-    std::cout << "Choose piece game mode:" << std::endl;
-    std::cin >> piece_game_mode;
+void Sesshoin_Kiara::setPieceGameMode(int piece_game_mode) {
     pieceGameMode = piece_game_mode;
 }
 
@@ -43,24 +43,39 @@ vector<pair<int, int> > Sesshoin_Kiara::getEffectRange(Effect_List effect) const
     return effect_range;
 }
 
-void Sesshoin_Kiara::SpellActivationCheck(void *arg) {
+bool Sesshoin_Kiara::SpellActivationCheck(void *arg) {
     auto * context = static_cast<context_type *>(arg);
     if (context->piece->getPieceGameMode() != 0){
+        std::cout << "ayayayayayayayayayayayayayayayayayay" << std::endl;
         if (canEvolve(context)){
-            evolvedForm(context);
-            return;
+            if (evolvedForm(context))
+                return true;
         }
-        passive(context);
+        if (passive(context))
+            return true;
+        return false;
     }
-
+    return true;
 
 }
 
 
-void Sesshoin_Kiara::passive(void* arg) {
+bool Sesshoin_Kiara::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-        if (EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{CHANGE_CONTROL,3,1,1}))
-            CNT_Charm++;
+        if (GameEngine::getInstance()->receivedClick){
+            if (EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{CHANGE_CONTROL,5,1,1})){
+                CNT_Charm++;
+                return true;
+            }
+            else{
+                //if (this->getIsWhite())
+                //    GameEngine::getInstance()->setState(SELECT_WHITE_PHASE);
+                //else
+                //    GameEngine::getInstance()->setState(SELECT_BLACK_PHASE);
+            }
+        }
+    return false;
+
 
 }
 
@@ -73,8 +88,18 @@ bool Sesshoin_Kiara::canEvolve(void *arg) {
     return false;
 }
 
-void Sesshoin_Kiara::evolvedForm(void *arg) {
+bool Sesshoin_Kiara::evolvedForm(void *arg) {
     auto * context = static_cast<context_type *>(arg);
     evolved = true;
-    EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{CHANGE_CONTROL_ADVANCE,3,1,1});
+    if (GameEngine::getInstance()->receivedClick){
+        if (EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{CHANGE_CONTROL_ADVANCE,-1,1,1}))
+            return true;
+        else{
+            //if (this->getIsWhite())
+            //    GameEngine::getInstance()->setState(SELECT_WHITE_PHASE);
+            //else
+            //    GameEngine::getInstance()->setState(SELECT_BLACK_PHASE);
+        }
+    }
+    return false;
 }

@@ -12,7 +12,7 @@
 //    }
 //    return {STUN};
 //}
-void Artoria::setPieceGameMode() {
+void Artoria::setPieceGameMode(int piece_game_mode) {
     return;
 }
 
@@ -45,18 +45,20 @@ vector<pair<int, int> > Artoria::getEffectRange(Effect_List effect) const {
     return effect_range;
 }
 
-void Artoria::SpellActivationCheck(void *arg) {
+bool Artoria::SpellActivationCheck(void *arg) {
     auto * context = static_cast<context_type *>(arg);
     if (context->piece->getHasJustKilled())
         passive(context);
+    return true;
 }
 
 
-void Artoria::passive(void* arg) {
+bool Artoria::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
         EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2,1});
         CNT_StunEffect++;
 
+    return true;
 }
 
 bool Artoria::canEvolve(void *arg) {
@@ -68,7 +70,8 @@ bool Artoria::canEvolve(void *arg) {
 
 }
 
-void Artoria::evolvedForm(void *arg) {
+bool Artoria::evolvedForm(void *arg) {
     evolved = true;
 
+    return true;
 }

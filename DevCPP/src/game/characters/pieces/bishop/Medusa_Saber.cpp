@@ -14,7 +14,7 @@
 //    return {STUN};
 //}
 
-void Medusa_Saber::setPieceGameMode() {
+void Medusa_Saber::setPieceGameMode(int piece_game_mode) {
     return;
 }
 
@@ -47,21 +47,22 @@ vector<pair<int, int> > Medusa_Saber::getEffectRange(Effect_List effect) const {
     return effect_range;
 }
 
-void Medusa_Saber::SpellActivationCheck(void *arg) {
+bool Medusa_Saber::SpellActivationCheck(void *arg) {
     auto * context = static_cast<context_type *>(arg);
     if (hasJustKilled) {
-        passive(context);
-        if (canEvolve(context))
+        if (canEvolve(context) || evolved)
             evolvedForm(context);
+        passive(context);
     }
+    return true;
 }
 
 
-void Medusa_Saber::passive(void* arg) {
+bool Medusa_Saber::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (EffectHandler::applyEffectToTargets(this,EffectInstance{STUN,1,1,1}))
+    if (EffectHandler::applyEffectToTargets(this,EffectInstance{STUN,2,1,1}))
         CNT_StunEffect++;
-
+    return true;
 }
 
 bool Medusa_Saber::canEvolve(void *arg) {
@@ -74,11 +75,11 @@ bool Medusa_Saber::canEvolve(void *arg) {
 
 }
 
-void Medusa_Saber::evolvedForm(void *arg) {
+bool Medusa_Saber::evolvedForm(void *arg) {
     auto * context = static_cast<context_type *>(arg);
     evolved = true;
     EffectHandler::applyEffectToTargets(this,EffectInstance{AOE,1,1,-1});
-
+    return true;
 
 
 }

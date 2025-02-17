@@ -5,6 +5,7 @@
 #include "EffectHandler.h"
 
 #include <chrono>
+#include <constants.hpp>
 #include <GameEngine.h>
 #include <random>
 
@@ -17,7 +18,6 @@ unordered_map<Effect_List, function<void()>> EffectHandler::effectBehaviors;
 void EffectHandler::executeEffect(Effect_List effect,Pieces* target_piece) {
     if (effectBehaviors.find(effect) != effectBehaviors.end()) {
         effectBehaviors[effect]();
-        target_piece->activateEffect(effect);
     }
 }
 
@@ -80,6 +80,11 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
                 }
             }
             piece->addEffectStatus(effect_instance);
+            //std::cout << effect_instance.effect << std::endl;
+            //std::cout << effect_instance.effect_duration << std::endl;
+            //std::cout << effect_instance.effect_amount << std::endl;
+
+
             piece->setIsWhite(not piece->getIsWhite());
             return true;
         });
@@ -161,6 +166,7 @@ int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectI
     for (const auto &range: effect_range) {
         int targetX = GameEngine::getInstance()->getLastClickX();
         int targetY = GameEngine::getInstance()->getLastClickY();
+        std::cout << "oho" << std::endl;
         Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
         if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)
             && targetX == range.first && targetY == range.second) {

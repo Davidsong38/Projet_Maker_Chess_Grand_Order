@@ -70,7 +70,7 @@ class Pieces : public SpriteTarget {
         [[nodiscard]] bool getIsEvolved() const;
 
 
-        virtual void setPieceGameMode() = 0;
+        virtual void setPieceGameMode(int piece_game_mode) = 0;
 
         void setIsWhite(bool is_white);
         void setHasJustKilled(bool has_just_killed);
@@ -117,10 +117,10 @@ class Pieces : public SpriteTarget {
 
         //[[nodiscard]] virtual vector<Effect_List> getCasterEffects() const = 0;
         [[nodiscard]] virtual bool isCheating() const {return false;}
-        virtual void passive(void* context) = 0;
+        virtual bool passive(void* context) = 0;
         virtual bool canEvolve(void* context) = 0;
-        virtual void evolvedForm(void* context) = 0;
-        virtual void SpellActivationCheck(void* context) = 0;
+        virtual bool evolvedForm(void* context) = 0;
+        virtual bool SpellActivationCheck(void* context) = 0;
 
 
 };

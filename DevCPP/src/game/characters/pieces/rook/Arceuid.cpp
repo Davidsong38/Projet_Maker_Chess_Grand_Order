@@ -13,7 +13,7 @@
 //    return {STUN};
 //}
 
-void Arceuid::setPieceGameMode() {
+void Arceuid::setPieceGameMode(int piece_game_mode) {
     return;
 }
 
@@ -45,16 +45,18 @@ vector<pair<int, int> > Arceuid::getEffectRange(Effect_List effect) const {
     return effect_range;
 }
 
-void Arceuid::SpellActivationCheck(void *arg) {
+bool Arceuid::SpellActivationCheck(void *arg) {
     auto * context = static_cast<context_type *>(arg);
     if (context->piece->getHasJustKilled())
         passive(context);
+    return true;
 }
 
-void Arceuid::passive(void* arg) {
+bool Arceuid::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
         EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2,1});
         CNT_StunEffect++;
+    return true;
 }
 
 bool Arceuid::canEvolve(void *arg) {
@@ -66,7 +68,8 @@ bool Arceuid::canEvolve(void *arg) {
 
 }
 
-void Arceuid::evolvedForm(void *arg) {
+bool Arceuid::evolvedForm(void *arg) {
     evolved = true;
 
+    return true;
 }

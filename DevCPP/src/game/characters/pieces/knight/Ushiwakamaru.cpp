@@ -13,7 +13,7 @@
 //    return {STUN};
 //}
 
-void Ushiwakamaru::setPieceGameMode() {
+void Ushiwakamaru::setPieceGameMode(int piece_game_mode) {
     return;
 }
 
@@ -44,18 +44,19 @@ vector<pair<int, int> > Ushiwakamaru::getEffectRange(Effect_List effect) const {
     }
     return effect_range;
 }
-
-void Ushiwakamaru::SpellActivationCheck(void *arg) {
+bool Ushiwakamaru::SpellActivationCheck(void *arg) {
     auto * context = static_cast<context_type *>(arg);
     if (context->piece->getHasJustKilled())
         passive(context);
+    return true;
 }
 
 
-void Ushiwakamaru::passive(void* arg) {
+bool Ushiwakamaru::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
         EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2,1});
         CNT_StunEffect++;
+    return true;
 }
 
 bool Ushiwakamaru::canEvolve(void *arg) {
@@ -67,7 +68,8 @@ bool Ushiwakamaru::canEvolve(void *arg) {
 
 }
 
-void Ushiwakamaru::evolvedForm(void *arg) {
+bool Ushiwakamaru::evolvedForm(void *arg) {
     evolved = true;
 
+    return true;
 }

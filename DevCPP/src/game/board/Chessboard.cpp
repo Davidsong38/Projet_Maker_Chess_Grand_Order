@@ -492,6 +492,7 @@ bool Chessboard::isKillable(Pieces *piece) {
 bool Chessboard::PieceHaveThisEffect(Pieces *piece, Effect_List chosenEffect) {
     for (const auto& e : piece->getActive_effects()) {
         if (e.effect == chosenEffect) {
+            std::cout << "pas la aussi par pitié" << e.effect_amount << std::endl;
             return true;
         }
 
@@ -506,7 +507,7 @@ bool Chessboard::KillCheck(Pieces *piece, Pieces *target_piece) {
     int coordY2 = target_piece->getCoordY();
     if (isKillable(target_piece)&& !isAlly(piece,target_piece)) {
         if (PieceHaveThisEffect(target_piece,CHANGE_CONTROL)){
-            target_piece->setIsWhite(not target_piece->getIsWhite());
+            target_piece->activateEffect(CHANGE_CONTROL);
             std::cout << "je reviens dans mon camp" << std::endl;
             return true;
         }

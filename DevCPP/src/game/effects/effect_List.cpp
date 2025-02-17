@@ -2,6 +2,8 @@
 // Created by david on 25/01/2025.
 //
 
+#include <iostream>
+
 #include "Effect_List.h"
 
 string Effect_List_to_string[EFFECT_COUNT];
@@ -90,6 +92,7 @@ bool EffectInstance::isExpired() const {
 void EffectInstance::activation()  {
     if (effect_amount > 0) {
         effect_amount--;
+        std::cout << "remaining : " << effect_amount << std::endl;
     }
 }
 

@@ -38,21 +38,26 @@ public:
     void update(double deltaTime_ms) override;
     [[nodiscard]] GameState get_current_state() const;
     void clickBoardAtPos(int x, int y);
+    void inputRightClick();
     int NB_Turn = 1;
     void setBlackKing(Pieces* piece) const;
     void setWhiteKing(Pieces* piece) const;
     [[nodiscard]] int getLastClickX() const;
     [[nodiscard]] int getLastClickY() const;
-private:
+    void setState(GameState state);
+    GameState current_state;
     int lastClickX{-1}, lastClickY{-1};
     bool receivedClick = false;
+    bool receivedRightClick = false;
+private:
 
-    GameState current_state;
+
+
     inline static GameEngine* instance = nullptr;
     context_type* context = new context_type();
     unordered_map<GameState, function<void()>> state_handlers;
 
-    void setState(GameState state);
+
     void handleInitialisation();
     void handleStartWhitePhase();
     void handleSelectPieceGamemodeWhitePhase();

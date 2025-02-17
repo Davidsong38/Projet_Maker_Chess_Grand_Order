@@ -30,11 +30,11 @@ class Sesshoin_Kiara final : public Queen{
 
         //[[nodiscard]] vector<Effect_List> getCasterEffects() const override;
         [[nodiscard]] vector<pair<int, int>> getEffectRange(Effect_List effect) const override;
-        void passive(void* arg) override;
+        bool passive(void* arg) override;
         bool canEvolve(void* arg) override;
-        void evolvedForm(void* arg) override;
-        void SpellActivationCheck(void *arg) override;
-        void setPieceGameMode() override;
+        bool evolvedForm(void* arg) override;
+        bool SpellActivationCheck(void *arg) override;
+        void setPieceGameMode(int piece_game_mode) override;
 
 };
 
