@@ -20,6 +20,7 @@ class EffectHandler {
         static bool configureEffectHandler(Pieces *piece, EffectInstance effect_instance);
         static int applyEffectToTargets(Pieces *caster_piece, EffectInstance effect_instance);
         static int applyEffectToSelectionnedTarget(Pieces* caster_piece, EffectInstance effect_instance);
+        static bool applyBuffToSelf(Pieces* caster_piece, EffectInstance effect_instance);
         static bool validTargetGettingEffect(Pieces *caster_piece, Pieces * target_piece, EffectInstance effect_instance);
         static bool isEffectTargetInGrid(Pieces *target_piece);
         static bool isTriggerEffect(Effect_List effect);

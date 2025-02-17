@@ -77,8 +77,13 @@ int Pieces::getPieceGameMode() const {
     return pieceGameMode;
 }
 
+bool Pieces::getIsOnAMove() const{
+    return isOnAMove;
+}
 
-
+void Pieces::setIsOnAMove(bool is_on_a_move){
+    isOnAMove = is_on_a_move;
+}
 
 void Pieces::setHasJustKilled(bool has_just_killed) {
     hasJustKilled = has_just_killed;

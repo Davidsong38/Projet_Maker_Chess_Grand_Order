@@ -15,7 +15,7 @@
 
 class Ushiwakamaru final : public Knight {
     protected :
-        int CNT_StunEffect = 0;
+        bool hasCharged = false;
     public:
         Ushiwakamaru(int startX, int startY, bool white, Characters_List hero,
             Pieces_List pieces_root)
@@ -34,6 +34,8 @@ class Ushiwakamaru final : public Knight {
         bool evolvedForm(void* arg) override;
         bool SpellActivationCheck(void *arg) override;
         void setPieceGameMode(int piece_game_mode) override;
+        [[nodiscard]] vector<pair<int, int>> getMoves() override;
+
 
 
 

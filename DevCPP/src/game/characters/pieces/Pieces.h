@@ -32,6 +32,7 @@ class Pieces : public SpriteTarget {
         bool firstMoveLastTurn = false;
         bool canActivateEffects = false;
         bool hasJustKilled = false;
+        bool isOnAMove = false;
         int pieceGameMode = 0;
 
         vector<EffectInstance> activeEffects ;
@@ -68,10 +69,11 @@ class Pieces : public SpriteTarget {
         [[nodiscard]] bool getHasJustKilled() const;
         [[nodiscard]] int getPieceGameMode() const;
         [[nodiscard]] bool getIsEvolved() const;
+        [[nodiscard]] bool getIsOnAMove() const;
 
 
+        void setIsOnAMove(bool is_on_a_move);
         virtual void setPieceGameMode(int piece_game_mode) = 0;
-
         void setIsWhite(bool is_white);
         void setHasJustKilled(bool has_just_killed);
         void setCanActivateEffects(bool can_activate_effects);

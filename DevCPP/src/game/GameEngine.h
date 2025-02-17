@@ -36,7 +36,7 @@ public:
     ~GameEngine() override;
     static GameEngine* getInstance();
     void update(double deltaTime_ms) override;
-    [[nodiscard]] GameState get_current_state() const;
+    [[nodiscard]] GameState getCurrentState() const;
     void clickBoardAtPos(int x, int y);
     void inputRightClick();
     int NB_Turn = 1;
@@ -44,8 +44,12 @@ public:
     void setWhiteKing(Pieces* piece) const;
     [[nodiscard]] int getLastClickX() const;
     [[nodiscard]] int getLastClickY() const;
+    [[nodiscard]] GameState getLastState() const;
+
     void setState(GameState state);
+    void setLastState(GameState state);
     GameState current_state;
+    GameState last_state;
     int lastClickX{-1}, lastClickY{-1};
     bool receivedClick = false;
     bool receivedRightClick = false;
