@@ -81,6 +81,14 @@ bool Pieces::getIsOnAMove() const{
     return isOnAMove;
 }
 
+int Pieces::getNB_TurnWithoutMoving() const{
+    return NB_TurnWithoutMoving;
+}
+
+void Pieces::setNB_TurnWithoutMoving(int nb_turn_without_moving){
+    NB_TurnWithoutMoving = nb_turn_without_moving;
+}
+
 void Pieces::setIsOnAMove(bool is_on_a_move){
     isOnAMove = is_on_a_move;
 }

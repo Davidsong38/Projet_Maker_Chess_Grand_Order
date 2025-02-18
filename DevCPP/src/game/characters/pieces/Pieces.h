@@ -33,6 +33,7 @@ class Pieces : public SpriteTarget {
         bool canActivateEffects = false;
         bool hasJustKilled = false;
         bool isOnAMove = false;
+        bool hasRoqued = false;
         int pieceGameMode = 0;
 
         vector<EffectInstance> activeEffects ;
@@ -45,6 +46,7 @@ class Pieces : public SpriteTarget {
         bool selected = false;
         int CNTMove = 0;
         int TurnStamp = 0;
+        int NB_TurnWithoutMoving = 0;
 
         explicit Pieces(int startX, int startY, bool white, Characters_List hero, Pieces_List pieces_root)
         : coordX(startX), coordY(startY),isWhite(white) , characters(hero) , pieces_origin(pieces_root), name(Characters_List_to_string[characters]) {}
@@ -70,8 +72,10 @@ class Pieces : public SpriteTarget {
         [[nodiscard]] int getPieceGameMode() const;
         [[nodiscard]] bool getIsEvolved() const;
         [[nodiscard]] bool getIsOnAMove() const;
+        [[nodiscard]] int getNB_TurnWithoutMoving() const;
 
 
+        void setNB_TurnWithoutMoving(int nb_turn_without_moving);
         void setIsOnAMove(bool is_on_a_move);
         virtual void setPieceGameMode(int piece_game_mode) = 0;
         void setIsWhite(bool is_white);

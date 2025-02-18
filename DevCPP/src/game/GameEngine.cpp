@@ -173,6 +173,10 @@ void GameEngine::handleEndWhitePhase() {
     } else {
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
             piece->updateEffectStatus();
+            if (piece != context->piece)
+                piece->setNB_TurnWithoutMoving(piece->getNB_TurnWithoutMoving() + 1);
+            if (piece == context->piece)
+                piece->setNB_TurnWithoutMoving(0);
             if (!piece->getIsFirstMove())
                 piece->setTurnStamp(piece->getTurnStamp() + 1);
         }
@@ -280,6 +284,10 @@ void GameEngine::handleEndBlackPhase() {
         NB_Turn++;
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
             piece->updateEffectStatus();
+            if (piece != context->piece)
+                piece->setNB_TurnWithoutMoving(piece->getNB_TurnWithoutMoving() + 1);
+            if (piece == context->piece)
+                piece->setNB_TurnWithoutMoving(0);
             if (!piece->getIsFirstMove())
                 piece->setTurnStamp(piece->getTurnStamp() + 1);
         }

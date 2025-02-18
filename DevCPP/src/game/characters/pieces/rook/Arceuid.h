@@ -15,7 +15,7 @@
 
 class Arceuid final: public Rook{
     protected :
-        int CNT_StunEffect = 0;
+        int CNTGainEffect = 0;
     public:
         Arceuid(int startX, int startY, bool white, Characters_List hero,
             Pieces_List pieces_root)
@@ -34,6 +34,8 @@ class Arceuid final: public Rook{
         bool evolvedForm(void* arg) override;
         bool SpellActivationCheck(void *arg) override;
         void setPieceGameMode(int piece_game_mode) override;
+        [[nodiscard]] vector<pair<int, int>> getMoves() override;
+
 
 
 };
