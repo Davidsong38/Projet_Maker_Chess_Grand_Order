@@ -173,6 +173,8 @@ void GameEngine::handleEndWhitePhase() {
     } else {
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
             piece->updateEffectStatus();
+            if (piece->getCharacters()== ARCEUID)
+                piece->canEvolve(context);
             if (piece != context->piece)
                 piece->setNB_TurnWithoutMoving(piece->getNB_TurnWithoutMoving() + 1);
             if (piece == context->piece)
@@ -284,6 +286,8 @@ void GameEngine::handleEndBlackPhase() {
         NB_Turn++;
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
             piece->updateEffectStatus();
+            if (piece->getCharacters()== ARCEUID)
+                piece->canEvolve(context);
             if (piece != context->piece)
                 piece->setNB_TurnWithoutMoving(piece->getNB_TurnWithoutMoving() + 1);
             if (piece == context->piece)

@@ -85,6 +85,16 @@ int Pieces::getNB_TurnWithoutMoving() const{
     return NB_TurnWithoutMoving;
 }
 
+bool Pieces::getHasRoqued() const
+{
+    return hasRoqued;
+}
+
+void Pieces::setHasRoqued(bool has_roqued)
+{
+    hasRoqued = has_roqued;
+}
+
 void Pieces::setNB_TurnWithoutMoving(int nb_turn_without_moving){
     NB_TurnWithoutMoving = nb_turn_without_moving;
 }

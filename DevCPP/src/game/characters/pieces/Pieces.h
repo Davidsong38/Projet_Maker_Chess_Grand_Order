@@ -73,8 +73,9 @@ class Pieces : public SpriteTarget {
         [[nodiscard]] bool getIsEvolved() const;
         [[nodiscard]] bool getIsOnAMove() const;
         [[nodiscard]] int getNB_TurnWithoutMoving() const;
+        [[nodiscard]] bool getHasRoqued() const;
 
-
+        void setHasRoqued(bool has_roqued);
         void setNB_TurnWithoutMoving(int nb_turn_without_moving);
         void setIsOnAMove(bool is_on_a_move);
         virtual void setPieceGameMode(int piece_game_mode) = 0;
