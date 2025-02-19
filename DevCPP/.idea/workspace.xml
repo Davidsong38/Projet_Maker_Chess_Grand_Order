@@ -30,15 +30,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ba82fa2-512b-4253-af3b-1ba77aac3bc6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/board/piece_loader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/piece_loader.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/King.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/King.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/GameEngine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/GameEngine.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -227,7 +220,7 @@
       <workItem from="1739713030302" duration="39278000" />
       <workItem from="1739793634886" duration="36749000" />
       <workItem from="1739888045788" duration="31643000" />
-      <workItem from="1739961746366" duration="16988000" />
+      <workItem from="1739961746366" duration="22985000" />
     </task>
     <servers />
   </component>

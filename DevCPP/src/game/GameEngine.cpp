@@ -151,6 +151,7 @@ void GameEngine::handleMovingWhitePhase() {
 }
 
 void GameEngine::handleCheckingWhitePhase() {
+    unloadPossibleMoves();
     if (last_state == SELECT_WHITE_PHASE)
         receivedRightClick = false;
     if (!context->piece->SpellActivationCheck(context)){
@@ -173,6 +174,7 @@ void GameEngine::handleCheckingWhitePhase() {
 }
 
 void GameEngine::handleEndWhitePhase() {
+    receivedClick = false;
     if (context->black_king->isHidden()) {
         std::cout<<"White has win!" << std::endl;
         setLastState(current_state);
@@ -213,8 +215,7 @@ void GameEngine::handleStartBlackPhase() {
     }
 }
 
-void GameEngine::handleSelectPieceGamemodeBlackPhase()
-{
+void GameEngine::handleSelectPieceGamemodeBlackPhase(){
     setLastState(current_state);
     setState(SELECT_BLACK_PHASE);
 }
@@ -272,6 +273,7 @@ void GameEngine::handleMovingBlackPhase() {
 }
 
 void GameEngine::handleCheckingBlackPhase() {
+    unloadPossibleMoves();
     if (last_state == SELECT_BLACK_PHASE)
         receivedRightClick = false;
     if (!context->piece->SpellActivationCheck(context)){
@@ -293,6 +295,7 @@ void GameEngine::handleCheckingBlackPhase() {
 
 
 void GameEngine::handleEndBlackPhase() {
+    receivedClick = false;
     if (context->white_king->isHidden()) {
         std::cout<<"Black has win!" << std::endl;
         setLastState(current_state);
