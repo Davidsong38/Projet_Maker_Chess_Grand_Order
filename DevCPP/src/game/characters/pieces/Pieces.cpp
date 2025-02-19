@@ -85,13 +85,20 @@ int Pieces::getNB_TurnWithoutMoving() const{
     return NB_TurnWithoutMoving;
 }
 
-bool Pieces::getHasRoqued() const
-{
+bool Pieces::getHasRoqued() const{
     return hasRoqued;
 }
 
-void Pieces::setHasRoqued(bool has_roqued)
-{
+
+void Pieces::setLastPosX(int last_pos_x){
+    lastPosX = last_pos_x;
+}
+
+void Pieces::setLastPosY(int last_pos_y){
+    lastPosY = last_pos_y;
+}
+
+void Pieces::setHasRoqued(bool has_roqued){
     hasRoqued = has_roqued;
 }
 

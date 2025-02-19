@@ -12,7 +12,7 @@
 #include "log.h"
 #include <iostream>
 #include <set>
-#include <VAO.h>
+#include <uiElements.h>
 
 GameEngine::GameEngine() : current_state(INITIALISATION) , last_state(INITIALISATION) {
         state_handlers[INITIALISATION] = [this]() { handleInitialisation(); };
@@ -86,6 +86,7 @@ void GameEngine::handleStartWhitePhase() {
                 context->piece->selected = false;
             }
             context->piece = selectedPiece;
+            unloadPossibleMoves();
             setLastState(current_state);
             setState(SELECT_PIECE_GAMEMODE_WHITE_PHASE);
         }
@@ -99,17 +100,22 @@ void GameEngine::handleSelectPieceGamemodeWhitePhase()
 }
 
 void GameEngine::handleSelectWhitePhase() {
+    if (context->piece == nullptr) {
+        log(LOG_ERROR,"Impossible state in GameEngine::handleSelectWhitePhase()");
+        setLastState(current_state);
+        return;
+    }
+
+    unloadPossibleMoves();
+    const vector<pair<int, int>> possible_moves = Chessboard::getInstance()->getValidMoves(context->piece);
+    loadPossibleMoves(possible_moves, context->piece->getDefaultColor());
+
     if (!receivedClick && !receivedRightClick) {
         setLastState(current_state);
         return;
     }
     receivedClick = false;
 
-    if (context->piece == nullptr) {
-        log(LOG_ERROR,"Impossible state in GameEngine::handleSelectWhitePhase()");
-        setLastState(current_state);
-        return;
-    }
     if (receivedRightClick){
         context->piece->setPieceGameMode(1);
         std::cout<< "Received right-click piece game mode"<< std::endl;
@@ -124,6 +130,7 @@ void GameEngine::handleSelectWhitePhase() {
     if (context->piece->getCoordX() == lastClickX && context->piece->getCoordY() == lastClickY && !context->piece->getIsOnAMove()) {
         context->piece->selected = false;
         context->piece = nullptr;
+        unloadPossibleMoves();
         setLastState(current_state);
         setState(START_WHITE_PHASE);
         return;
@@ -199,6 +206,7 @@ void GameEngine::handleStartBlackPhase() {
                 context->piece->selected = false;
             }
             context->piece = selectedPiece;
+            unloadPossibleMoves();
             setLastState(current_state);
             setState(SELECT_PIECE_GAMEMODE_BLACK_PHASE);
         }
@@ -213,16 +221,22 @@ void GameEngine::handleSelectPieceGamemodeBlackPhase()
 
 
 void GameEngine::handleSelectBlackPhase() {
-    if (!receivedClick && !receivedRightClick){
-        setLastState(current_state);
-        return;
-    }
-    receivedClick = false;
     if (context->piece == nullptr) {
         log(LOG_ERROR,"Impossible state in GameEngine::handleSelectBlackPhase()");
         setLastState(current_state);
         return;
     }
+
+    unloadPossibleMoves();
+    const vector<pair<int, int>> possible_moves = Chessboard::getInstance()->getValidMoves(context->piece);
+    loadPossibleMoves(possible_moves, context->piece->getDefaultColor());
+
+    if (!receivedClick && !receivedRightClick) {
+        setLastState(current_state);
+        return;
+    }
+    receivedClick = false;
+
     if (receivedRightClick){
         context->piece->setPieceGameMode(1);
     }
@@ -236,6 +250,7 @@ void GameEngine::handleSelectBlackPhase() {
     if (context->piece->getCoordX() == lastClickX && context->piece->getCoordY() == lastClickY && !context->piece->getIsOnAMove()) {
         context->piece->selected = false;
         context->piece = nullptr;
+        unloadPossibleMoves();
         setLastState(current_state);
         setState(START_BLACK_PHASE);
         return;
@@ -349,5 +364,4 @@ int GameEngine::getLastClickX() const {
 int GameEngine::getLastClickY() const {
     return lastClickY;
 }
-
 

@@ -7,6 +7,7 @@
 
 #define LAYER_BACKGROUND (-0.1)
 #define LAYER_BOARD (-0.3)
+#define LAYER_GROUND (-0.4)
 #define LAYER_PIECES (-0.5)
 
 #define PIECE_SIZE (0.125)

@@ -63,6 +63,7 @@ public:
     bool pawnMenacingBigRoque(Pieces* king);
     static bool hasJustFirstMove(Pieces* piece);
     static bool isPassable(Pieces* piece);
+    static bool notBrokenMove(Pieces* piece, Pieces* target_piece);
     vector<Pieces*> getAllPieces();
 };
 

@@ -375,6 +375,11 @@ bool Chessboard::isPassable(Pieces* piece) {
     return false;
 }
 
+bool Chessboard::notBrokenMove(Pieces* piece,Pieces* target_piece){
+    if (target_piece != nullptr && piece->getIsOnAMove() && target_piece->isKing())
+        return false;
+    return true;
+}
 
 vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
     vector<pair<int, int>> valid_moves;
@@ -417,26 +422,23 @@ vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
         }
         return valid_moves;
     }
-    if (piece->isKing()) {
-
-    }
-
     for (const auto& move : piece_moves) {
         int to_coordX = move.first;
         int to_coordY = move.second;
         bool inGrid = isInGrid(to_coordX, to_coordY);
         bool emptySquare = grid[to_coordX][to_coordY] == nullptr;
         bool isTargetAlly = false;
+        bool notBroken = notBrokenMove(piece,grid[to_coordX][to_coordY]);
         if (!emptySquare)
             isTargetAlly = isAlly(piece,grid[to_coordX][to_coordY]);
         bool knight = piece->isKnight();
         bool pathClear = true;
         if (!knight)
             pathClear = isPathClear(to_coordX,to_coordY, piece);
-        if (inGrid && (emptySquare || !isTargetAlly) && pathClear && !knight) {
+        if (inGrid && (emptySquare || !isTargetAlly) && pathClear && !knight && notBroken) {
             valid_moves.emplace_back(move);
         }
-        if (inGrid && (emptySquare || !isTargetAlly) && knight) {
+        if (inGrid && (emptySquare || !isTargetAlly) && knight && notBroken) {
             valid_moves.emplace_back(move);
         }
     }
@@ -457,6 +459,8 @@ bool Chessboard::isMovePossible(Pieces* piece,int to_coordX, int to_coordY) cons
 bool Chessboard::movePiece(Pieces* piece, int to_coordX, int to_coordY) {
     int coordX = piece->getCoordX();
     int coordY = piece->getCoordY();
+    piece->setLastPosX(coordX);
+    piece->setLastPosY(coordY);
     if (littleRoque(piece,to_coordX,to_coordY))
         return true;
     if (bigRoque(piece,to_coordX,to_coordY))

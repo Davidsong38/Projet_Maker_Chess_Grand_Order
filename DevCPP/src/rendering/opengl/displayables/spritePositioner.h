@@ -11,7 +11,7 @@ struct spritePositioner_type {
   glm::vec3 position;
   glm::vec4 defaultColor;
   glm::vec3 filterColor;
-  glm::vec3 size;
+  glm::vec2 size;
   float rotation;
 };
 

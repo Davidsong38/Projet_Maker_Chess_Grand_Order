@@ -34,6 +34,8 @@ class Pieces : public SpriteTarget {
         bool hasJustKilled = false;
         bool isOnAMove = false;
         bool hasRoqued = false;
+        int lastPosX = coordX;
+        int lastPosY = coordY;
         int pieceGameMode = 0;
 
         vector<EffectInstance> activeEffects ;
@@ -75,6 +77,8 @@ class Pieces : public SpriteTarget {
         [[nodiscard]] int getNB_TurnWithoutMoving() const;
         [[nodiscard]] bool getHasRoqued() const;
 
+        void setLastPosX(int last_pos_x);
+        void setLastPosY(int last_pos_y);
         void setHasRoqued(bool has_roqued);
         void setNB_TurnWithoutMoving(int nb_turn_without_moving);
         void setIsOnAMove(bool is_on_a_move);

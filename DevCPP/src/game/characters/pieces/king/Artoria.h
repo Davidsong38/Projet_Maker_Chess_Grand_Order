@@ -15,7 +15,7 @@
 
 class Artoria final: public King{
     protected :
-        int CNT_StunEffect = 0;
+        int CNT_GodMove = 0;
     public:
         Artoria(int startX, int startY, bool white, Characters_List hero,
             Pieces_List pieces_root)
@@ -34,7 +34,7 @@ class Artoria final: public King{
         bool evolvedForm(void* arg) override;
         bool SpellActivationCheck(void *arg) override;
         void setPieceGameMode(int piece_game_mode) override;
-
+        [[nodiscard]] vector<pair<int, int>> getMoves() override;
 
 
 };

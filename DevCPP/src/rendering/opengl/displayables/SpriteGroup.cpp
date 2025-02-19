@@ -4,6 +4,9 @@
 
 #include "SpriteGroup.h"
 
+#include <iostream>
+#include <ostream>
+
 #include "vaos.h"
 #include "shaders.h"
 #include "glFunctions.h"
@@ -15,7 +18,7 @@
 SpriteGroup::SpriteGroup(Texture* texture, int positionsSize) {
     this->vao = quadVAO;
     this->texture = texture;
-    this->shader = basicSpriteShader;
+    this->shader = basicSpriteShaderWithFilter;
     this->positionsSize = positionsSize;
     this->spritePositioners = static_cast<spritePositioner_type *>(malloc(positionsSize * sizeof(spritePositioner_type)));
 }
@@ -29,13 +32,15 @@ void SpriteGroup::draw() {
     this->texture->bind();
     this->shader->use();
     for (int i = 0; i < this->positionCount; i++) {
-        spritePositioner_type* sp = &this->spritePositioners[i];
+        const spritePositioner_type* sp = &this->spritePositioners[i];
 
-        glm::mat4 model = glm::mat4(1.0f);
+        auto model = glm::mat4(1.0f);
         model = translate(model, sp->position);
-        model = scale(model, sp->size);
+        model = scale(model, glm::vec3(sp->size.x, sp->size.y, 1));
         model = rotate(model, glm::radians(sp->rotation), glm::vec3(0, 0, 1));
         this->shader->setMat4("model", model);
+        this->shader->setVec4("defaultColor", sp->defaultColor);
+        this->shader->setVec3("filterColor", sp->filterColor);
         glDrawArrays(GL_TRIANGLES, 0, VERTEX_PER_QUAD);
     }
 }

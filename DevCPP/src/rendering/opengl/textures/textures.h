@@ -37,6 +37,8 @@ enum tex_type {
     TEX_XUFU,
     TEX_ZHOU,
 
+    TEX_EMPTY,
+
     TEX_COUNT
 };
 
@@ -70,6 +72,8 @@ extern Texture* ushiwakamaruTexture;
 extern Texture* waverTexture;
 extern Texture* xufuTexture;
 extern Texture* zhouTexture;
+
+extern Texture* emptyTexture;
 
 void loadTextures();
 void loadTextureNames();

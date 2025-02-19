@@ -36,6 +36,8 @@ Texture* waverTexture;
 Texture* xufuTexture;
 Texture* zhouTexture;
 
+Texture* emptyTexture;
+
 std::string texNames[TEX_COUNT];
 
 void loadTextures() {
@@ -70,6 +72,8 @@ void loadTextures() {
     waverTexture = new Texture(texture_ids[TEX_WAVER],"waver.png",GL_RGBA);
     xufuTexture = new Texture(texture_ids[TEX_XUFU],"xufu.png",GL_RGBA);
     zhouTexture = new Texture(texture_ids[TEX_ZHOU],"zhou.png",GL_RGBA);
+
+    emptyTexture = new Texture(texture_ids[TEX_EMPTY],"emptyCharacter.png",GL_RGBA);
 }
 
 void loadTextureNames() {

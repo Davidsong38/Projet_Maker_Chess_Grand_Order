@@ -108,8 +108,8 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
             });
             break;
         }
-    case ONE_MORE_MOVE : {
-            success = addEffectBehavior(ONE_MORE_MOVE,[piece,effect_instance](){
+        case ONE_MORE_MOVE : {
+            success = addEffectBehavior(ONE_MORE_MOVE,[piece](){
                 piece->setIsOnAMove(true);
                 if (piece->getIsWhite()){
                     GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
@@ -122,6 +122,22 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
             });
             break;
         }
+        case IMMUNITY_AOE :{
+            success = addEffectBehavior(IMMUNITY_AOE,[piece,effect_instance](){
+                piece->addEffectStatus(effect_instance);
+                return true;
+            });
+            break;
+        }
+
+        case IMMUNITY_EFFECT :{
+            success = addEffectBehavior(IMMUNITY_EFFECT,[piece,effect_instance](){
+                piece->addEffectStatus(effect_instance);
+                return true;
+            });
+            break;
+        }
+
     default:
         std::cout << "Effect handler undefined" << std::endl;
     }
