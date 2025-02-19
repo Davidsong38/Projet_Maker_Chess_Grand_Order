@@ -50,7 +50,7 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
                 for (const auto& e : piece->getActive_effects()) {
                     if (e.effect == SHIELD || e.effect == IMMORTALITY || e.effect == IMMUNITY_AOE ) {
                         piece->activateEffect(e.effect);
-                        return false;
+                        return true;
                     }
                 }
                 //std::cout << "BATARI" <<piece->getCoordX() << ' ' << piece->getCoordY() << "BATARU" << std::endl;
@@ -65,9 +65,9 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
         case STUN : {
             success = addEffectBehavior(STUN, [piece, effect_instance]() {
                 for (const auto& e : piece->getActive_effects()) {
-                    if (e.effect == IMMUNITY_AOE ) {
+                    if (e.effect == IMMUNITY_EFFECT) {
                         piece->activateEffect(e.effect);
-                        return false;
+                        return true;
                     }
                 }
                 piece->addEffectStatus(effect_instance);
@@ -78,9 +78,9 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
         case CHANGE_CONTROL : {
             success = addEffectBehavior(CHANGE_CONTROL,[piece,effect_instance]() {
                 for (const auto& e : piece->getActive_effects()) {
-                    if (e.effect == IMMUNITY_AOE ) {
+                    if (e.effect == IMMUNITY_EFFECT ) {
                         piece->activateEffect(e.effect);
-                        return false;
+                        return true;
                     }
                 }
                 piece->addEffectStatus(effect_instance);
@@ -97,9 +97,9 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
         case CHANGE_CONTROL_ADVANCE : {
             success = addEffectBehavior(CHANGE_CONTROL_ADVANCE,[piece,effect_instance]() {
                 for (const auto& e : piece->getActive_effects()) {
-                    if (e.effect == IMMUNITY_AOE ) {
+                    if (e.effect == IMMUNITY_EFFECT ) {
                         piece->activateEffect(e.effect);
-                        return false;
+                        return true;
                     }
                 }
                 piece->addEffectStatus(effect_instance);

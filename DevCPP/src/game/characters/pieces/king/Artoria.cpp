@@ -51,15 +51,71 @@ vector<pair<int, int> > Artoria::getMoves() {
 vector<pair<int, int> > Artoria::getEffectRange(Effect_List effect) const {
 
     vector<std::pair<int, int>> effect_range;
-
+    pair<int, int> lastPos = this->getAllMovesDoneBefore().back();
     if (effect == AOE){
-        switch (lastPosX && lastPosY){
-            case coordX - 1 && coordY :{
-                for (int i = 1; i < 8; ++i){
-
-                }
+        if (lastPos.first == coordX - 1 && lastPos.second == coordY - 1){
+            for (int i = 1; i < 8; ++i){
+                if (coordX + i < 8 && coordY + i < 8) effect_range.emplace_back(coordX + i, coordY + i);
+                if (coordX + i < 8) effect_range.emplace_back(coordX + i, coordY);
+                if (coordY + i < 8) effect_range.emplace_back(coordX + i, coordY);
             }
-        default: ;
+            return effect_range;
+        }
+        if (lastPos.first == coordX - 1 && lastPos.second == coordY){
+            for (int i = 1; i < 8; ++i){
+                if (coordX + i < 8 && coordY + i < 8) effect_range.emplace_back(coordX + i, coordY + i);
+                if (coordX + i < 8 && coordY - i >= 0) effect_range.emplace_back(coordX + i, coordY - i);
+                if (coordX + i < 8) effect_range.emplace_back(coordX + i, coordY);
+            }
+            return effect_range;
+        }
+        if (lastPos.first == coordX - 1 && lastPos.second == coordY + 1){
+            for (int i = 1; i < 8; ++i){
+                if (coordX + i < 8 && coordY - i >= 0) effect_range.emplace_back(coordX + i, coordY - i);
+                if (coordX + i < 8) effect_range.emplace_back(coordX + i, coordY);
+                if (coordY - i >= 0) effect_range.emplace_back(coordX, coordY - i);
+            }
+            return effect_range;
+        }
+        if (lastPos.first == coordX && lastPos.second == coordY - 1){
+            for (int i = 1; i < 8; ++i){
+                if (coordX + i < 8 && coordY + i < 8) effect_range.emplace_back(coordX + i, coordY + i);
+                if (coordX - i >= 0 && coordY + i < 8) effect_range.emplace_back(coordX - i, coordY + i);
+                if (coordY + i < 8) effect_range.emplace_back(coordX, coordY + i);
+            }
+            return effect_range;
+        }
+        if (lastPos.first == coordX && lastPos.second == coordY + 1){
+            for (int i = 1; i < 8; ++i){
+                if (coordX + i < 8 && coordY - i >= 0) effect_range.emplace_back(coordX + i, coordY - i);
+                if (coordX - i >= 0 && coordY - i >= 0) effect_range.emplace_back(coordX - i, coordY - i);
+                if (coordY - i >= 0) effect_range.emplace_back(coordX, coordY - i);
+            }
+            return effect_range;
+        }
+        if (lastPos.first == coordX + 1 && lastPos.second == coordY - 1){
+            for (int i = 1; i < 8; ++i){
+                if (coordX - i >= 0 && coordY + i < 8) effect_range.emplace_back(coordX - i, coordY + i);
+                if (coordX - i >= 0) effect_range.emplace_back(coordX - i, coordY);
+                if (coordY + i < 8) effect_range.emplace_back(coordX, coordY + i);
+            }
+            return effect_range;
+        }
+        if (lastPos.first == coordX + 1 && lastPos.second == coordY){
+            for (int i = 1; i < 8; ++i){
+                if (coordX - i >= 0 && coordY + i < 8) effect_range.emplace_back(coordX - i, coordY + i);
+                if (coordX - i >= 0 && coordY - i >= 0) effect_range.emplace_back(coordX - i, coordY - i);
+                if (coordX - i >= 0) effect_range.emplace_back(coordX - i, coordY);
+            }
+            return effect_range;
+        }
+        if (lastPos.first == coordX + 1 && lastPos.second == coordY + 1){
+            for (int i = 1; i < 8; ++i){
+                if (coordX - i >= 0 && coordY - i >= 0) effect_range.emplace_back(coordX - i, coordY - i);
+                if (coordX - i >= 0) effect_range.emplace_back(coordX - i, coordY);
+                if (coordY - i >= 0) effect_range.emplace_back(coordX, coordY - i);
+            }
+            return effect_range;
         }
     }
     return effect_range;
@@ -83,7 +139,7 @@ bool Artoria::SpellActivationCheck(void *arg) {
 
 bool Artoria::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    EffectHandler::applyEffectToTargets(context->piece,EffectInstance{AOE,1,1,-1});
+    EffectHandler::applyEffectToTargets(this,EffectInstance{AOE,1,1,-1});
 
 
     return true;

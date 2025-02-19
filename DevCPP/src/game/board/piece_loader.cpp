@@ -79,6 +79,7 @@ void add_piece_to_board(int x, int y, bool isWhite, Characters_List character) {
     auto* piece = get_piece(x,y,isWhite,character);
     //EffectHandler::configureEffectHandler(piece);
     Chessboard::getInstance()->placePiece(x,y,piece);
+    piece->addToAllMovesDoneBefore(piece->getCoordX(),piece->getCoordY());
 }
 
 Pieces* get_piece(int x, int y, bool isWhite, Characters_List character) {

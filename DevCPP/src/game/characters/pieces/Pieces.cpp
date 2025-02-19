@@ -89,14 +89,21 @@ bool Pieces::getHasRoqued() const{
     return hasRoqued;
 }
 
-
-void Pieces::setLastPosX(int last_pos_x){
-    lastPosX = last_pos_x;
+vector<pair<int, int>> Pieces::getAllMovesDoneBefore() const{
+    return AllMovesDoneBefore;
 }
 
-void Pieces::setLastPosY(int last_pos_y){
-    lastPosY = last_pos_y;
+void Pieces::addToAllMovesDoneBefore(int lastCoordX, int lastCoordY){
+    AllMovesDoneBefore.emplace_back(lastCoordX,lastCoordY);
 }
+
+//void Pieces::setLastPosX(int last_pos_x){
+//    lastPosX = last_pos_x;
+//}
+//
+//void Pieces::setLastPosY(int last_pos_y){
+//    lastPosY = last_pos_y;
+//}
 
 void Pieces::setHasRoqued(bool has_roqued){
     hasRoqued = has_roqued;

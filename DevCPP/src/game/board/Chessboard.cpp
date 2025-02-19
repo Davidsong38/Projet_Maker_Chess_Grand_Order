@@ -459,8 +459,7 @@ bool Chessboard::isMovePossible(Pieces* piece,int to_coordX, int to_coordY) cons
 bool Chessboard::movePiece(Pieces* piece, int to_coordX, int to_coordY) {
     int coordX = piece->getCoordX();
     int coordY = piece->getCoordY();
-    piece->setLastPosX(coordX);
-    piece->setLastPosY(coordY);
+    piece->addToAllMovesDoneBefore(coordX, coordY);
     if (littleRoque(piece,to_coordX,to_coordY))
         return true;
     if (bigRoque(piece,to_coordX,to_coordY))
