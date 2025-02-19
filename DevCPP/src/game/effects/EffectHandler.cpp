@@ -124,6 +124,8 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
         }
         case IMMUNITY_AOE :{
             success = addEffectBehavior(IMMUNITY_AOE,[piece,effect_instance](){
+                if (piece->isKing())
+                    return false;
                 piece->addEffectStatus(effect_instance);
                 return true;
             });
@@ -132,6 +134,8 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
 
         case IMMUNITY_EFFECT :{
             success = addEffectBehavior(IMMUNITY_EFFECT,[piece,effect_instance](){
+                if (piece->isKing())
+                    return false;
                 piece->addEffectStatus(effect_instance);
                 return true;
             });
@@ -184,6 +188,7 @@ int EffectHandler::applyEffectToTargets(Pieces *caster_piece, EffectInstance eff
             Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
             if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)) {
                 if (configureEffectHandler(target_piece,effect_instance)) {
+                    GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
                     NB_targetTouched++;
                     executeEffect(effect_instance.getEffect(), target_piece);
                     std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
@@ -210,6 +215,7 @@ int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectI
             && targetX == range.first && targetY == range.second) {
             std::cout << "ablacabou" << std::endl;
             if (configureEffectHandler(target_piece,effect_instance)) {
+                GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
                 NB_targetTouched++;
                 std::cout << "ablacabiiiii" << std::endl;
 
@@ -221,11 +227,33 @@ int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectI
     return NB_targetTouched;
 }
 
+int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectInstance effect_instance, int targetX , int targetY){
+    vector<pair<int,int>> effect_range = caster_piece->getEffectRange(effect_instance.getEffect());
+    int NB_targetTouched = 0;
+    for (const auto &range: effect_range) {
+        //std::cout << "oho" << std::endl;
+        Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
+        if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)
+            && targetX == range.first && targetY == range.second) {
+            std::cout << "ablacabou" << std::endl;
+            if (configureEffectHandler(target_piece,effect_instance)) {
+                GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
+                NB_targetTouched++;
+                std::cout << "ablacabiiiii" << std::endl;
+
+                executeEffect(effect_instance.getEffect(), target_piece);
+                std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
+            }
+            }
+    }
+    return NB_targetTouched;
+}
+
 bool EffectHandler::applyBuffToSelf(Pieces* caster_piece, EffectInstance effect_instance){
     if (configureEffectHandler(caster_piece,effect_instance)){
+        GameEngine::getInstance()->setLastPieceTouchedByEffect(caster_piece);
         executeEffect(effect_instance.getEffect(), caster_piece);
         return true;
     }
     return false;
-
 }

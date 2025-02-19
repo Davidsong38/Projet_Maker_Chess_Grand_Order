@@ -45,7 +45,9 @@ public:
     [[nodiscard]] int getLastClickX() const;
     [[nodiscard]] int getLastClickY() const;
     [[nodiscard]] GameState getLastState() const;
+    [[nodiscard]] Pieces* getLastPieceTouchedByEffect() const;
 
+    void setLastPieceTouchedByEffect(Pieces* last_piece_touched_by_effect);
     void setState(GameState state);
     void setLastState(GameState state);
     GameState current_state;
@@ -53,6 +55,8 @@ public:
     int lastClickX{-1}, lastClickY{-1};
     bool receivedClick = false;
     bool receivedRightClick = false;
+    Pieces* lastPieceTouchedByEffect;
+
 private:
 
 

@@ -368,3 +368,10 @@ int GameEngine::getLastClickY() const {
     return lastClickY;
 }
 
+Pieces* GameEngine::getLastPieceTouchedByEffect() const{
+    return lastPieceTouchedByEffect;
+}
+
+void GameEngine::setLastPieceTouchedByEffect(Pieces* last_piece_touched_by_effect){
+    lastPieceTouchedByEffect = last_piece_touched_by_effect;
+}

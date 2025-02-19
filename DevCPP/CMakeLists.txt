@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(Chess_Grand_Order
         src/main.cpp
+        src/game/characters/pieces/bishop/Merlin.cpp
+        src/game/characters/pieces/bishop/Merlin.h
 )
 
 add_compile_options(-Wno-int-to-pointer-cast)
