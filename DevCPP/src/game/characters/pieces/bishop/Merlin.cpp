@@ -9,7 +9,14 @@
 
 
 void Merlin::setPieceGameMode(int piece_game_mode) {
-    return;
+    //std::cout<< MerlinPowerON<< "tuer moi par pitie" << std::endl;
+    //std::cout<< pieceGameMode<< "HHHEEEEEELLLLPPPP" << std::endl;
+    if (evolved && MerlinPowerON){
+        //std::cout<< MerlinPowerON<< "HHHEEEEEELLLLPPPP" << std::endl;
+        pieceGameMode = piece_game_mode;
+    } else{
+        pieceGameMode = 0;
+    }
 }
 
 
@@ -33,15 +40,15 @@ vector<pair<int, int> > Merlin::getEffectRange(Effect_List effect) const {
 
     if (chooseSpell){
         if (effect == IMMUNITY_EFFECT) {
-            for (int i = 0; i < 7; ++i){
-                for (int j = 0; j < 7; ++j){
+            for (int i = 0; i < 8; ++i){
+                for (int j = 0; j < 8; ++j){
                     effect_range.emplace_back(i, j);
                 }
             }
         }
         if (effect == IMMUNITY_AOE) {
-            for (int i = 0; i < 7; ++i){
-                for (int j = 0; j < 7; ++j){
+            for (int i = 0; i < 8; ++i){
+                for (int j = 0; j < 8; ++j){
                     effect_range.emplace_back(i, j);
                 }
             }
@@ -52,19 +59,47 @@ vector<pair<int, int> > Merlin::getEffectRange(Effect_List effect) const {
 
 bool Merlin::SpellActivationCheck(void *arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (hasJustKilled) {
-        if (canEvolve(context) || evolved)
-            evolvedForm(context);
-        passive(context);
+    //std::cout << "merlin power : " << MerlinPowerON <<std::endl;
+    if (evolved && MerlinPowerON){
+        if (GameEngine::getInstance()->receivedRightClick){
+            //std::cout << "gekooo" << std::endl;
+            if (this->getIsWhite()){
+                GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
+                GameEngine::getInstance()->setState(SELECT_WHITE_PHASE);
+            }
+            else{
+                GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
+                GameEngine::getInstance()->setState(SELECT_BLACK_PHASE);
+            }
+            return true;
+        }
+        if (this->getPieceGameMode() != 0){
+            if (GameEngine::getInstance()->receivedClick){
+                chooseSpell = true;
+                if (evolvedForm(context)){
+                    chooseSpell = false;
+                    MerlinPowerON = false;
+                    return true;
+                }
+                chooseSpell = false;
+
+
+            }
+            return false;
+        }
     }
+    if (evolved && !MerlinPowerON && !isOnAMove)
+        MerlinPowerON = true;
+    passive(context);
+    setIsOnAMove(false);
     return true;
 }
 
 
 bool Merlin::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    EffectHandler::applyEffectToTargets(this,EffectInstance{IMMUNITY_EFFECT,-1,1,1});
-    EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{IMMUNITY_AOE,-1,1,1},
+    EffectHandler::applyEffectToTargets(this,EffectInstance{IMMUNITY_EFFECT,-1,1,1,this});
+    EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{IMMUNITY_AOE,-1,1,1,this},
         GameEngine::getInstance()->getLastPieceTouchedByEffect()->getCoordX(),GameEngine::getInstance()->getLastPieceTouchedByEffect()->getCoordY());
     return true;
 }
@@ -81,7 +116,10 @@ bool Merlin::canEvolve(void *arg) {
 
 bool Merlin::evolvedForm(void *arg) {
     auto * context = static_cast<context_type *>(arg);
-    evolved = true;
-    EffectHandler::applyEffectToTargets(this,EffectInstance{AOE,1,1,-1});
-    return true;
+    if (EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{IMMUNITY_EFFECT,-1,1,1,this}) &&
+        EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{IMMUNITY_AOE,-1,1,1,this})){
+        EffectHandler::applyBuffToSelf(this,EffectInstance{ONE_MORE_MOVE,1,1,1});
+        return true;
+    }
+    return false;
 }

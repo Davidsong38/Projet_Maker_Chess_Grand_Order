@@ -12,6 +12,8 @@
 #include "Chessboard.h"
 #include <utility>
 
+#include "Xu_Fu.h"
+
 
 unordered_map<Effect_List, function<void()>> EffectHandler::effectBehaviors;
 
@@ -30,6 +32,7 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
     Effect_List current_effect = effect_instance.getEffect();
     Chessboard* board = Chessboard::getInstance();
     bool success = false;
+    std::cout << "success: " << success << std::endl;
     switch (current_effect){
         case ALLY_TELEPORT :{
             success = addEffectBehavior(ALLY_TELEPORT, [board,piece]() {
@@ -47,6 +50,8 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
         }
         case AOE : {
             success = addEffectBehavior(AOE, [board,piece]() {
+                if (piece->isKing())
+                    return false;
                 for (const auto& e : piece->getActive_effects()) {
                     if (e.effect == SHIELD || e.effect == IMMORTALITY || e.effect == IMMUNITY_AOE ) {
                         piece->activateEffect(e.effect);
@@ -64,6 +69,8 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
         }
         case STUN : {
             success = addEffectBehavior(STUN, [piece, effect_instance]() {
+                if (piece->isKing())
+                    return false;
                 for (const auto& e : piece->getActive_effects()) {
                     if (e.effect == IMMUNITY_EFFECT) {
                         piece->activateEffect(e.effect);
@@ -77,8 +84,14 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
         }
         case CHANGE_CONTROL : {
             success = addEffectBehavior(CHANGE_CONTROL,[piece,effect_instance]() {
+                if (piece->isKing())
+                    return false;
                 for (const auto& e : piece->getActive_effects()) {
                     if (e.effect == IMMUNITY_EFFECT ) {
+                        //std::cout << "AHAHAHAHAHAHAHAHAHAHAHAHAHAHA" << std::endl;
+                        if (e.caster_piece != nullptr)
+                            std::cout << static_cast<Pieces*>(e.caster_piece)->getName() << std::endl;
+                        //std::cout << "AHAHAHAHAHAHAHAHAHAHAHAHAHAHA" << std::endl;
                         piece->activateEffect(e.effect);
                         return true;
                     }
@@ -96,6 +109,8 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
         }
         case CHANGE_CONTROL_ADVANCE : {
             success = addEffectBehavior(CHANGE_CONTROL_ADVANCE,[piece,effect_instance]() {
+                if (piece->isKing())
+                    return false;
                 for (const auto& e : piece->getActive_effects()) {
                     if (e.effect == IMMUNITY_EFFECT ) {
                         piece->activateEffect(e.effect);
@@ -141,10 +156,42 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
             });
             break;
         }
+        case IMMORTALITY :{
+            success = addEffectBehavior(IMMORTALITY,[piece,effect_instance](){
+                if (piece->isKing())
+                    return false;
+                if (effect_instance.caster_piece != nullptr && static_cast<Pieces*>(effect_instance.caster_piece)->getCharacters() == XU_FU){
+                    if (piece->isPawn()){
+                        piece->addEffectStatus(effect_instance);
+                        return true;
+                    }
+                    return false;
+                }
+                piece->addEffectStatus(effect_instance);
+                return true;
+            });
+            break;
+        }
+        case SHIELD :{
+            success = addEffectBehavior(SHIELD,[piece,effect_instance](){
+                if (effect_instance.caster_piece != nullptr && static_cast<Pieces*>(effect_instance.caster_piece)->getCharacters() == XU_FU){
+                    if (piece->isPawn()){
+                        piece->addEffectStatus(effect_instance);
+                        return true;
+                    }
+                    return false;
+                }
+                piece->addEffectStatus(effect_instance);
+                return true;
+            });
+            break;
+        }
+
 
     default:
         std::cout << "Effect handler undefined" << std::endl;
     }
+    //std::cout << "success: " << success << std::endl;
     return success;
 }
 
@@ -186,6 +233,9 @@ int EffectHandler::applyEffectToTargets(Pieces *caster_piece, EffectInstance eff
             int targetX = range.first;
             int targetY = range.second;
             Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
+            if (target_piece != nullptr && target_piece->isKing() && (!isBuff(effect_instance.getEffect())
+                || effect_instance.getEffect() == IMMUNITY_AOE || effect_instance.getEffect() == IMMUNITY_EFFECT || effect_instance.getEffect() == IMMORTALITY ))
+                return NB_targetTouched;
             if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)) {
                 if (configureEffectHandler(target_piece,effect_instance)) {
                     GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
@@ -211,19 +261,23 @@ int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectI
         int targetY = GameEngine::getInstance()->getLastClickY();
         //std::cout << "oho" << std::endl;
         Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
+        if (target_piece != nullptr && target_piece->isKing() && (!isBuff(effect_instance.getEffect())
+            || effect_instance.getEffect() == IMMUNITY_AOE || effect_instance.getEffect() == IMMUNITY_EFFECT || effect_instance.getEffect() == IMMORTALITY ))
+            return NB_targetTouched;
         if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)
             && targetX == range.first && targetY == range.second) {
-            std::cout << "ablacabou" << std::endl;
+            //std::cout << "ablacabou" << std::endl;
             if (configureEffectHandler(target_piece,effect_instance)) {
                 GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
                 NB_targetTouched++;
-                std::cout << "ablacabiiiii" << std::endl;
+                //std::cout << "ablacabiiiii" << std::endl;
 
                 executeEffect(effect_instance.getEffect(), target_piece);
                 std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
             }
         }
     }
+    std::cout << NB_targetTouched << std::endl;
     return NB_targetTouched;
 }
 
@@ -233,26 +287,33 @@ int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectI
     for (const auto &range: effect_range) {
         //std::cout << "oho" << std::endl;
         Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
+        if (target_piece != nullptr && target_piece->isKing() && (!isBuff(effect_instance.getEffect())
+            || effect_instance.getEffect() == IMMUNITY_AOE || effect_instance.getEffect() == IMMUNITY_EFFECT || effect_instance.getEffect() == IMMORTALITY ))
+            return NB_targetTouched;
         if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)
             && targetX == range.first && targetY == range.second) {
-            std::cout << "ablacabou" << std::endl;
+
+            //std::cout << "ablacabou" << std::endl;
             if (configureEffectHandler(target_piece,effect_instance)) {
                 GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
                 NB_targetTouched++;
-                std::cout << "ablacabiiiii" << std::endl;
+                //std::cout << "ablacabiiiii" << std::endl;
 
                 executeEffect(effect_instance.getEffect(), target_piece);
                 std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
             }
-            }
+        }
     }
+    std::cout << NB_targetTouched << std::endl;
     return NB_targetTouched;
 }
 
 bool EffectHandler::applyBuffToSelf(Pieces* caster_piece, EffectInstance effect_instance){
     if (configureEffectHandler(caster_piece,effect_instance)){
+        //std::cout << "help me pls" << std::endl;
         GameEngine::getInstance()->setLastPieceTouchedByEffect(caster_piece);
         executeEffect(effect_instance.getEffect(), caster_piece);
+        //std::cout << caster_piece->getActive_effects().size()<<std::endl;
         return true;
     }
     return false;

@@ -61,6 +61,7 @@ GameState GameEngine::getLastState() const{
 }
 
 void GameEngine::handleInitialisation() {
+    srand (time(nullptr));
     loadEffectList();
     loadCharactersList();
     loadPiecesList();
@@ -159,8 +160,9 @@ void GameEngine::handleCheckingWhitePhase() {
         receivedClick = false;
         return;
     }
-    std::cout << "SEIIIIBAAAAA" << std::endl;
+    //std::cout << "SEIIIIBAAAAA" << std::endl;
     context->piece->setPieceGameMode(0);
+    //std::cout<< context->piece->getPieceGameMode()<< " le pere fouettard " << std::endl;
     if (current_state == SELECT_WHITE_PHASE){
         std::cout << "CANCEL" << std::endl;
         receivedRightClick = false;

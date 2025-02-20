@@ -20,7 +20,7 @@
 using namespace std;
 
 
-class Pieces : public SpriteTarget {
+class Pieces : public SpriteTarget{
     protected:
         int coordX;
         int coordY;

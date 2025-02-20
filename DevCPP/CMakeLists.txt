@@ -7,6 +7,10 @@ add_executable(Chess_Grand_Order
         src/main.cpp
         src/game/characters/pieces/bishop/Merlin.cpp
         src/game/characters/pieces/bishop/Merlin.h
+        src/game/characters/pieces/knight/Okita.cpp
+        src/game/characters/pieces/knight/Okita.h
+        src/game/characters/pieces/rook/Xu_Fu.cpp
+        src/game/characters/pieces/rook/Xu_Fu.h
 )
 
 add_compile_options(-Wno-int-to-pointer-cast)

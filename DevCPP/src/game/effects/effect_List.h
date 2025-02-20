@@ -50,8 +50,28 @@ struct EffectInstance {
     int effect_duration;
     int effect_amount;
     int NB_Target;
+    void* caster_piece;
 
-    explicit EffectInstance(Effect_List effect, int effect_duration = -1, int effect_amount = -1, int NB_Target = -1);
+    EffectInstance(Effect_List effect, int effect_duration, int effect_amount, int NB_Target, void* caster_piece)
+    {
+        this->effect = effect;
+        this->effect_duration = effect_duration;
+        this->effect_amount = effect_amount;
+        this->NB_Target = NB_Target;
+        this->caster_piece = caster_piece;
+        //std::cout << (long long int)(caster_piece) << endl;
+
+    }
+
+    EffectInstance(Effect_List effect, int effect_duration, int effect_amount, int NB_Target)
+    {
+        this->effect = effect;
+        this->effect_duration = effect_duration;
+        this->effect_amount = effect_amount;
+        this->NB_Target = NB_Target;
+        this->caster_piece = nullptr;
+
+    }
 
     [[nodiscard]] Effect_List getEffect() const {
         return effect;

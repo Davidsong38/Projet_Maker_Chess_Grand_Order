@@ -77,8 +77,8 @@ void loadEffectList() {
 
 }
 
-EffectInstance::EffectInstance(const Effect_List effect, int effect_duration, int effect_amount , int NB_Target)
-    :effect(effect), effect_duration(effect_duration), effect_amount(effect_amount) , NB_Target(NB_Target){}
+//EffectInstance::EffectInstance(const Effect_List effect, int effect_duration, int effect_amount , int NB_Target, void* context)
+//    :effect(effect), effect_duration(effect_duration), effect_amount(effect_amount) , NB_Target(NB_Target) , caster_piece(context){}
 
 
 bool EffectInstance::isInfinite() const {

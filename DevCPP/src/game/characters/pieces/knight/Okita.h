@@ -1,26 +1,29 @@
 //
-// Created by Megaport on 19/02/2025.
+// Created by Megaport on 20/02/2025.
 //
 
-#ifndef MERLIN_H
-#define MERLIN_H
-#include <Bishop.h>
-#include <RenderEngine.h>
-#include <rendering_cfg.h>
+#ifndef OKITA_H
+#define OKITA_H
+
+
+
 #include <textures.h>
 #include <uiElements.h>
+#include "RenderEngine.h"
+#include "rendering_cfg.h"
+
+#include "Knight.h"
 
 
-class Merlin final : public Bishop{
+class Okita final : public Knight {
     protected :
-        bool chooseSpell = false;
-        bool MerlinPowerON = false;
+        int CNT_Charge = 0;
 public:
-    Merlin(int startX, int startY, bool white, Characters_List hero,
-         Pieces_List pieces_root)
-        : Bishop(startX, startY, white, hero, pieces_root) {
+    Okita(int startX, int startY, bool white, Characters_List hero,
+        Pieces_List pieces_root)
+        : Knight(startX, startY, white, hero, pieces_root) {
         addAdditionalUIElement(
-            merlinTexture,
+            okitaTexture,
             glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
             this
         );
@@ -36,8 +39,11 @@ public:
 
 
 
+
+
 };
 
 
 
-#endif //MERLIN_H
+
+#endif //OKITA_H

@@ -19,6 +19,10 @@
 #include <Sesshoin_Kiara.h>
 #include <Ushiwakamaru.h>
 
+#include "Merlin.h"
+#include "Okita.h"
+#include "Xu_Fu.h"
+
 bool didPiecesGetInitiated = false;
 
 Characters_List choose_pawn(bool isWhite) {
@@ -31,7 +35,7 @@ Characters_List choose_pawn(bool isWhite) {
 }
 
 Characters_List choose_knight(bool isWhite, bool isRight) {
-    int id_character = USHIWAKAMARU;
+    int id_character = OKITA;
     if constexpr (NOT_QUICK_TEST) {
         cout << " Choose" << (isWhite ? " White" : " Black") << " knight"<< (isRight ? "Right" : "Left")<<" character: " << endl;
         cin >> id_character;
@@ -40,7 +44,7 @@ Characters_List choose_knight(bool isWhite, bool isRight) {
 }
 
 Characters_List choose_bishop(bool isWhite, bool isRight) {
-    int id_character = MEDUSA_SABER;
+    int id_character = MERLIN;
     if constexpr (NOT_QUICK_TEST) {
         cout << "Choose" << (isWhite ? " White" : " Black") << " bishop"<< (isRight ? "Right" : "Left")<<" character: " << endl;
         cin >> id_character;
@@ -49,7 +53,7 @@ Characters_List choose_bishop(bool isWhite, bool isRight) {
 }
 
 Characters_List choose_rook(bool isWhite, bool isRight) {
-    int id_character = ARCEUID;
+    int id_character = XU_FU;
     if constexpr (NOT_QUICK_TEST) {
         cout << "Choose" << (isWhite ? " White" : " Black") << " rook"<< (isRight ? "Right" : "Left")<<" character: " << endl;
         cin >> id_character;
@@ -88,9 +92,9 @@ Pieces* get_piece(int x, int y, bool isWhite, Characters_List character) {
         case MEDUSA_SABER:
         piece = new Medusa_Saber(x,y,isWhite,character,BISHOP);
         break;
-        //case MERLIN:
-        //piece = new Merlin(x,y,isWhite,character,PAWN);
-        //break;
+        case MERLIN:
+        piece = new Merlin(x,y,isWhite,character,BISHOP);
+        break;
         //case ASTOLFO:
         //piece = new Astolfo(x,y,isWhite,character,PAWN);
         //break;
@@ -100,9 +104,9 @@ Pieces* get_piece(int x, int y, bool isWhite, Characters_List character) {
         case USHIWAKAMARU:
         piece = new Ushiwakamaru(x,y,isWhite,character,KNIGHT);
         break;
-        //case OKITA:
-        //piece = new Okita(x,y,isWhite,character,PAWN);
-        //break;
+        case OKITA:
+        piece = new Okita(x,y,isWhite,character,KNIGHT);
+        break;
         //case KINTOKI_RIDER:
         //piece = new Kintoki_Rider(x,y,isWhite,character,PAWN);
         //break;
@@ -112,9 +116,9 @@ Pieces* get_piece(int x, int y, bool isWhite, Characters_List character) {
         case ARCEUID:
         piece = new Arceuid(x,y,isWhite,character,ROOK);
         break;
-        //case XU_FU:
-        //piece = new Xu_Fu(x,y,isWhite,character,PAWN);
-        //break;
+        case XU_FU:
+        piece = new Xu_Fu(x,y,isWhite,character,ROOK);
+        break;
         //case MELUSINE:
         //piece = new Melusine(x,y,isWhite,character,PAWN);
         //break;

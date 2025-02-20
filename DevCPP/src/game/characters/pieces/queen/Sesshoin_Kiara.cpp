@@ -23,8 +23,8 @@ vector<pair<int, int> > Sesshoin_Kiara::getEffectRange(Effect_List effect) const
 
     vector<std::pair<int, int>> effect_range;
     if (effect == CHANGE_CONTROL_ADVANCE){
-        for (int i = 0; i < 7; ++i){
-            for (int j = 0; j < 7; ++j){
+        for (int i = 0; i < 8; ++i){
+            for (int j = 0; j < 8; ++j){
                 effect_range.emplace_back(i, j);
             }
         }
@@ -55,7 +55,7 @@ bool Sesshoin_Kiara::SpellActivationCheck(void *arg) {
         }
         return true;
     }
-    if (context->piece->getPieceGameMode() != 0){
+    if (this->getPieceGameMode() != 0){
         if (GameEngine::getInstance()->receivedClick){
             //std::cout << "ayayayayayayayayayayayayayayayayayay" << std::endl;
             if (canEvolve(context)){
@@ -78,16 +78,7 @@ bool Sesshoin_Kiara::passive(void* arg) {
         CNT_Charm++;
         return true;
     }
-    else{
-        //if (this->getIsWhite())
-        //    GameEngine::getInstance()->setState(SELECT_WHITE_PHASE);
-        //else
-        //    GameEngine::getInstance()->setState(SELECT_BLACK_PHASE);
-    }
-
     return false;
-
-
 }
 
 bool Sesshoin_Kiara::canEvolve(void *arg) {
@@ -105,12 +96,6 @@ bool Sesshoin_Kiara::evolvedForm(void *arg) {
         std::cout << "Special competence"<<std::endl;
         evolved = true;
         return true;
-    }
-    else{
-        //if (this->getIsWhite())
-        //    GameEngine::getInstance()->setState(SELECT_WHITE_PHASE);
-        //else
-        //    GameEngine::getInstance()->setState(SELECT_BLACK_PHASE);
     }
     return false;
 }

@@ -6,13 +6,6 @@
 #include "Context.h"
 
 
-//vector<Effect_List> Ushiwakamaru::getCasterEffects() const {
-//    if (evolved==true) {
-//        return {STUN,AOE};
-//    }
-//    return {STUN};
-//}
-
 void Ushiwakamaru::setPieceGameMode(int piece_game_mode) {
     return;
 }
@@ -82,7 +75,7 @@ bool Ushiwakamaru::SpellActivationCheck(void *arg) {
 
 bool Ushiwakamaru::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (evolved && hasJustKilled && !this->getIsOnAMove()){
+    if (evolved && hasJustKilled && !isOnAMove){
         if (!hasCharged){
             hasCharged = true;
             return true;

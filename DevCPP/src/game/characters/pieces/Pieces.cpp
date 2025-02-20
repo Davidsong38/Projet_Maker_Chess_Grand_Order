@@ -3,6 +3,8 @@
 //
 
 #include "Pieces.h"
+
+#include <Context.h>
 #include <iostream>
 #include <utility>
 #include "Effect_List.h"
@@ -162,7 +164,7 @@ void Pieces::setIsAlive(bool is_alive) {
 
 void Pieces::addEffectStatus(EffectInstance effect_instance) {
 
-    activeEffects.emplace_back(effect_instance.getEffect(),effect_instance.getEffectDuration(),effect_instance.getEffectAmount());
+    activeEffects.emplace_back(effect_instance.getEffect(),effect_instance.getEffectDuration(),effect_instance.getEffectAmount(),effect_instance.getNB_Target(),effect_instance.caster_piece);
 }
 
 Characters_List Pieces::getCharacters() const {
@@ -191,7 +193,7 @@ bool Pieces::hasEffectStatus(Effect_List effect) const {
 void Pieces::updateEffectStatus() {
     for (auto effect=activeEffects.begin(); effect!=activeEffects.end();) {
         if (effect->effect == CHANGE_CONTROL && (effect->effect_duration == 1 || effect->effect_amount == 0)){
-            std::cout << "allllllezzzzz" << std::endl;
+            //std::cout << "allllllezzzzz" << std::endl;
             this->setIsWhite(not this->getIsWhite());
         }
         effect->decrement_duration();
@@ -206,10 +208,13 @@ void Pieces::activateEffect(Effect_List effect) {
     //std::cout << "Yaharo0000"<<std::endl;
     for ( auto& e : activeEffects) {
         //std::cout << Effect_List_to_string[e.effect] << "Yaharo"<<std::endl;
+        if (e.caster_piece != nullptr && (e.effect == IMMUNITY_AOE || e.effect == IMMUNITY_EFFECT)){
+            static_cast<Pieces*>(e.caster_piece)->evolved = true;
+            //std::cout << static_cast<Pieces*>(e.caster_piece)->getName() << static_cast<Pieces*>(e.caster_piece)->evolved <<std::endl;
+        }
         if (e.effect == effect && !e.isExpired()) {
-            std::cout << e.effect_amount << " je vais devenir fou " <<std::endl;
-            std::cout << e.effect_duration << " je vais devenir fou " <<std::endl;
-
+            //std::cout << e.effect_amount << " je vais devenir fou " <<std::endl;
+            //std::cout << e.effect_duration << " je vais devenir fou " <<std::endl;
             e.activation();
             //std::cout << "Effect " << Effect_List_to_string[e.effect] << " activated on piece!" << std::endl;
 
