@@ -18,7 +18,7 @@
 class Xu_Fu final : public Queen{
     protected :
     int CNT_Shield = 0;
-    int ShieldChance = 30;
+    int ShieldChance = 80;
     bool releaseEvolvedSpell = false;
 public:
     Xu_Fu(int startX, int startY, bool white, Characters_List hero,

@@ -15,24 +15,25 @@
 #include "Xu_Fu.h"
 
 
-unordered_map<Effect_List, function<void()>> EffectHandler::effectBehaviors;
+unordered_map<Effect_List, function<bool()>> EffectHandler::effectBehaviors;
 
-void EffectHandler::executeEffect(Effect_List effect,Pieces* target_piece) {
-    if (effectBehaviors.find(effect) != effectBehaviors.end()) {
-        effectBehaviors[effect]();
-    }
-}
+//void EffectHandler::executeEffect(Effect_List effect,Pieces* target_piece) {
+//    if (effectBehaviors.find(effect) != effectBehaviors.end()) {
+//        effectBehaviors[effect]();
+//    }
+//}
 
 bool EffectHandler::addEffectBehavior(Effect_List effect, function<bool()> behavior) {
     effectBehaviors[effect] = std::move(behavior);
-    return true;
+    bool result = effectBehaviors[effect]();
+    return result;
 }
 
 bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_instance) {
     Effect_List current_effect = effect_instance.getEffect();
     Chessboard* board = Chessboard::getInstance();
     bool success = false;
-    std::cout << "success: " << success << std::endl;
+    //std::cout << "success: " << success << std::endl;
     switch (current_effect){
         case ALLY_TELEPORT :{
             success = addEffectBehavior(ALLY_TELEPORT, [board,piece]() {
@@ -191,7 +192,7 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
     default:
         std::cout << "Effect handler undefined" << std::endl;
     }
-    //std::cout << "success: " << success << std::endl;
+    std::cout << "success: " << success << std::endl;
     return success;
 }
 
@@ -240,12 +241,13 @@ int EffectHandler::applyEffectToTargets(Pieces *caster_piece, EffectInstance eff
                 if (configureEffectHandler(target_piece,effect_instance)) {
                     GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
                     NB_targetTouched++;
-                    executeEffect(effect_instance.getEffect(), target_piece);
+                    if (effect_instance.getNB_Target() != -1)
+                        CNT_target++;
+                    //executeEffect(effect_instance.getEffect(), target_piece);
                     std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
                 }
 
-                if (effect_instance.getNB_Target() != -1)
-                    CNT_target++;
+
             }
         }
     }
@@ -272,7 +274,7 @@ int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectI
                 NB_targetTouched++;
                 //std::cout << "ablacabiiiii" << std::endl;
 
-                executeEffect(effect_instance.getEffect(), target_piece);
+                //executeEffect(effect_instance.getEffect(), target_piece);
                 std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
             }
         }
@@ -299,7 +301,7 @@ int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectI
                 NB_targetTouched++;
                 //std::cout << "ablacabiiiii" << std::endl;
 
-                executeEffect(effect_instance.getEffect(), target_piece);
+                //executeEffect(effect_instance.getEffect(), target_piece);
                 std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to piece at (" << targetX << ", " << targetY << ")." << std::endl;
             }
         }
@@ -312,7 +314,7 @@ bool EffectHandler::applyBuffToSelf(Pieces* caster_piece, EffectInstance effect_
     if (configureEffectHandler(caster_piece,effect_instance)){
         //std::cout << "help me pls" << std::endl;
         GameEngine::getInstance()->setLastPieceTouchedByEffect(caster_piece);
-        executeEffect(effect_instance.getEffect(), caster_piece);
+        //executeEffect(effect_instance.getEffect(), caster_piece);
         //std::cout << caster_piece->getActive_effects().size()<<std::endl;
         return true;
     }

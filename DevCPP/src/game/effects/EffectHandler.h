@@ -13,7 +13,7 @@ using namespace std;
 
 class EffectHandler {
     private:
-        static unordered_map<Effect_List, function<void()>> effectBehaviors;
+        static unordered_map<Effect_List, function<bool()>> effectBehaviors;
     public:
         static void executeEffect(Effect_List Effect,Pieces* pieces);
         static bool addEffectBehavior(Effect_List effect, function<bool()> behavior);
