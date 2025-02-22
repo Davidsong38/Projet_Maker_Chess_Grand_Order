@@ -30,6 +30,15 @@ vector<pair<int, int> > Xu_Fu::getEffectRange(Effect_List effect) const {
         if (coordY - 1 >= 0) effect_range.emplace_back(coordX, coordY - 1);
         if (coordY + 1 < 8) effect_range.emplace_back(coordX, coordY + 1);
     }
+
+
+    if (effect == SUPP_RANGE){
+        for (int i = 0; i < 8; ++i){
+            for (int j = 0; j < 8; ++j){
+                effect_range.emplace_back(i, j);
+            }
+        }
+    }
     return effect_range;
 }
 
@@ -98,6 +107,7 @@ bool Xu_Fu::evolvedForm(void *arg) {
         return true;
     }
     if (EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{IMMORTALITY,-1,-1,1,this})){
+        EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{SUPP_RANGE,-1,1,1,this});
         std::cout << "Special competence"<<std::endl;
         return true;
     }

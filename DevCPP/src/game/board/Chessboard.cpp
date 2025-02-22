@@ -31,9 +31,22 @@ vector<vector<Pieces *>> Chessboard::getGrid() const {
     return grid;
 }
 
+vector<vector<Pieces *>>* Chessboard::getGrid_ptr(){
+    return &grid;
+}
+
+vector<Pieces*> Chessboard::getDeadList() const{
+    return deadList;
+}
+
+void Chessboard::addToDeadList(Pieces* piece){
+    deadList.emplace_back(piece);
+}
+
 void Chessboard::deletePiece (Pieces* piece) {
     grid[piece->getCoordX()][piece->getCoordY()] = nullptr;
 }
+
 
 bool Chessboard::isAlly(Pieces *piece, Pieces *target_piece) {
     if (piece->getIsWhite() == target_piece->getIsWhite()) {
@@ -378,6 +391,8 @@ bool Chessboard::isPassable(Pieces* piece) {
 bool Chessboard::notBrokenMove(Pieces* piece,Pieces* target_piece){
     if (target_piece != nullptr && piece->getIsOnAMove() && target_piece->isKing())
         return false;
+    if (target_piece != nullptr && PieceHaveThisEffect(piece,IMMORTALITY) && target_piece->isKing())
+        return false;
     return true;
 }
 
@@ -385,8 +400,7 @@ vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
     vector<pair<int, int>> valid_moves;
     vector<pair<int, int>> piece_moves = piece->getMoves();
     //cout << "moves : " <<piece_moves.size() << endl;
-    PawnReachingEndOfBoard(piece);
-    if (piece->isPawn()) {
+    if (piece->isPawn() && piece->getMoves().empty()) {
         int pawnDirection = piece->getIsWhite() ? -1 : 1;
         int currentX = piece->getCoordX();
         int currentY = piece->getCoordY();
@@ -483,16 +497,19 @@ bool Chessboard::movePiece(Pieces* piece, int to_coordX, int to_coordY) {
     } else {
         KillCheck(piece,target_piece);
     }
+    PawnReachingEndOfBoard(piece);
     std::cout << (piece->getIsWhite()? "White " : "Black ")<<piece->getName()<<" moved from (" << coordX << ", " << coordY
               << ") to (" << to_coordX << ", " << to_coordY << ")." << std::endl;
     return true;
 }
 
 
-bool Chessboard::isKillable(Pieces *piece) {
-    for (const auto& e : piece->getActive_effects()) {
+bool Chessboard::isKillable(Pieces *piece,Pieces* target_piece) {
+    if (piece->isKing())
+        return true;
+    for (const auto& e : target_piece->getActive_effects()) {
         if (e.effect == SHIELD || e.effect == IMMORTALITY ) {
-            piece->activateEffect(e.effect);
+            target_piece->activateEffect(e.effect);
             return false;
         }
 
@@ -516,18 +533,24 @@ bool Chessboard::KillCheck(Pieces *piece, Pieces *target_piece) {
     int coordY1 = piece->getCoordY();
     int coordX2 = target_piece->getCoordX();
     int coordY2 = target_piece->getCoordY();
-    if (isKillable(target_piece)&& !isAlly(piece,target_piece)) {
+    if (isKillable(piece,target_piece)&& !isAlly(piece,target_piece)) {
         if (PieceHaveThisEffect(target_piece,CHANGE_CONTROL)){
             target_piece->activateEffect(CHANGE_CONTROL);
             std::cout << "je reviens dans mon camp" << std::endl;
             return true;
         }
+
         grid[coordX2][coordY2] = piece;
         grid[coordX1][coordY1] = nullptr;
         piece->setPosition(coordX2,coordY2);
         std::cout << (piece->getIsWhite()? "White " : "Black ")<< piece->getName() << " killed "
         << (target_piece->getIsWhite()? "White " : "Black ") <<target_piece->getName() << std::endl;
         piece->setHasJustKilled(true);
+        if (target_piece->getIsWhite())
+            GameEngine::getInstance()->NB_WhiteDead++;
+        if (!target_piece->getIsWhite())
+            GameEngine::getInstance()->NB_BlackDead++;
+        addToDeadList(target_piece);
         target_piece->setIsAlive(false);
         return true;
     }
@@ -542,7 +565,7 @@ bool Chessboard::KillInPassing(Pieces *piece, int to_coordX, int to_coordY) {
             int coordX2 = to_coordX + 1;
             int coordY2 = to_coordY;
             Pieces* realTargetPiece = grid[coordX2][coordY2];
-            if (realTargetPiece != nullptr && isKillable(realTargetPiece)&& !isAlly(piece,realTargetPiece) && realTargetPiece->isPawn()
+            if (realTargetPiece != nullptr && isKillable(piece,realTargetPiece)&& !isAlly(piece,realTargetPiece) && realTargetPiece->isPawn()
                 && coordX1 == 3 && coordX2 == 3 && isPassable(realTargetPiece)) {
                 grid[coordX2][coordY2] = nullptr;
                 grid[to_coordX][to_coordY] = piece;
@@ -551,6 +574,11 @@ bool Chessboard::KillInPassing(Pieces *piece, int to_coordX, int to_coordY) {
                 (piece->CNTMove)++;
                 std::cout << (piece->getIsWhite()? "White " : "Black ")<< piece->getName() << " killed "
                 << (realTargetPiece->getIsWhite()? "White " : "Black ") <<realTargetPiece->getName() << std::endl;
+                if (realTargetPiece->getIsWhite())
+                    GameEngine::getInstance()->NB_WhiteDead++;
+                if (!realTargetPiece->getIsWhite())
+                    GameEngine::getInstance()->NB_BlackDead++;
+                addToDeadList(realTargetPiece);
                 realTargetPiece->setIsAlive(false);
                 return true;
             }
@@ -558,7 +586,7 @@ bool Chessboard::KillInPassing(Pieces *piece, int to_coordX, int to_coordY) {
             int coordX2 = to_coordX - 1;
             int coordY2 = to_coordY;
             Pieces* realTargetPiece = grid[coordX2][coordY2];
-            if (realTargetPiece != nullptr && isKillable(realTargetPiece)&& !isAlly(piece,realTargetPiece) && realTargetPiece->isPawn()
+            if (realTargetPiece != nullptr && isKillable(piece,realTargetPiece)&& !isAlly(piece,realTargetPiece) && realTargetPiece->isPawn()
                 && coordX1 == 4 && coordX2 == 4 && isPassable(realTargetPiece)) {
                 grid[coordX2][coordY2] = nullptr;
                 grid[to_coordX][to_coordY] = piece;
@@ -567,6 +595,11 @@ bool Chessboard::KillInPassing(Pieces *piece, int to_coordX, int to_coordY) {
                 (piece->CNTMove)++;
                 std::cout << (piece->getIsWhite()? "White " : "Black ")<< piece->getName() << " killed "
                 << (realTargetPiece->getIsWhite()? "White " : "Black ") <<realTargetPiece->getName() << std::endl;
+                if (realTargetPiece->getIsWhite())
+                    GameEngine::getInstance()->NB_WhiteDead++;
+                if (!realTargetPiece->getIsWhite())
+                    GameEngine::getInstance()->NB_BlackDead++;
+                addToDeadList(realTargetPiece);
                 realTargetPiece->setIsAlive(false);
                 return true;
             }
@@ -576,17 +609,26 @@ bool Chessboard::KillInPassing(Pieces *piece, int to_coordX, int to_coordY) {
 
 }
 
-void Chessboard::PawnReachingEndOfBoard(Pieces *piece) {
+bool Chessboard::PawnReachingEndOfBoard(Pieces *piece) {
     int coordX = piece->getCoordX();
     if (piece->isPawn()) {
         if (piece->getIsWhite()) {
-            if (coordX == 0)
+            if (coordX == 0){
                 piece->setPiecesOrigin(QUEEN);
+                piece->activateEffect(SUPP_RANGE);
+                piece->deleteEffect(IMMORTALITY);
+                return true;
+            }
         } else {
-            if (coordX == 7)
+            if (coordX == 7){
                 piece->setPiecesOrigin(QUEEN);
+                piece->activateEffect(SUPP_RANGE);
+                piece->deleteEffect(IMMORTALITY);
+                return true;
+            }
         }
     }
+    return false;
 }
 
 

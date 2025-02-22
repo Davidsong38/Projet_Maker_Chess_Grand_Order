@@ -1,35 +1,31 @@
 //
-// Created by Megaport on 20/02/2025.
+// Created by Megaport on 21/02/2025.
 //
 
-#ifndef XU_FU_H
-#define XU_FU_H
-
-
-#include <Rook.h>
+#ifndef NITOCRIS_ALTER_H
+#define NITOCRIS_ALTER_H
+#include <Queen.h>
+#include <RenderEngine.h>
+#include <rendering_cfg.h>
 #include <textures.h>
 #include <uiElements.h>
-#include "RenderEngine.h"
-#include "rendering_cfg.h"
 
 
-
-class Xu_Fu final : public Rook{
+class Nitocris_Alter final : public Queen{
     protected :
-    int CNT_Shield = 0;
-    int ShieldChance = 100;
-    bool releaseEvolvedSpell = false;
+        int Revive_Charge = 0;
+        int CNT_Revive = 0;
+        int CNT_4Turn = 0;
 public:
-    Xu_Fu(int startX, int startY, bool white, Characters_List hero,
-        Pieces_List pieces_root)
-        : Rook(startX, startY, white, hero, pieces_root) {
+    Nitocris_Alter(int startX, int startY, bool white, Characters_List hero,
+         Pieces_List pieces_root)
+        : Queen(startX, startY, white, hero, pieces_root) {
         addAdditionalUIElement(
-            xufuTexture,
+            nitocrisTexture,
             glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
             this
         );
     }
-
 
     //[[nodiscard]] vector<Effect_List> getCasterEffects() const override;
     [[nodiscard]] vector<pair<int, int>> getEffectRange(Effect_List effect) const override;
@@ -39,8 +35,10 @@ public:
     bool SpellActivationCheck(void *arg) override;
     void setPieceGameMode(int piece_game_mode) override;
 
+
+
 };
 
 
 
-#endif //XU_FU_H
+#endif //NITOCRIS_ALTER_H

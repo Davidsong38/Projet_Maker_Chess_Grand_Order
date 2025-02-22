@@ -57,7 +57,7 @@ vector<pair<int, int> > Artoria::getEffectRange(Effect_List effect) const {
             for (int i = 1; i < 8; ++i){
                 if (coordX + i < 8 && coordY + i < 8) effect_range.emplace_back(coordX + i, coordY + i);
                 if (coordX + i < 8) effect_range.emplace_back(coordX + i, coordY);
-                if (coordY + i < 8) effect_range.emplace_back(coordX + i, coordY);
+                if (coordY + i < 8) effect_range.emplace_back(coordX, coordY + i);
             }
             return effect_range;
         }

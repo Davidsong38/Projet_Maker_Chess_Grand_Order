@@ -46,11 +46,13 @@ void loadEffectList();
 
 
 struct EffectInstance {
+    static EffectInstance* instance;
     Effect_List effect;
     int effect_duration;
     int effect_amount;
     int NB_Target;
     void* caster_piece;
+
 
     EffectInstance(Effect_List effect, int effect_duration, int effect_amount, int NB_Target, void* caster_piece)
     {
@@ -73,6 +75,8 @@ struct EffectInstance {
 
     }
 
+    static EffectInstance* getInstance();
+
     [[nodiscard]] Effect_List getEffect() const {
         return effect;
     }
@@ -89,6 +93,10 @@ struct EffectInstance {
         return NB_Target;
     }
 
+
+    void setEffectAmount(int effect_amount){
+        this->effect_amount = effect_amount;
+    }
 
     [[nodiscard]] bool isInfinite() const;
     [[nodiscard]] bool isExpired() const;

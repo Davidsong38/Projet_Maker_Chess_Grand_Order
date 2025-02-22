@@ -19,6 +19,7 @@ using namespace std;
 
 class Chessboard {
     vector<vector<Pieces*>> grid;
+    vector<Pieces*> deadList;
     static Chessboard* instance;
     int size;
     vector<EffectInstance> EffectOnPieces;
@@ -35,9 +36,9 @@ public:
     bool KillCheck(Pieces* piece,Pieces* target_piece);
     bool KillInPassing(Pieces *piece, int to_coordX, int to_coordY);
 
-    static void PawnReachingEndOfBoard(Pieces *piece);
+    static bool PawnReachingEndOfBoard(Pieces *piece);
     void displayBoard() const;
-    static bool isKillable(Pieces* piece) ; // vérifie si la pièce peut être tué ( ne possède pas d'effet qui la protège)
+    static bool isKillable(Pieces* piece, Pieces* target_piece) ; // vérifie si la pièce peut être tué ( ne possède pas d'effet qui la protège)
     static bool PieceHaveThisEffect(Pieces *piece, Effect_List chosenEffect);
 
     static bool isMoveable(Pieces* piece) ; // vérifie si la pièce n'est pas affecté par des effets d'immobilisation
@@ -49,9 +50,12 @@ public:
     [[nodiscard]] bool isPathAllClear(int startX, int startY, int endX, int endY) const ;
     [[nodiscard]] bool isInGrid(int to_coordX, int to_coordY) const;
     [[nodiscard]] vector<vector<Pieces *>> getGrid() const;
+    vector<vector<Pieces*>>* getGrid_ptr();
 
     void deletePiece(Pieces *piece);
 
+    [[nodiscard]] vector<Pieces*> getDeadList() const;
+    void addToDeadList(Pieces* piece);
     bool getPosInBoard(glm::vec2 screenPos, glm::ivec2 &boardPos) const;
     bool isEndangeredByWhite(pair<int, int> cell);
     bool isEndangeredByBlack(pair<int, int> cell);

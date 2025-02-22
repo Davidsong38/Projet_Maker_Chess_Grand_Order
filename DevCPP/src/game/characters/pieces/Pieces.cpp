@@ -204,6 +204,16 @@ void Pieces::updateEffectStatus() {
         }
     }
 }
+
+void Pieces::deleteEffect(Effect_List effect)
+{
+    for (auto& e : activeEffects){
+        if (e.effect == effect && !e.isExpired()){
+            e.setEffectAmount(0);
+        }
+    }
+}
+
 void Pieces::activateEffect(Effect_List effect) {
     //std::cout << "Yaharo0000"<<std::endl;
     for ( auto& e : activeEffects) {

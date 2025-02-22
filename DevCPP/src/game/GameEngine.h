@@ -40,6 +40,10 @@ public:
     void clickBoardAtPos(int x, int y);
     void inputRightClick();
     int NB_Turn = 1;
+    int NB_WhiteDead = 0;
+    int NB_BlackDead = 0;
+    int NB_WhiteDeadLastPhase = 0;
+    int NB_BlackDeadLastPhase = 0;
     void setBlackKing(Pieces* piece) const;
     void setWhiteKing(Pieces* piece) const;
     [[nodiscard]] int getLastClickX() const;

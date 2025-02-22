@@ -103,6 +103,7 @@ class Pieces : public SpriteTarget{
         //void affectCharacter(const Character_Instance& character_instance);
         [[nodiscard]] bool hasEffectStatus (Effect_List effect) const;
         void updateEffectStatus ();
+        void deleteEffect(Effect_List effect);
         void activateEffect(Effect_List);
         void displayEffect();
 

@@ -29,7 +29,7 @@ bool EffectHandler::addEffectBehavior(Effect_List effect, function<bool()> behav
     return result;
 }
 
-bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_instance) {
+bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece, EffectInstance effect_instance) {
     Effect_List current_effect = effect_instance.getEffect();
     Chessboard* board = Chessboard::getInstance();
     bool success = false;
@@ -62,6 +62,11 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
                 //std::cout << "BATARI" <<piece->getCoordX() << ' ' << piece->getCoordY() << "BATARU" << std::endl;
                 //board->getGrid()[piece->getCoordX()][piece->getCoordY()] = nullptr;
                 //std::cout << board->getGrid()[piece->getCoordX()][piece->getCoordY()] << std::endl;
+                if (piece->getIsWhite())
+                    GameEngine::getInstance()->NB_WhiteDead++;
+                if (!piece->getIsWhite())
+                    GameEngine::getInstance()->NB_BlackDead++;
+                board->addToDeadList(piece);
                 piece->setIsAlive(false);
                 board->deletePiece(piece);
                 return true;
@@ -187,8 +192,83 @@ bool EffectHandler::configureEffectHandler(Pieces *piece, EffectInstance effect_
             });
             break;
         }
-
-
+        case SUPP_RANGE :{
+            success = addEffectBehavior(SUPP_RANGE,[piece,effect_instance](){
+                //std::cout << " allllloooo " << std::endl;
+                if (effect_instance.caster_piece != nullptr && static_cast<Pieces*>(effect_instance.caster_piece)->getCharacters() == XU_FU){
+                    //std::cout << " allllliiiii " << std::endl;
+                    if (piece->isPawn()){
+                       // std::cout << " alllllaaa " << std::endl;
+                        piece->addEffectStatus(effect_instance);
+                        return true;
+                    }
+                    return false;
+                }
+                piece->addEffectStatus(effect_instance);
+                return true;
+            });
+            break;
+        }
+        case KILLING :{
+            success = addEffectBehavior(KILLING,[board,piece,effect_instance](){
+                if (piece->isKing())
+                    return false;
+                if (effect_instance.caster_piece != nullptr && static_cast<Pieces*>(effect_instance.caster_piece)->getCharacters() == NITOCRIS_ALTER){
+                    if (piece->isPawn()){
+                        for (const auto& e : piece->getActive_effects()) {
+                            if (e.effect == IMMUNITY_EFFECT || e.effect == IMMORTALITY) {
+                                piece->activateEffect(e.effect);
+                                return true;
+                            }
+                        }
+                        if (piece->getIsWhite())
+                            GameEngine::getInstance()->NB_WhiteDead++;
+                        if (!piece->getIsWhite())
+                            GameEngine::getInstance()->NB_BlackDead++;
+                        board->addToDeadList(piece);
+                        piece->setIsAlive(false);
+                        board->deletePiece(piece);
+                        return true;
+                    }
+                    return false;
+               }
+                for (const auto& e : piece->getActive_effects()) {
+                    if (e.effect == IMMUNITY_EFFECT || e.effect == IMMORTALITY) {
+                        piece->activateEffect(e.effect);
+                        return true;
+                    }
+                }
+                if (piece->getIsWhite())
+                    GameEngine::getInstance()->NB_WhiteDead++;
+                if (!piece->getIsWhite())
+                    GameEngine::getInstance()->NB_BlackDead++;
+                board->addToDeadList(piece);
+                piece->setIsAlive(false);
+                board->deletePiece(piece);
+                return true;
+            });
+            break;
+        }
+        case SPAWN_PIECES :{
+            success = addEffectBehavior(SPAWN_PIECES,[coordX,coordY,board,effect_instance](){
+                std::cout << "coordX : " << coordX << " coordY : " << coordY << std::endl;
+                long long rd = rand() % board->getDeadList().size();
+                for (long long i = 0; i < board->getDeadList().size(); i++) {
+                    long long id = (rd + i) % board->getDeadList().size();
+                    Pieces* resurrectPiece = board->getDeadList()[id];
+                    if (resurrectPiece != nullptr && effect_instance.caster_piece !=nullptr
+                        && resurrectPiece->getIsWhite() == static_cast<Pieces*>(effect_instance.caster_piece)->getIsWhite()){
+                        std::cout << "coordX : " << coordX << " coordY : " << coordY << std::endl;
+                        (*board->getGrid_ptr())[coordX][coordY] = resurrectPiece;
+                        resurrectPiece->setIsAlive(true);
+                        return true;
+                        //board->getDeadList().erase(board->getDeadList().begin()+id);
+                    }
+                }
+                return true;
+            });
+            break;
+        }
     default:
         std::cout << "Effect handler undefined" << std::endl;
     }
@@ -209,12 +289,22 @@ bool EffectHandler::validTargetGettingEffect(Pieces *caster_piece, Pieces * targ
         ||(target_piece != nullptr && Chessboard::isAlly(caster_piece,target_piece) && isBuff(effect_instance.getEffect()))) {
         return true;
     }
+    if (target_piece != nullptr && target_piece->isKing() && (!isBuff(effect_instance.getEffect())
+        || effect_instance.getEffect() == IMMUNITY_AOE || effect_instance.getEffect() == IMMUNITY_EFFECT || effect_instance.getEffect() == IMMORTALITY ))
+        return false;
     return false;
 }
 
 bool EffectHandler::isEffectTargetInGrid(Pieces * target_piece) {
     int coordX = target_piece->getCoordX();
     int coordY = target_piece->getCoordY();
+    if (coordX >= 0 && coordX < Chessboard::getInstance()->getGrid().size() && coordY >= 0 && coordY < Chessboard::getInstance()->getGrid().size()) {
+        return true;
+    }
+    return false;
+}
+
+bool EffectHandler::isEffectTargetInGrid(int coordX, int coordY){
     if (coordX >= 0 && coordX < Chessboard::getInstance()->getGrid().size() && coordY >= 0 && coordY < Chessboard::getInstance()->getGrid().size()) {
         return true;
     }
@@ -234,11 +324,8 @@ int EffectHandler::applyEffectToTargets(Pieces *caster_piece, EffectInstance eff
             int targetX = range.first;
             int targetY = range.second;
             Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
-            if (target_piece != nullptr && target_piece->isKing() && (!isBuff(effect_instance.getEffect())
-                || effect_instance.getEffect() == IMMUNITY_AOE || effect_instance.getEffect() == IMMUNITY_EFFECT || effect_instance.getEffect() == IMMORTALITY ))
-                return NB_targetTouched;
             if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)) {
-                if (configureEffectHandler(target_piece,effect_instance)) {
+                if (configureEffectHandler(targetX,targetY, target_piece,effect_instance)) {
                     GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
                     NB_targetTouched++;
                     if (effect_instance.getNB_Target() != -1)
@@ -263,13 +350,10 @@ int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectI
         int targetY = GameEngine::getInstance()->getLastClickY();
         //std::cout << "oho" << std::endl;
         Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
-        if (target_piece != nullptr && target_piece->isKing() && (!isBuff(effect_instance.getEffect())
-            || effect_instance.getEffect() == IMMUNITY_AOE || effect_instance.getEffect() == IMMUNITY_EFFECT || effect_instance.getEffect() == IMMORTALITY ))
-            return NB_targetTouched;
         if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)
             && targetX == range.first && targetY == range.second) {
             //std::cout << "ablacabou" << std::endl;
-            if (configureEffectHandler(target_piece,effect_instance)) {
+            if (configureEffectHandler(targetX,targetY,target_piece,effect_instance)) {
                 GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
                 NB_targetTouched++;
                 //std::cout << "ablacabiiiii" << std::endl;
@@ -289,14 +373,11 @@ int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectI
     for (const auto &range: effect_range) {
         //std::cout << "oho" << std::endl;
         Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
-        if (target_piece != nullptr && target_piece->isKing() && (!isBuff(effect_instance.getEffect())
-            || effect_instance.getEffect() == IMMUNITY_AOE || effect_instance.getEffect() == IMMUNITY_EFFECT || effect_instance.getEffect() == IMMORTALITY ))
-            return NB_targetTouched;
         if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)
             && targetX == range.first && targetY == range.second) {
 
             //std::cout << "ablacabou" << std::endl;
-            if (configureEffectHandler(target_piece,effect_instance)) {
+            if (configureEffectHandler(targetX,targetY,target_piece,effect_instance)) {
                 GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
                 NB_targetTouched++;
                 //std::cout << "ablacabiiiii" << std::endl;
@@ -311,7 +392,7 @@ int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectI
 }
 
 bool EffectHandler::applyBuffToSelf(Pieces* caster_piece, EffectInstance effect_instance){
-    if (configureEffectHandler(caster_piece,effect_instance)){
+    if (configureEffectHandler(caster_piece->getCoordX(),caster_piece->getCoordY(),caster_piece,effect_instance)){
         //std::cout << "help me pls" << std::endl;
         GameEngine::getInstance()->setLastPieceTouchedByEffect(caster_piece);
         //executeEffect(effect_instance.getEffect(), caster_piece);
@@ -319,4 +400,33 @@ bool EffectHandler::applyBuffToSelf(Pieces* caster_piece, EffectInstance effect_
         return true;
     }
     return false;
+}
+
+bool EffectHandler::applyToEmptyCell(Pieces* caster_piece, EffectInstance effect_instance){
+    vector<pair<int,int>> effect_range = caster_piece->getEffectRange(effect_instance.getEffect());
+    unsigned num = chrono::system_clock::now().time_since_epoch().count();
+    shuffle (effect_range.begin(), effect_range.end(), default_random_engine(num));
+    int NB_targetTouched = 0;
+    int CNT_target = 1;
+    for (const auto &range: effect_range) {
+        //std::cout << "(" << range.first << ", " << range.second << ")" << std::endl;
+        if (effect_instance.getNB_Target() == -1 || CNT_target <= effect_instance.getNB_Target()) {
+            int targetX = range.first;
+            int targetY = range.second;
+            Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
+            if (target_piece==nullptr && isEffectTargetInGrid(targetX,targetY)) {
+                if (configureEffectHandler(targetX,targetY,target_piece,effect_instance)) {
+                    //GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
+                    NB_targetTouched++;
+                    if (effect_instance.getNB_Target() != -1)
+                        CNT_target++;
+                    //executeEffect(effect_instance.getEffect(), target_piece);
+                    std::cout << "Effect " << Effect_List_to_string[effect_instance.getEffect()] << " applied to cell at (" << targetX << ", " << targetY << ")." << std::endl;
+                }
+
+
+            }
+        }
+    }
+    return NB_targetTouched;
 }

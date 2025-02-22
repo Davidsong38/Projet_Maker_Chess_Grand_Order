@@ -186,6 +186,10 @@ void GameEngine::handleEndWhitePhase() {
             piece->updateEffectStatus();
             if (piece->getCharacters()== ARCEUID)
                 piece->canEvolve(context);
+            if (piece->getCharacters() == NITOCRIS_ALTER){
+                piece->passive(context);
+                piece->canEvolve(context);
+            }
             if (piece != context->piece)
                 piece->setNB_TurnWithoutMoving(piece->getNB_TurnWithoutMoving() + 1);
             if (piece == context->piece)
@@ -193,6 +197,8 @@ void GameEngine::handleEndWhitePhase() {
             if (!piece->getIsFirstMove())
                 piece->setTurnStamp(piece->getTurnStamp() + 1);
         }
+        NB_WhiteDeadLastPhase = NB_WhiteDead;
+        NB_BlackDeadLastPhase = NB_BlackDead;
         std::cout<< "---------------------------------------------------BLACK TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
         setLastState(current_state);
         setState(START_BLACK_PHASE);
@@ -280,6 +286,7 @@ void GameEngine::handleCheckingBlackPhase() {
         receivedRightClick = false;
     if (!context->piece->SpellActivationCheck(context)){
         setLastState(current_state);
+        receivedClick = false;
         return;
     }
     std::cout << "SEIIIIBAAAAA" << std::endl;
@@ -308,6 +315,10 @@ void GameEngine::handleEndBlackPhase() {
             piece->updateEffectStatus();
             if (piece->getCharacters()== ARCEUID)
                 piece->canEvolve(context);
+            if (piece->getCharacters() == NITOCRIS_ALTER){
+                piece->passive(context);
+                piece->canEvolve(context);
+            }
             if (piece != context->piece)
                 piece->setNB_TurnWithoutMoving(piece->getNB_TurnWithoutMoving() + 1);
             if (piece == context->piece)
@@ -315,7 +326,8 @@ void GameEngine::handleEndBlackPhase() {
             if (!piece->getIsFirstMove())
                 piece->setTurnStamp(piece->getTurnStamp() + 1);
         }
-
+        NB_WhiteDeadLastPhase = NB_WhiteDead;
+        NB_BlackDeadLastPhase = NB_BlackDead;
         std::cout<< "---------------------------------------------------WHITE TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
         setLastState(current_state);
         setState(START_WHITE_PHASE);

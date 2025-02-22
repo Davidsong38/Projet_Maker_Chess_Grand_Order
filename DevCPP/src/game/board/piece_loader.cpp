@@ -20,6 +20,7 @@
 #include <Ushiwakamaru.h>
 
 #include "Merlin.h"
+#include "Nitocris_Alter.h"
 #include "Okita.h"
 #include "Xu_Fu.h"
 
@@ -44,7 +45,7 @@ Characters_List choose_knight(bool isWhite, bool isRight) {
 }
 
 Characters_List choose_bishop(bool isWhite, bool isRight) {
-    int id_character = MERLIN;
+    int id_character = MEDUSA_SABER;
     if constexpr (NOT_QUICK_TEST) {
         cout << "Choose" << (isWhite ? " White" : " Black") << " bishop"<< (isRight ? "Right" : "Left")<<" character: " << endl;
         cin >> id_character;
@@ -71,7 +72,7 @@ Characters_List choose_king(bool isWhite) {
 }
 
 Characters_List choose_queen(bool isWhite) {
-    int id_character = SESSHOIN_KIARA;
+    int id_character = NITOCRIS_ALTER;
     if constexpr (NOT_QUICK_TEST) {
         cout << "Choose" << (isWhite ? " White" : " Black") << " queen character: " << endl;
         cin >> id_character;
@@ -128,9 +129,9 @@ Pieces* get_piece(int x, int y, bool isWhite, Characters_List character) {
         case SESSHOIN_KIARA:
         piece = new Sesshoin_Kiara(x,y,isWhite,character,QUEEN);
         break;
-        //case NITOCRIS_ALTER:
-        //piece = new Nitocris_Alter(x,y,isWhite,character,PAWN);
-        //break;
+        case NITOCRIS_ALTER:
+        piece = new Nitocris_Alter(x,y,isWhite,character,QUEEN);
+        break;
         //case BB_DUBAI:
         //piece = new Bb_Dubai(x,y,isWhite,character,PAWN);
         //break;

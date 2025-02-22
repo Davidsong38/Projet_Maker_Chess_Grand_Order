@@ -11,6 +11,8 @@ add_executable(Chess_Grand_Order
         src/game/characters/pieces/knight/Okita.h
         src/game/characters/pieces/rook/Xu_Fu.cpp
         src/game/characters/pieces/rook/Xu_Fu.h
+        src/game/characters/pieces/queen/Nitocris_Alter.cpp
+        src/game/characters/pieces/queen/Nitocris_Alter.h
 )
 
 add_compile_options(-Wno-int-to-pointer-cast)
