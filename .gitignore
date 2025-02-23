@@ -52,5 +52,5 @@ Mkfile.old
 dkms.conf
 
 # CLion project files
-/DevCPP/.idea
-/DevCPP/cmake-build-debug
+/DevCPP/.idea/*
+/DevCPP/cmake-build-debug/*

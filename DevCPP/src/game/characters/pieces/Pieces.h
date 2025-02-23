@@ -4,6 +4,7 @@
 
 #ifndef PIECES_H
 #define PIECES_H
+#include <functional>
 #include <iostream>
 #include <string>
 #include <utility>
@@ -37,6 +38,7 @@ class Pieces : public SpriteTarget{
         //int lastPosX = coordX;
         //int lastPosY = coordY;
         int pieceGameMode = 0;
+        int movesMode = 0;
         vector<pair<int, int>> AllMovesDoneBefore;
 
         vector<EffectInstance> activeEffects ;
@@ -44,6 +46,7 @@ class Pieces : public SpriteTarget{
         Characters_List characters;
         Pieces_List pieces_origin;
         string name;
+        function<vector<pair<int,int>>()> overrideMoves = nullptr;
 
     public:
         bool selected = false;
@@ -78,7 +81,11 @@ class Pieces : public SpriteTarget{
         [[nodiscard]] int getNB_TurnWithoutMoving() const;
         [[nodiscard]] bool getHasRoqued() const;
         [[nodiscard]] vector<pair<int, int>> getAllMovesDoneBefore() const;
+        [[nodiscard]] int getMovesMode() const;
+        [[nodiscard]] function<vector<pair<int, int>>()> getOverrideMoves() const;
 
+        void clearOverrideMoves();
+        void setOverrideMoves(const function<vector<pair<int, int>>()>& override_moves);
         void addToAllMovesDoneBefore(int lastCoordX, int lastCoordY);
         //void setLastPosX(int last_pos_x);
         //void setLastPosY(int last_pos_y);

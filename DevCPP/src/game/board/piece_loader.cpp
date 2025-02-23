@@ -19,6 +19,7 @@
 #include <Sesshoin_Kiara.h>
 #include <Ushiwakamaru.h>
 
+#include "Gilgamesh.h"
 #include "Merlin.h"
 #include "Nitocris_Alter.h"
 #include "Okita.h"
@@ -63,7 +64,7 @@ Characters_List choose_rook(bool isWhite, bool isRight) {
 }
 
 Characters_List choose_king(bool isWhite) {
-    int id_character = ARTORIA;
+    int id_character = GILGAMESH;
     if constexpr (NOT_QUICK_TEST) {
         cout << "Choose" << (isWhite ? " White" : " Black") << " king character: " << endl;
         cin >> id_character;
@@ -141,9 +142,9 @@ Pieces* get_piece(int x, int y, bool isWhite, Characters_List character) {
         case ARTORIA:
         piece = new Artoria(x,y,isWhite,character,KING);
         break;
-        //case GILGAMESH:
-        //piece = new Gilgamesh(x,y,isWhite,character,PAWN);
-        //break;
+        case GILGAMESH:
+        piece = new Gilgamesh(x,y,isWhite,character,KING);
+        break;
         //case OBERON:
         //piece = new Oberon(x,y,isWhite,character,PAWN);
         //break;

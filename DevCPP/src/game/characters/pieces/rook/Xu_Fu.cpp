@@ -44,18 +44,6 @@ vector<pair<int, int> > Xu_Fu::getEffectRange(Effect_List effect) const {
 
 bool Xu_Fu::SpellActivationCheck(void *arg) {
     auto * context = static_cast<context_type *>(arg);
-    //if (GameEngine::getInstance()->receivedRightClick){
-    //    //std::cout << "gekooo" << std::endl;
-    //    if (this->getIsWhite()){
-    //        GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
-    //        GameEngine::getInstance()->setState(SELECT_WHITE_PHASE);
-    //    }
-    //    else{
-    //        GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
-    //        GameEngine::getInstance()->setState(SELECT_BLACK_PHASE);
-    //    }
-    //    return true;
-    //}
     if (this->getPieceGameMode() != 0){
         if (!getIsOnAMove())
             passive(context);

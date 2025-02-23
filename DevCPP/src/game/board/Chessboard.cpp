@@ -399,8 +399,12 @@ bool Chessboard::notBrokenMove(Pieces* piece,Pieces* target_piece){
 vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
     vector<pair<int, int>> valid_moves;
     vector<pair<int, int>> piece_moves = piece->getMoves();
+    if (piece->getOverrideMoves() != nullptr){
+        std::cout << "alors je sais pas mais la ca me casse les couilles" << std::endl;
+        piece_moves = piece->getOverrideMoves()();
+    }
     //cout << "moves : " <<piece_moves.size() << endl;
-    if (piece->isPawn() && piece->getMoves().empty()) {
+    if (piece->isPawn() && piece->getMoves().empty() && piece->getOverrideMoves() == nullptr) {
         int pawnDirection = piece->getIsWhite() ? -1 : 1;
         int currentX = piece->getCoordX();
         int currentY = piece->getCoordY();
@@ -500,6 +504,7 @@ bool Chessboard::movePiece(Pieces* piece, int to_coordX, int to_coordY) {
     PawnReachingEndOfBoard(piece);
     std::cout << (piece->getIsWhite()? "White " : "Black ")<<piece->getName()<<" moved from (" << coordX << ", " << coordY
               << ") to (" << to_coordX << ", " << to_coordY << ")." << std::endl;
+    piece->activateEffect(MOVE_CHANGING);
     return true;
 }
 
@@ -560,7 +565,7 @@ bool Chessboard::KillCheck(Pieces *piece, Pieces *target_piece) {
 bool Chessboard::KillInPassing(Pieces *piece, int to_coordX, int to_coordY) {
     int coordX1 = piece->getCoordX();
     int coordY1 = piece->getCoordY();
-    if (piece->isPawn()) {
+    if (piece->isPawn() && !PieceHaveThisEffect(piece, MOVE_CHANGING)) {
         if (piece->getIsWhite()) {
             int coordX2 = to_coordX + 1;
             int coordY2 = to_coordY;

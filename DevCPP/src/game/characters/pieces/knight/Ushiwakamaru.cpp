@@ -26,6 +26,7 @@ vector<pair<int, int> > Ushiwakamaru::getMoves() {
     if (coordY- 1 >= 0) moves.emplace_back(coordX, coordY - 1);
     if (coordY + 1 < 8) moves.emplace_back(coordX, coordY + 1);
     return moves;
+
 }
 
 

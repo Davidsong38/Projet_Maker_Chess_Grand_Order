@@ -261,8 +261,96 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                         std::cout << "coordX : " << coordX << " coordY : " << coordY << std::endl;
                         (*board->getGrid_ptr())[coordX][coordY] = resurrectPiece;
                         resurrectPiece->setIsAlive(true);
+                        resurrectPiece->setPosition(coordX, coordY);
                         return true;
                         //board->getDeadList().erase(board->getDeadList().begin()+id);
+                    }
+                }
+                return true;
+            });
+            break;
+        }
+        case MOVE_CHANGING :{
+            success = addEffectBehavior(MOVE_CHANGING,[piece,effect_instance](){
+                if (effect_instance.caster_piece != nullptr && static_cast<Pieces*>(effect_instance.caster_piece)->getCharacters() == GILGAMESH){
+                    auto* casterPiece = static_cast<Pieces*>(effect_instance.caster_piece);
+                    if (casterPiece->getMovesMode() == 0){
+                        piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                            vector<std::pair<int, int>> moves;
+                            int coordX = piece->getCoordX();
+                            int coordY = piece->getCoordY();
+                            if (coordX + 1 < 8 && coordY + 1 < 8) moves.emplace_back(coordX + 1, coordY + 1);
+                            if (coordX - 1 >= 0 && coordY + 1 < 8) moves.emplace_back(coordX - 1, coordY + 1);
+                            if (coordX + 1 < 8 && coordY- 1 >= 0) moves.emplace_back(coordX + 1, coordY - 1);
+                            if (coordX - 1 >= 0 && coordY - 1 >= 0) moves.emplace_back(coordX - 1, coordY - 1);
+                            if (coordX + 1 < 8) moves.emplace_back(coordX + 1, coordY);
+                            if (coordX - 1 >= 0) moves.emplace_back(coordX - 1, coordY);
+                            if (coordY- 1 >= 0) moves.emplace_back(coordX, coordY - 1);
+                            if (coordY + 1 < 8) moves.emplace_back(coordX, coordY + 1);
+                            return moves;
+                        });
+                    }
+                    if (casterPiece->getMovesMode() == 1){
+                        piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                            vector<std::pair<int, int>> moves;
+                            int coordX = piece->getCoordX();
+                            int coordY = piece->getCoordY();
+                            for (int i = 1; i < 8; ++i) {
+                                if (coordX + i < 8) moves.emplace_back(coordX + i, coordY);
+                                if (coordX - i >= 0) moves.emplace_back(coordX - i, coordY);
+                                if (coordY- i >= 0) moves.emplace_back(coordX, coordY - i);
+                                if (coordY + i < 8) moves.emplace_back(coordX, coordY + i);
+                            }
+                            return moves;
+                        });
+                    }
+                    if (casterPiece->getMovesMode() == 2){
+                        piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                            vector<std::pair<int, int>> moves;
+                            int coordX = piece->getCoordX();
+                            int coordY = piece->getCoordY();
+                            for (int i = 1; i < 8; ++i) {
+                                if (coordX + i < 8 && coordY + i < 8) moves.emplace_back(coordX + i, coordY + i);
+                                if (coordX - i >= 0 && coordY + i < 8) moves.emplace_back(coordX - i, coordY + i);
+                                if (coordX + i < 8 && coordY- i >= 0) moves.emplace_back(coordX + i, coordY - i);
+                                if (coordX - i >= 0 && coordY - i >= 0) moves.emplace_back(coordX - i, coordY - i);
+                            }
+                            return moves;
+                        });
+                    }
+                    if (casterPiece->getMovesMode() == 3){
+                        piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                            vector<std::pair<int, int>> moves;
+                            int coordX = piece->getCoordX();
+                            int coordY = piece->getCoordY();
+                            if (coordX + 1 < 8 && coordY + 2 < 8) moves.emplace_back(coordX + 1, coordY + 2);
+                            if (coordX - 1 >= 0 && coordY + 2 < 8) moves.emplace_back(coordX - 1, coordY + 2);
+                            if (coordX + 1 < 8 && coordY- 2 >= 0) moves.emplace_back(coordX + 1, coordY - 2);
+                            if (coordX - 1 >= 0 && coordY - 2 >= 0) moves.emplace_back(coordX - 1, coordY - 2);
+                            if (coordX + 2 < 8 && coordY + 1 < 8) moves.emplace_back(coordX + 2, coordY + 1);
+                            if (coordX - 2 >= 0 && coordY + 1 < 8) moves.emplace_back(coordX - 2, coordY + 1);
+                            if (coordX + 2 < 8 && coordY- 1 >= 0) moves.emplace_back(coordX + 2, coordY - 1);
+                            if (coordX - 2 >= 0 && coordY - 1 >= 0) moves.emplace_back(coordX - 2, coordY - 1);
+                            return moves;
+                        });
+                    }
+                    if (casterPiece->getMovesMode() == 4){
+                        piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                            vector<std::pair<int, int>> moves;
+                            int coordX = piece->getCoordX();
+                            int coordY = piece->getCoordY();
+                            for (int i = 1; i < 8; ++i) {
+                                if (coordX + i < 8 && coordY + i < 8) moves.emplace_back(coordX + i, coordY + i);
+                                if (coordX - i >= 0 && coordY + i < 8) moves.emplace_back(coordX - i, coordY + i);
+                                if (coordX + i < 8 && coordY- i >= 0) moves.emplace_back(coordX + i, coordY - i);
+                                if (coordX - i >= 0 && coordY - i >= 0) moves.emplace_back(coordX - i, coordY - i);
+                                if (coordX + i < 8) moves.emplace_back(coordX + i, coordY);
+                                if (coordX - i >= 0) moves.emplace_back(coordX - i, coordY);
+                                if (coordY- i >= 0) moves.emplace_back(coordX, coordY - i);
+                                if (coordY + i < 8) moves.emplace_back(coordX, coordY + i);
+                            }
+                            return moves;
+                        });
                     }
                 }
                 return true;

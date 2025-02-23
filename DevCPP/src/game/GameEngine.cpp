@@ -14,6 +14,8 @@
 #include <set>
 #include <uiElements.h>
 
+#include "Gilgamesh.h"
+
 GameEngine::GameEngine() : current_state(INITIALISATION) , last_state(INITIALISATION) {
         state_handlers[INITIALISATION] = [this]() { handleInitialisation(); };
         state_handlers[START_WHITE_PHASE] = [this]() { handleStartWhitePhase(); };
@@ -190,6 +192,8 @@ void GameEngine::handleEndWhitePhase() {
                 piece->passive(context);
                 piece->canEvolve(context);
             }
+            if (piece->getCharacters() == GILGAMESH)
+                piece->passive(context);
             if (piece != context->piece)
                 piece->setNB_TurnWithoutMoving(piece->getNB_TurnWithoutMoving() + 1);
             if (piece == context->piece)
@@ -319,6 +323,8 @@ void GameEngine::handleEndBlackPhase() {
                 piece->passive(context);
                 piece->canEvolve(context);
             }
+            if (piece->getCharacters() == GILGAMESH)
+                piece->passive(context);
             if (piece != context->piece)
                 piece->setNB_TurnWithoutMoving(piece->getNB_TurnWithoutMoving() + 1);
             if (piece == context->piece)

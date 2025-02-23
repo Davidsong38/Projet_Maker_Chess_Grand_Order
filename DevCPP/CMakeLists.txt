@@ -13,6 +13,8 @@ add_executable(Chess_Grand_Order
         src/game/characters/pieces/rook/Xu_Fu.h
         src/game/characters/pieces/queen/Nitocris_Alter.cpp
         src/game/characters/pieces/queen/Nitocris_Alter.h
+        src/game/characters/pieces/king/Gilgamesh.cpp
+        src/game/characters/pieces/king/Gilgamesh.h
 )
 
 add_compile_options(-Wno-int-to-pointer-cast)

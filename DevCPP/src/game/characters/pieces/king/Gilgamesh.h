@@ -1,34 +1,34 @@
 //
-// Created by Megaport on 20/02/2025.
+// Created by Megaport on 22/02/2025.
 //
 
-#ifndef XU_FU_H
-#define XU_FU_H
+#ifndef GILGAMESH_H
+#define GILGAMESH_H
 
 
-#include <Rook.h>
+
 #include <textures.h>
 #include <uiElements.h>
 #include "RenderEngine.h"
 #include "rendering_cfg.h"
 
+#include "King.h"
 
 
-class Xu_Fu final : public Rook{
+class Gilgamesh final: public King{
     protected :
-    int CNT_Shield = 0;
-    int ShieldChance = 100;
+        int CNT_NotMove = 0;
+        int CNT_EvolvedForm = 0;
 public:
-    Xu_Fu(int startX, int startY, bool white, Characters_List hero,
+    Gilgamesh(int startX, int startY, bool white, Characters_List hero,
         Pieces_List pieces_root)
-        : Rook(startX, startY, white, hero, pieces_root) {
+        : King(startX, startY, white, hero, pieces_root) {
         addAdditionalUIElement(
-            xufuTexture,
+            gilgameshTexture,
             glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
             this
         );
     }
-
 
     //[[nodiscard]] vector<Effect_List> getCasterEffects() const override;
     [[nodiscard]] vector<pair<int, int>> getEffectRange(Effect_List effect) const override;
@@ -37,9 +37,9 @@ public:
     bool evolvedForm(void* arg) override;
     bool SpellActivationCheck(void *arg) override;
     void setPieceGameMode(int piece_game_mode) override;
+    [[nodiscard]] vector<pair<int, int>> getMoves() override;
+
 
 };
 
-
-
-#endif //XU_FU_H
+#endif //GILGAMESH_H

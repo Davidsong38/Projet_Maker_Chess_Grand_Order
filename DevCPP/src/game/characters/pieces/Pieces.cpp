@@ -95,6 +95,23 @@ vector<pair<int, int>> Pieces::getAllMovesDoneBefore() const{
     return AllMovesDoneBefore;
 }
 
+int Pieces::getMovesMode() const{
+    return movesMode;
+}
+
+function<vector<pair<int, int>>()> Pieces::getOverrideMoves() const{
+    return overrideMoves;
+}
+
+void Pieces::clearOverrideMoves(){
+    overrideMoves = nullptr;
+}
+
+
+void Pieces::setOverrideMoves(const function<vector<pair<int, int>>()>& override_moves){
+    overrideMoves = override_moves;
+}
+
 void Pieces::addToAllMovesDoneBefore(int lastCoordX, int lastCoordY){
     AllMovesDoneBefore.emplace_back(lastCoordX,lastCoordY);
 }
@@ -196,6 +213,8 @@ void Pieces::updateEffectStatus() {
             //std::cout << "allllllezzzzz" << std::endl;
             this->setIsWhite(not this->getIsWhite());
         }
+        if (effect->effect == MOVE_CHANGING && effect->effect_amount == 0)
+            clearOverrideMoves();
         effect->decrement_duration();
         if (effect->isExpired()) {
             effect= activeEffects.erase(effect);
