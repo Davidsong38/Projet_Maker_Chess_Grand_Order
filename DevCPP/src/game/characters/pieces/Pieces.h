@@ -84,6 +84,7 @@ class Pieces : public SpriteTarget{
         [[nodiscard]] int getMovesMode() const;
         [[nodiscard]] function<vector<pair<int, int>>()> getOverrideMoves() const;
 
+        void setMovesMode(int moves_mode);
         void clearOverrideMoves();
         void setOverrideMoves(const function<vector<pair<int, int>>()>& override_moves);
         void addToAllMovesDoneBefore(int lastCoordX, int lastCoordY);

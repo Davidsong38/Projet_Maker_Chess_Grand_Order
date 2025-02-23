@@ -103,6 +103,10 @@ function<vector<pair<int, int>>()> Pieces::getOverrideMoves() const{
     return overrideMoves;
 }
 
+void Pieces::setMovesMode(int moves_mode){
+    movesMode = moves_mode;
+}
+
 void Pieces::clearOverrideMoves(){
     overrideMoves = nullptr;
 }
@@ -213,8 +217,11 @@ void Pieces::updateEffectStatus() {
             //std::cout << "allllllezzzzz" << std::endl;
             this->setIsWhite(not this->getIsWhite());
         }
-        if (effect->effect == MOVE_CHANGING && effect->effect_amount == 0)
+        if (effect->effect == MOVE_CHANGING && effect->effect_amount == 0){
+            setMovesMode(0);
             clearOverrideMoves();
+            std::cout << "abracadabra" << std::endl;
+        }
         effect->decrement_duration();
         if (effect->isExpired()) {
             effect= activeEffects.erase(effect);

@@ -276,6 +276,7 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                     auto* casterPiece = static_cast<Pieces*>(effect_instance.caster_piece);
                     if (casterPiece->getMovesMode() == 0){
                         piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                            piece->setMovesMode(0);
                             vector<std::pair<int, int>> moves;
                             int coordX = piece->getCoordX();
                             int coordY = piece->getCoordY();
@@ -292,6 +293,7 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                     }
                     if (casterPiece->getMovesMode() == 1){
                         piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                            piece->setMovesMode(1);
                             vector<std::pair<int, int>> moves;
                             int coordX = piece->getCoordX();
                             int coordY = piece->getCoordY();
@@ -306,6 +308,7 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                     }
                     if (casterPiece->getMovesMode() == 2){
                         piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                            piece->setMovesMode(2);
                             vector<std::pair<int, int>> moves;
                             int coordX = piece->getCoordX();
                             int coordY = piece->getCoordY();
@@ -320,6 +323,7 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                     }
                     if (casterPiece->getMovesMode() == 3){
                         piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                            piece->setMovesMode(3);
                             vector<std::pair<int, int>> moves;
                             int coordX = piece->getCoordX();
                             int coordY = piece->getCoordY();
@@ -336,6 +340,7 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                     }
                     if (casterPiece->getMovesMode() == 4){
                         piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                            piece->setMovesMode(4);
                             vector<std::pair<int, int>> moves;
                             int coordX = piece->getCoordX();
                             int coordY = piece->getCoordY();
@@ -353,6 +358,7 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                         });
                     }
                 }
+                piece->addEffectStatus(effect_instance);
                 return true;
             });
             break;

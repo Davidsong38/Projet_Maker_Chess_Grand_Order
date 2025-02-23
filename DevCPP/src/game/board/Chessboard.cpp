@@ -400,7 +400,7 @@ vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
     vector<pair<int, int>> valid_moves;
     vector<pair<int, int>> piece_moves = piece->getMoves();
     if (piece->getOverrideMoves() != nullptr){
-        std::cout << "alors je sais pas mais la ca me casse les couilles" << std::endl;
+        //std::cout << "alors je sais pas mais la ca me casse les couilles" << std::endl;
         piece_moves = piece->getOverrideMoves()();
     }
     //cout << "moves : " <<piece_moves.size() << endl;
@@ -451,12 +451,9 @@ vector<pair<int, int>> Chessboard::getValidMoves(Pieces* piece) const {
             isTargetAlly = isAlly(piece,grid[to_coordX][to_coordY]);
         bool knight = piece->isKnight();
         bool pathClear = true;
-        if (!knight)
+        if (!knight && piece->getMovesMode() != 3 || knight && piece->getMovesMode() != 0 && piece->getMovesMode() != 3)
             pathClear = isPathClear(to_coordX,to_coordY, piece);
-        if (inGrid && (emptySquare || !isTargetAlly) && pathClear && !knight && notBroken) {
-            valid_moves.emplace_back(move);
-        }
-        if (inGrid && (emptySquare || !isTargetAlly) && knight && notBroken) {
+        if (inGrid && (emptySquare || !isTargetAlly) && pathClear && notBroken) {
             valid_moves.emplace_back(move);
         }
     }
