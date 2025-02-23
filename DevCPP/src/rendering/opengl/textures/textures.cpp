@@ -37,8 +37,9 @@ Texture* xufuTexture;
 Texture* zhouTexture;
 
 Texture* emptyTexture;
-
-std::string texNames[TEX_COUNT];
+Texture* whiteTexture;
+Texture* screenBlockerTexture;
+Texture* selectionTexture;
 
 void loadTextures() {
     GLuint texture_ids[TEX_COUNT];
@@ -50,34 +51,31 @@ void loadTextures() {
     backgroundTexture = new Texture(texture_ids[TEX_BACKGROUND], "background.jpg", GL_RGB);
     boardTexture = new Texture(texture_ids[TEX_BOARD], "board.png", GL_RGBA);
 
-    arcueidTexture = new Texture(texture_ids[TEX_ARCUEID],"arcueid.png",GL_RGBA);
-    artoriaTexture = new Texture(texture_ids[TEX_ARTORIA],"artoria.png",GL_RGBA);
-    astolfoTexture = new Texture(texture_ids[TEX_ASTOLFO],"astolfo.png",GL_RGBA);
-    bbdubaiTexture = new Texture(texture_ids[TEX_BBDUBAI],"bbdubai.png",GL_RGBA);
-    gilgameshTexture = new Texture(texture_ids[TEX_GILGAMESH],"gilgamesh.png",GL_RGBA);
-    kiaraTexture = new Texture(texture_ids[TEX_KIARA],"kiara.png",GL_RGBA);
-    kintoshiTexture = new Texture(texture_ids[TEX_KINTOKI],"kintoshi.png",GL_RGBA);
-    kukulcanTexture = new Texture(texture_ids[TEX_KUKULCAN],"kukulcan.png",GL_RGBA);
-    mashTexture = new Texture(texture_ids[TEX_MASH],"mash.png",GL_RGBA);
-    medusaTexture = new Texture(texture_ids[TEX_MEDUSA],"medusa.png",GL_RGBA);
-    melusineTexture = new Texture(texture_ids[TEX_MELUSINE],"melusine.png",GL_RGBA);
-    merlinTexture = new Texture(texture_ids[TEX_MERLIN],"merlin.png",GL_RGBA);
-    nemoMarxTexture = new Texture(texture_ids[TEX_NEMO_MARX],"nemo_marx.png",GL_RGBA);
-    nitocrisTexture = new Texture(texture_ids[TEX_NITOCRIS],"nitocris.png",GL_RGBA);
-    nobuTexture = new Texture(texture_ids[TEX_NOBU],"nobu.png",GL_RGBA);
-    oberonTexture = new Texture(texture_ids[TEX_OBERON],"oberon.png",GL_RGBA);
-    okitaTexture = new Texture(texture_ids[TEX_OKITA],"okita.png",GL_RGBA);
-    tanamoTexture = new Texture(texture_ids[TEX_TANAMO],"tanamo.png",GL_RGBA);
-    ushiwakamaruTexture = new Texture(texture_ids[TEX_USHIWAKAMARU],"ushiwakamaru.png",GL_RGBA);
-    waverTexture = new Texture(texture_ids[TEX_WAVER],"waver.png",GL_RGBA);
-    xufuTexture = new Texture(texture_ids[TEX_XUFU],"xufu.png",GL_RGBA);
-    zhouTexture = new Texture(texture_ids[TEX_ZHOU],"zhou.png",GL_RGBA);
+    arcueidTexture = new Texture(texture_ids[TEX_ARCUEID],"characters/arcueid.png",GL_RGBA);
+    artoriaTexture = new Texture(texture_ids[TEX_ARTORIA],"characters/artoria.png",GL_RGBA);
+    astolfoTexture = new Texture(texture_ids[TEX_ASTOLFO],"characters/astolfo.png",GL_RGBA);
+    bbdubaiTexture = new Texture(texture_ids[TEX_BBDUBAI],"characters/bbdubai.png",GL_RGBA);
+    gilgameshTexture = new Texture(texture_ids[TEX_GILGAMESH],"characters/gilgamesh.png",GL_RGBA);
+    kiaraTexture = new Texture(texture_ids[TEX_KIARA],"characters/kiara.png",GL_RGBA);
+    kintoshiTexture = new Texture(texture_ids[TEX_KINTOKI],"characters/kintoshi.png",GL_RGBA);
+    kukulcanTexture = new Texture(texture_ids[TEX_KUKULCAN],"characters/kukulcan.png",GL_RGBA);
+    mashTexture = new Texture(texture_ids[TEX_MASH],"characters/mash.png",GL_RGBA);
+    medusaTexture = new Texture(texture_ids[TEX_MEDUSA],"characters/medusa.png",GL_RGBA);
+    melusineTexture = new Texture(texture_ids[TEX_MELUSINE],"characters/melusine.png",GL_RGBA);
+    merlinTexture = new Texture(texture_ids[TEX_MERLIN],"characters/merlin.png",GL_RGBA);
+    nemoMarxTexture = new Texture(texture_ids[TEX_NEMO_MARX],"characters/nemo_marx.png",GL_RGBA);
+    nitocrisTexture = new Texture(texture_ids[TEX_NITOCRIS],"characters/nitocris.png",GL_RGBA);
+    nobuTexture = new Texture(texture_ids[TEX_NOBU],"characters/nobu.png",GL_RGBA);
+    oberonTexture = new Texture(texture_ids[TEX_OBERON],"characters/oberon.png",GL_RGBA);
+    okitaTexture = new Texture(texture_ids[TEX_OKITA],"characters/okita.png",GL_RGBA);
+    tanamoTexture = new Texture(texture_ids[TEX_TANAMO],"characters/tanamo.png",GL_RGBA);
+    ushiwakamaruTexture = new Texture(texture_ids[TEX_USHIWAKAMARU],"characters/ushiwakamaru.png",GL_RGBA);
+    waverTexture = new Texture(texture_ids[TEX_WAVER],"characters/waver.png",GL_RGBA);
+    xufuTexture = new Texture(texture_ids[TEX_XUFU],"characters/xufu.png",GL_RGBA);
+    zhouTexture = new Texture(texture_ids[TEX_ZHOU],"characters/zhou.png",GL_RGBA);
 
-    emptyTexture = new Texture(texture_ids[TEX_EMPTY],"emptyCharacter.png",GL_RGBA);
-}
-
-void loadTextureNames() {
-    texNames[TEX_FARID] = "farid.png";
-    texNames[TEX_LTR] = "LTR.png";
-    texNames[TEX_FRAME_TEXTURE] = "frame.png";
+    emptyTexture = new Texture(texture_ids[TEX_EMPTY],"emptySquare.png",GL_RGBA);
+    whiteTexture = new Texture(texture_ids[TEX_WHITE],"whiteSquare.png",GL_RGBA);
+    screenBlockerTexture = new Texture(texture_ids[TEX_SCREEN_BLOCKER],"screenBlocker.png",GL_RGBA);
+    selectionTexture = new Texture(texture_ids[TEX_SELECTION],"selectionSquare.png",GL_RGBA);
 }

@@ -5,16 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(Chess_Grand_Order
         src/main.cpp
-        src/game/characters/pieces/bishop/Merlin.cpp
-        src/game/characters/pieces/bishop/Merlin.h
-        src/game/characters/pieces/knight/Okita.cpp
-        src/game/characters/pieces/knight/Okita.h
-        src/game/characters/pieces/rook/Xu_Fu.cpp
-        src/game/characters/pieces/rook/Xu_Fu.h
-        src/game/characters/pieces/queen/Nitocris_Alter.cpp
-        src/game/characters/pieces/queen/Nitocris_Alter.h
-        src/game/characters/pieces/king/Gilgamesh.cpp
-        src/game/characters/pieces/king/Gilgamesh.h
+
 )
 
 add_compile_options(-Wno-int-to-pointer-cast)
@@ -50,11 +41,21 @@ target_sources(Chess_Grand_Order PRIVATE
         src/game/characters/pieces/queen/Sesshoin_Kiara.cpp
         src/game/characters/pieces/rook/Rook.cpp
         src/game/characters/pieces/rook/Arceuid.cpp
+        src/game/characters/pieces/bishop/Merlin.cpp
+        src/game/characters/pieces/knight/Okita.cpp
+        src/game/characters/pieces/rook/Xu_Fu.cpp
+        src/game/characters/pieces/queen/Nitocris_Alter.cpp
+        src/game/characters/pieces/king/Gilgamesh.cpp
         src/game/effects/effect_List.cpp
         src/game/effects/EffectHandler.cpp
         src/game/inputs/mouseInputs.cpp
         src/game/inputs/Key.cpp
         src/game/inputs/keys.cpp
+        src/game/inputs/clickables/ClickableArea.cpp
+        src/game/inputs/clickables/CheckBox.cpp
+        src/game/inputs/clickables/Button.cpp
+        src/game/inputs/clickables/RadioButton.cpp
+        src/game/inputs/clickables/clickables.cpp
         src/physics/PhysicsEngine.cpp
         src/rendering/RenderEngine.cpp
         src/rendering/opengl/glFunctions.cpp
@@ -100,6 +101,7 @@ target_include_directories(Chess_Grand_Order PRIVATE
         src/game/characters/pieces/rook/
         src/game/effects/
         src/game/inputs/
+        src/game/inputs/clickables/
         src/physics/
         src/rendering/
         src/rendering/opengl/

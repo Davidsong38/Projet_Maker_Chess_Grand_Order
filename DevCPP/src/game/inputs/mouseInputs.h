@@ -14,9 +14,12 @@ void rightClickDown(glm::vec2 mousePos);
 void middleClickUp(glm::vec2 mousePos);
 void middleClickDown(glm::vec2 mousePos);
 
-glm::vec2 getMousePos();
 bool isLeftClickBeingHeld();
 bool isRightClickBeingHeld();
 bool isMiddleClickBeingHeld();
+
+glm::vec2 getMousePos();
+glm::vec2 getScreenMousePos();
+glm::vec2 getScreenMousePos(glm::vec2 mousePos);
 
 #endif //MOUSEINPUTS_H

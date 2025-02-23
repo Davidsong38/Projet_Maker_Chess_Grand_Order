@@ -13,6 +13,7 @@ public:
     virtual void draw() = 0;
     virtual void load() = 0;
     virtual void unload() = 0;
+    virtual float getDistanceToCamera() = 0;
 };
 
 

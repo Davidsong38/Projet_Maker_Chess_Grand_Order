@@ -6,6 +6,7 @@
 #define SPRITEGROUP_H
 
 #include <Displayable.h>
+#include <rendering_cfg.h>
 #include <Texture.h>
 #include <VAO.h>
 #include <Shader.h>
@@ -21,12 +22,14 @@ public:
     void unload() override;
     void addPosition(spritePositioner_type spritePositioner);
     void clearPositions();
+    float getDistanceToCamera() override { return -defaultLayer; }
 protected:
     VAO* vao;
     Texture* texture;
     Shader* shader;
     spritePositioner_type* spritePositioners;
     int positionsSize, positionCount{0};
+    float defaultLayer{LAYER_GROUND};
 };
 
 

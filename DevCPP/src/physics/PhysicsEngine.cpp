@@ -4,14 +4,14 @@
 
 #include "PhysicsEngine.h"
 
-#include <iostream>
+#include <log.h>
 
 PhysicsEngine::PhysicsEngine() {
-    std::cout << "Creating Physics Engine" << std::endl;
+    ltr_log_info("Creating Physics Engine");
 }
 
 PhysicsEngine::~PhysicsEngine() {
-    std::cout << "Destroying Physics Engine" << std::endl;
+    ltr_log_info("Destroying Physics Engine");
 }
 
 PhysicsEngine* PhysicsEngine::getInstance() {

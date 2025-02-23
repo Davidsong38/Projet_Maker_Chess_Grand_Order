@@ -12,13 +12,15 @@
 #include "Displayable.h"
 #include "SpriteTarget.h"
 
-class Sprite : Displayable {
+class Sprite : public Displayable {
 public:
     Sprite(Texture* texture, glm::vec3 position, glm::vec2 size);
     Sprite(Texture* texture, glm::vec2 size, SpriteTarget* target);
+    Sprite(Texture* texture, glm::vec2 size, SpriteTarget* target, float layer);
     void draw() override;
     void load() override;
     void unload() override;
+    float getDistanceToCamera() override { return -position.z; }
 protected:
     VAO* vao;
     Texture* texture;

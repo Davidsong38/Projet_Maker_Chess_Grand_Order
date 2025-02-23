@@ -237,8 +237,8 @@ glm::vec2 platform_get_mouse_position() {
     POINT point = {};
     GetCursorPos(&point);
     const auto pos = glm::vec2(
-        (float)point.x/(float)currentWindowSize.x,
-        (float)point.y/(float)currentWindowSize.y
+        static_cast<float>(point.x) / static_cast<float>(currentWindowSize.x),
+        static_cast<float>(point.y) / static_cast<float>(currentWindowSize.y)
     );
     return pos;
 }
@@ -249,9 +249,7 @@ void* platform_load_gl_function(char* funName){
         static HMODULE openglDLL=LoadLibraryA((LPCSTR)"opengl32.dll");
         proc = GetProcAddress(openglDLL,funName);
         if (!proc){
-            char msg[64]{0};
-            sprintf(msg,"Failed to load: %s",funName);
-            log(LOG_FATAL,msg);
+            ltr_log_fatal("Failed to load : ", funName);
             return nullptr;
         }
     }

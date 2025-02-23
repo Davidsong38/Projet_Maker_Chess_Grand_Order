@@ -24,22 +24,22 @@ static glm::ivec2 resolution;
 static glm::ivec2 maxResolution;
 
 static void APIENTRY gl_debug_callback(
-    GLenum source,
-    GLenum type,
-    GLuint id,
+    GLenum /*source*/,
+    GLenum /*type*/,
+    GLuint /*id*/,
     GLenum severity,
-    GLsizei length,
+    GLsizei /*length*/,
     const GLchar* message,
-    const void* user
+    const void* /*user*/
 ){
     if (
         severity == GL_DEBUG_SEVERITY_LOW ||
         severity == GL_DEBUG_SEVERITY_MEDIUM ||
         severity == GL_DEBUG_SEVERITY_HIGH
     ) {
-        log(LOG_ERROR, message);
+        ltr_log_error(message);
     } else {
-        log(LOG_INFO, message);
+        ltr_log_gl_info(message);
     }
 }
 
@@ -67,12 +67,12 @@ void glInitCfg() {
 }
 
 void glInitFrameBuffers() {
-    log(LOG_INFO,"OpenGL Rendering Init Frame Buffer");
+    ltr_log_info("OpenGL Rendering Init Frame Buffer");
     // Frame Buffer
     glGenFramebuffers(1, &frameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     frameTexture->useAsTarget();
-    log(LOG_INFO,"OpenGL Rendering Init Render Buffer");
+    ltr_log_info("OpenGL Rendering Init Render Buffer");
     // Render Buffer
     glGenRenderbuffers(1, &renderBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
@@ -84,7 +84,7 @@ void glInitFrameBuffers() {
         GL_RENDERBUFFER,
         renderBuffer
     );
-    log(LOG_INFO,"OpenGL Rendering Init Check");
+    ltr_log_info("OpenGL Rendering Init Check");
     FATAL_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE,"Scene framebuffer incomplete");
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -129,13 +129,8 @@ void glWorldPostProcessing() {
 }
 
 void glRenderUI() {
-    for (int i = 0; i < UI_SPRITE_COUNT; i++) {
-        if (ui_sprites[i] == nullptr) continue;
-        ui_sprites[i]->draw();
-    }
-
     if (!didPiecesGetInitiated) return;
-    for (Sprite* sprite : ui_additional_sprites) {
+    for (auto* sprite : ui_sprites) {
         if (sprite == nullptr) continue;
         sprite->draw();
     }

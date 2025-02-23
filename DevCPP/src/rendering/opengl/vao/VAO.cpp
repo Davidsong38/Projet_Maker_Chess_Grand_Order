@@ -61,7 +61,7 @@ void VAO::initAttributes(const int attribConfig, const GLuint dataType) {
             break;
         }
         default: {
-            log(LOG_ERROR, "VAO::initAttributes: Unsupported attrib config");
+            ltr_log_error("VAO::initAttributes: Unsupported attrib config : ", attribConfig);
         }
     }
 }

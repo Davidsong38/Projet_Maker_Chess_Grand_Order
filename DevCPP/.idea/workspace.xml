@@ -31,13 +31,52 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ba82fa2-512b-4253-af3b-1ba77aac3bc6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/arcueid.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/artoria.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/astolfo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/bbdubai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/emptyCharacter.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/gilgamesh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/kiara.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/kintoki.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/kukulcan.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/mash.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/medusa.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/melusine.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/merlin.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/nemo_marx.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/nitocris.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/nobu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/oberon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/okita.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/tanamo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/ushiwakamaru.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/waver.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/xufu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/textures/zhou.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/GameEngine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/GameEngine.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/board/piece_loader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/piece_loader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/inputs/mouseInputs.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/inputs/mouseInputs.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/inputs/mouseInputs.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/inputs/mouseInputs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/physics/PhysicsEngine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/physics/PhysicsEngine.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/platform/windows.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/platform/windows.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/Displayable.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/Displayable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/RenderEngine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/RenderEngine.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/displayables/Sprite.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/displayables/Sprite.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/displayables/Sprite.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/displayables/Sprite.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/displayables/SpriteGroup.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/displayables/SpriteGroup.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/displayables/SpriteWithFilter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/displayables/SpriteWithFilter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/glRenderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/glRenderer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/textures/textures.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/textures/textures.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/textures/textures.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/textures/textures.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/ui/uiElements.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/ui/uiElements.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/ui/uiElements.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/ui/uiElements.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/vao/VAO.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/vao/VAO.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/config/rendering_cfg.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/config/rendering_cfg.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/logging/log.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/logging/log.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/logging/log.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/logging/log.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,10 +175,15 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Chess_Grand_Order">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Unnamed" type="CMakeListConfigurationType" factoryName="CMakeListConfigurationFactory">
       <method v="2" />
     </configuration>
-    <configuration name="Chess_Grand_Order" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Chess_Grand_Order" TARGET_NAME="Chess_Grand_Order" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Chess_Grand_Order" RUN_TARGET_NAME="Chess_Grand_Order">
+    <configuration name="Chess_Grand_Order" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Chess_Grand_Order" TARGET_NAME="Chess_Grand_Order" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Chess_Grand_Order" RUN_TARGET_NAME="Chess_Grand_Order">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -209,7 +253,7 @@
       <workItem from="1740048283600" duration="43307000" />
       <workItem from="1740131848266" duration="40412000" />
       <workItem from="1740246858500" duration="22487000" />
-      <workItem from="1740310083216" duration="18334000" />
+      <workItem from="1740310083216" duration="19586000" />
     </task>
     <servers />
   </component>

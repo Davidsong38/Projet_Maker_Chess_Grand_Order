@@ -34,6 +34,15 @@ Sprite::Sprite(Texture* texture, const glm::vec2 size, SpriteTarget* target) {
     this->spriteTarget = target;
 }
 
+Sprite::Sprite(Texture* texture, const glm::vec2 size, SpriteTarget* target, const float layer) {
+    this->vao = quadVAO;
+    this->texture = texture;
+    this->shader = basicSpriteShader;
+    this->position = glm::vec3(0,0,layer);
+    this->size = size;
+    this->spriteTarget = target;
+}
+
 void Sprite::draw() {
     if (this->spriteTarget != nullptr) {
         this->position.x = spriteTarget->getSpriteX();

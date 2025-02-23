@@ -8,15 +8,13 @@
 #include "glRenderer.h"
 #include "log.h"
 
-#include <iostream>
-
 RenderEngine* RenderEngine::instance = nullptr;
 glm::ivec2 RenderEngine::windowSize;
 glm::ivec2 RenderEngine::maxWindowSize;
 float RenderEngine::aspectRatio, RenderEngine::inverseAspectRatio;
 
 RenderEngine::RenderEngine() {
-    std::cout << "Creating Render Engine" << std::endl;
+    ltr_log_info("Creating Render Engine");
     platform_create_window(1920,1080,"Open Your Magic Circuit");
     maxWindowSize = glm::ivec2(1920,1080);
     updateWindowSize();
@@ -24,7 +22,7 @@ RenderEngine::RenderEngine() {
 }
 
 RenderEngine::~RenderEngine() {
-    std::cout << "Destroying Render Engine" << std::endl;
+    ltr_log_info("Destroying Render Engine");
 }
 
 RenderEngine* RenderEngine::getInstance() {

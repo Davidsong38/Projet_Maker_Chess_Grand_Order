@@ -4,6 +4,8 @@
 
 #include "GameEngine.h"
 
+#include <clickables.h>
+
 #include "effect_List.h"
 #include "characters_List.h"
 #include "pieces_List.h"
@@ -104,7 +106,7 @@ void GameEngine::handleSelectPieceGamemodeWhitePhase()
 
 void GameEngine::handleSelectWhitePhase() {
     if (context->piece == nullptr) {
-        log(LOG_ERROR,"Impossible state in GameEngine::handleSelectWhitePhase()");
+        ltr_log_error("Impossible state in GameEngine::handleSelectWhitePhase()");
         setLastState(current_state);
         return;
     }
@@ -235,7 +237,7 @@ void GameEngine::handleSelectPieceGamemodeBlackPhase(){
 
 void GameEngine::handleSelectBlackPhase() {
     if (context->piece == nullptr) {
-        log(LOG_ERROR,"Impossible state in GameEngine::handleSelectBlackPhase()");
+        ltr_log_error("Impossible state in GameEngine::handleSelectBlackPhase()");
         setLastState(current_state);
         return;
     }
@@ -365,6 +367,8 @@ GameEngine* GameEngine::getInstance() {
 
 void GameEngine::update(double deltaTime_ms) {
     state_handlers[current_state]();
+    if (get_key(KEY_P)->didKeyGetPressed())
+        screen_blocker->toggle();
     keys_update();
 }
 
