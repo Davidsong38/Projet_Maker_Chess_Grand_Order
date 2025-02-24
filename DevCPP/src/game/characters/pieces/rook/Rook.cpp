@@ -4,8 +4,8 @@
 
 #include "Rook.h"
 
-vector<pair<int, int> > Rook::getMoves() {
-    vector<std::pair<int, int>> moves;
+vector<glm::ivec2> Rook::getMoves() {
+    vector<glm::ivec2> moves;
     for (int i = 1; i < 8; ++i) {
         if (coordX + i < 8) moves.emplace_back(coordX + i, coordY);
         if (coordX - i >= 0) moves.emplace_back(coordX - i, coordY);

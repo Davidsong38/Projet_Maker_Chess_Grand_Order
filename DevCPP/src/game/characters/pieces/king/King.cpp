@@ -4,8 +4,8 @@
 
 #include "King.h"
 
-vector<pair<int, int> > King::getMoves() {
-    vector<std::pair<int, int>> moves;
+vector<glm::ivec2> King::getMoves() {
+    vector<glm::ivec2> moves;
         if (coordX + 1 < 8 && coordY + 1 < 8) moves.emplace_back(coordX + 1, coordY + 1);
         if (coordX - 1 >= 0 && coordY + 1 < 8) moves.emplace_back(coordX - 1, coordY + 1);
         if (coordX + 1 < 8 && coordY- 1 >= 0) moves.emplace_back(coordX + 1, coordY - 1);

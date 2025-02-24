@@ -8,12 +8,11 @@
 #include "EffectHandler.h"
 #include "Pieces.h"
 
+#include "phase_context.h"
+
 struct context_type {
     Pieces* piece;
     Pieces* target_piece;
-    Chessboard* chessboard;
-    Pieces* black_king;
-    Pieces* white_king;
     int toX;
     int toY;
 

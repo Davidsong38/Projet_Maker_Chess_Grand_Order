@@ -28,7 +28,7 @@ class Medusa_Saber final : public Bishop{
         }
 
         //[[nodiscard]] vector<Effect_List> getCasterEffects() const override;
-        [[nodiscard]] vector<pair<int, int>> getEffectRange(Effect_List effect) const override;
+        [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) const override;
         bool passive(void* arg) override;
         bool canEvolve(void* arg) override;
         bool evolvedForm(void* arg) override;

@@ -27,14 +27,13 @@ class Artoria final: public King{
             );
         }
 
-        //[[nodiscard]] vector<Effect_List> getCasterEffects() const override;
-        [[nodiscard]] vector<pair<int, int>> getEffectRange(Effect_List effect) const override;
+        [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) const override;
         bool passive(void* arg) override;
         bool canEvolve(void* arg) override;
         bool evolvedForm(void* arg) override;
         bool SpellActivationCheck(void *arg) override;
         void setPieceGameMode(int piece_game_mode) override;
-        [[nodiscard]] vector<pair<int, int>> getMoves() override;
+        [[nodiscard]] vector<glm::ivec2> getMoves() override;
 
 
 };

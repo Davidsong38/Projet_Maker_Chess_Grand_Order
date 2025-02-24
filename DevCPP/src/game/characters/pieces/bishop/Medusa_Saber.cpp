@@ -19,9 +19,9 @@ void Medusa_Saber::setPieceGameMode(int piece_game_mode) {
 }
 
 
-vector<pair<int, int> > Medusa_Saber::getEffectRange(Effect_List effect) const {
+vector<glm::ivec2> Medusa_Saber::getEffectRange(Effect_List effect) const {
 
-    vector<std::pair<int, int>> effect_range;
+    vector<glm::ivec2> effect_range;
 
     if (effect == STUN && evolved==false) {
         if (coordX + 1 < 8 && coordY + 1 < 8) effect_range.emplace_back(coordX + 1, coordY + 1);

@@ -36,21 +36,21 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
     //std::cout << "success: " << success << std::endl;
     switch (current_effect){
         case ALLY_TELEPORT :{
-            success = addEffectBehavior(ALLY_TELEPORT, [board,piece]() {
-                int toX = 0;
-                int toY = 0;
-                std::cout << "donnes les coord!!!";
-                std::cin >> toX >> toY;
-                if (toX >= 0 && toX < board->getGrid().size() && toY >= 0 && toY < board->getGrid().size()) {
-                    piece->setPosition(toX, toY);
-                    return true;
-                }
-                return false;
-            });
+            // success = addEffectBehavior(ALLY_TELEPORT, [board,piece]() {
+            //     int toX = 0;
+            //     int toY = 0;
+            //     std::cout << "donnes les coord!!!";
+            //     std::cin >> toX >> toY;
+            //     if (toX >= 0 && toX < board->getSize() && toY >= 0 && toY < board->getSize()) {
+            //         piece->setPosition(toX, toY);
+            //         return true;
+            //     }
+            //     return false;
+            // });
             break;
         }
         case AOE : {
-            success = addEffectBehavior(AOE, [board,piece]() {
+            success = addEffectBehavior(AOE, [board,piece, effect_instance]() {
                 if (piece->isKing())
                     return false;
                 for (const auto& e : piece->getActive_effects()) {
@@ -59,16 +59,7 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                         return true;
                     }
                 }
-                //std::cout << "BATARI" <<piece->getCoordX() << ' ' << piece->getCoordY() << "BATARU" << std::endl;
-                //board->getGrid()[piece->getCoordX()][piece->getCoordY()] = nullptr;
-                //std::cout << board->getGrid()[piece->getCoordX()][piece->getCoordY()] << std::endl;
-                if (piece->getIsWhite())
-                    GameEngine::getInstance()->NB_WhiteDead++;
-                if (!piece->getIsWhite())
-                    GameEngine::getInstance()->NB_BlackDead++;
-                board->addToDeadList(piece);
-                piece->setIsAlive(false);
-                board->deletePiece(piece);
+                piece->gotUnalivedBy(static_cast<Pieces*>(effect_instance.caster_piece), KILL_AOE_EFFECT);
                 return true;
             });
             break;
@@ -221,30 +212,18 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                                 return true;
                             }
                         }
-                        if (piece->getIsWhite())
-                            GameEngine::getInstance()->NB_WhiteDead++;
-                        if (!piece->getIsWhite())
-                            GameEngine::getInstance()->NB_BlackDead++;
-                        board->addToDeadList(piece);
-                        piece->setIsAlive(false);
-                        board->deletePiece(piece);
+                        piece->gotUnalivedBy(static_cast<Pieces*>(effect_instance.caster_piece), KILL_KILL_EFFECT);
                         return true;
                     }
                     return false;
-               }
+                }
                 for (const auto& e : piece->getActive_effects()) {
                     if (e.effect == IMMUNITY_EFFECT || e.effect == IMMORTALITY) {
                         piece->activateEffect(e.effect);
                         return true;
                     }
                 }
-                if (piece->getIsWhite())
-                    GameEngine::getInstance()->NB_WhiteDead++;
-                if (!piece->getIsWhite())
-                    GameEngine::getInstance()->NB_BlackDead++;
-                board->addToDeadList(piece);
-                piece->setIsAlive(false);
-                board->deletePiece(piece);
+                piece->gotUnalivedBy(static_cast<Pieces*>(effect_instance.caster_piece), KILL_KILL_EFFECT);
                 return true;
             });
             break;
@@ -254,16 +233,12 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                 std::cout << "coordX : " << coordX << " coordY : " << coordY << std::endl;
                 long long rd = rand() % board->getDeadList().size();
                 for (long long i = 0; i < board->getDeadList().size(); i++) {
-                    long long id = (rd + i) % board->getDeadList().size();
+                    const long long id = (rd + i) % board->getDeadList().size();
                     Pieces* resurrectPiece = board->getDeadList()[id];
                     if (resurrectPiece != nullptr && effect_instance.caster_piece !=nullptr
                         && resurrectPiece->getIsWhite() == static_cast<Pieces*>(effect_instance.caster_piece)->getIsWhite()){
-                        std::cout << "coordX : " << coordX << " coordY : " << coordY << std::endl;
-                        (*board->getGrid_ptr())[coordX][coordY] = resurrectPiece;
-                        resurrectPiece->setIsAlive(true);
-                        resurrectPiece->setPosition(coordX, coordY);
+                        resurrectPiece->gotResurrectedAt(static_cast<Pieces*>(effect_instance.caster_piece), glm::ivec2(coordX, coordY));
                         return true;
-                        //board->getDeadList().erase(board->getDeadList().begin()+id);
                     }
                 }
                 return true;
@@ -275,9 +250,9 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                 if (effect_instance.caster_piece != nullptr && static_cast<Pieces*>(effect_instance.caster_piece)->getCharacters() == GILGAMESH){
                     auto* casterPiece = static_cast<Pieces*>(effect_instance.caster_piece);
                     if (casterPiece->getMovesMode() == 0){
-                        piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                        piece->setOverrideMoves([piece]()->std::vector<glm::ivec2>{
                             piece->setMovesMode(0);
-                            vector<std::pair<int, int>> moves;
+                            vector<glm::ivec2> moves;
                             int coordX = piece->getCoordX();
                             int coordY = piece->getCoordY();
                             if (coordX + 1 < 8 && coordY + 1 < 8) moves.emplace_back(coordX + 1, coordY + 1);
@@ -292,9 +267,9 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                         });
                     }
                     if (casterPiece->getMovesMode() == 1){
-                        piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                        piece->setOverrideMoves([piece]()->std::vector<glm::ivec2>{
                             piece->setMovesMode(1);
-                            vector<std::pair<int, int>> moves;
+                            vector<glm::ivec2> moves;
                             int coordX = piece->getCoordX();
                             int coordY = piece->getCoordY();
                             for (int i = 1; i < 8; ++i) {
@@ -307,9 +282,9 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                         });
                     }
                     if (casterPiece->getMovesMode() == 2){
-                        piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                        piece->setOverrideMoves([piece]()->std::vector<glm::ivec2>{
                             piece->setMovesMode(2);
-                            vector<std::pair<int, int>> moves;
+                            vector<glm::ivec2> moves;
                             int coordX = piece->getCoordX();
                             int coordY = piece->getCoordY();
                             for (int i = 1; i < 8; ++i) {
@@ -322,9 +297,9 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                         });
                     }
                     if (casterPiece->getMovesMode() == 3){
-                        piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                        piece->setOverrideMoves([piece]()->std::vector<glm::ivec2>{
                             piece->setMovesMode(3);
-                            vector<std::pair<int, int>> moves;
+                            vector<glm::ivec2> moves;
                             int coordX = piece->getCoordX();
                             int coordY = piece->getCoordY();
                             if (coordX + 1 < 8 && coordY + 2 < 8) moves.emplace_back(coordX + 1, coordY + 2);
@@ -339,9 +314,9 @@ bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece,
                         });
                     }
                     if (casterPiece->getMovesMode() == 4){
-                        piece->setOverrideMoves([piece]()->std::vector<pair<int,int>>{
+                        piece->setOverrideMoves([piece]()->std::vector<glm::ivec2>{
                             piece->setMovesMode(4);
-                            vector<std::pair<int, int>> moves;
+                            vector<glm::ivec2> moves;
                             int coordX = piece->getCoordX();
                             int coordY = piece->getCoordY();
                             for (int i = 1; i < 8; ++i) {
@@ -392,14 +367,14 @@ bool EffectHandler::validTargetGettingEffect(Pieces *caster_piece, Pieces * targ
 bool EffectHandler::isEffectTargetInGrid(Pieces * target_piece) {
     int coordX = target_piece->getCoordX();
     int coordY = target_piece->getCoordY();
-    if (coordX >= 0 && coordX < Chessboard::getInstance()->getGrid().size() && coordY >= 0 && coordY < Chessboard::getInstance()->getGrid().size()) {
+    if (coordX >= 0 && coordX < Chessboard::getInstance()->getSize() && coordY >= 0 && coordY < Chessboard::getInstance()->getSize()) {
         return true;
     }
     return false;
 }
 
 bool EffectHandler::isEffectTargetInGrid(int coordX, int coordY){
-    if (coordX >= 0 && coordX < Chessboard::getInstance()->getGrid().size() && coordY >= 0 && coordY < Chessboard::getInstance()->getGrid().size()) {
+    if (coordX >= 0 && coordX < Chessboard::getInstance()->getSize() && coordY >= 0 && coordY < Chessboard::getInstance()->getSize()) {
         return true;
     }
     return false;
@@ -407,17 +382,17 @@ bool EffectHandler::isEffectTargetInGrid(int coordX, int coordY){
 
 
 int EffectHandler::applyEffectToTargets(Pieces *caster_piece, EffectInstance effect_instance) {
-    vector<pair<int,int>> effect_range = caster_piece->getEffectRange(effect_instance.getEffect());
+    vector<glm::ivec2> effect_range = caster_piece->getEffectRange(effect_instance.getEffect());
     unsigned num = chrono::system_clock::now().time_since_epoch().count();
     shuffle (effect_range.begin(), effect_range.end(), default_random_engine(num));
     int NB_targetTouched = 0;
     int CNT_target = 1;
     for (const auto &range: effect_range) {
-        //std::cout << "(" << range.first << ", " << range.second << ")" << std::endl;
+        //std::cout << "(" << range.x << ", " << range.y << ")" << std::endl;
         if (effect_instance.getNB_Target() == -1 || CNT_target <= effect_instance.getNB_Target()) {
-            int targetX = range.first;
-            int targetY = range.second;
-            Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
+            int targetX = range.x;
+            int targetY = range.y;
+            Pieces* target_piece =  Chessboard::getInstance()->getPieceAt(targetX, targetY);
             if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)) {
                 if (configureEffectHandler(targetX,targetY, target_piece,effect_instance)) {
                     GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
@@ -437,15 +412,15 @@ int EffectHandler::applyEffectToTargets(Pieces *caster_piece, EffectInstance eff
 
 
 int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectInstance effect_instance){
-    vector<pair<int,int>> effect_range = caster_piece->getEffectRange(effect_instance.getEffect());
+    vector<glm::ivec2> effect_range = caster_piece->getEffectRange(effect_instance.getEffect());
     int NB_targetTouched = 0;
     for (const auto &range: effect_range) {
         int targetX = GameEngine::getInstance()->getLastClickX();
         int targetY = GameEngine::getInstance()->getLastClickY();
         //std::cout << "oho" << std::endl;
-        Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
+        Pieces* target_piece =  Chessboard::getInstance()->getPieceAt(targetX, targetY);
         if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)
-            && targetX == range.first && targetY == range.second) {
+            && targetX == range.x && targetY == range.y) {
             //std::cout << "ablacabou" << std::endl;
             if (configureEffectHandler(targetX,targetY,target_piece,effect_instance)) {
                 GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);
@@ -462,13 +437,13 @@ int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectI
 }
 
 int EffectHandler::applyEffectToSelectionnedTarget(Pieces *caster_piece, EffectInstance effect_instance, int targetX , int targetY){
-    vector<pair<int,int>> effect_range = caster_piece->getEffectRange(effect_instance.getEffect());
+    vector<glm::ivec2> effect_range = caster_piece->getEffectRange(effect_instance.getEffect());
     int NB_targetTouched = 0;
     for (const auto &range: effect_range) {
         //std::cout << "oho" << std::endl;
-        Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
+        Pieces* target_piece =  Chessboard::getInstance()->getPieceAt(targetX, targetY);
         if (validTargetGettingEffect(caster_piece,target_piece,effect_instance) && isEffectTargetInGrid(target_piece)
-            && targetX == range.first && targetY == range.second) {
+            && targetX == range.x && targetY == range.y) {
 
             //std::cout << "ablacabou" << std::endl;
             if (configureEffectHandler(targetX,targetY,target_piece,effect_instance)) {
@@ -497,17 +472,17 @@ bool EffectHandler::applyBuffToSelf(Pieces* caster_piece, EffectInstance effect_
 }
 
 bool EffectHandler::applyToEmptyCell(Pieces* caster_piece, EffectInstance effect_instance){
-    vector<pair<int,int>> effect_range = caster_piece->getEffectRange(effect_instance.getEffect());
+    vector<glm::ivec2> effect_range = caster_piece->getEffectRange(effect_instance.getEffect());
     unsigned num = chrono::system_clock::now().time_since_epoch().count();
     shuffle (effect_range.begin(), effect_range.end(), default_random_engine(num));
     int NB_targetTouched = 0;
     int CNT_target = 1;
     for (const auto &range: effect_range) {
-        //std::cout << "(" << range.first << ", " << range.second << ")" << std::endl;
+        //std::cout << "(" << range.x << ", " << range.y << ")" << std::endl;
         if (effect_instance.getNB_Target() == -1 || CNT_target <= effect_instance.getNB_Target()) {
-            int targetX = range.first;
-            int targetY = range.second;
-            Pieces* target_piece =  Chessboard::getInstance()->getGrid()[targetX][targetY];
+            int targetX = range.x;
+            int targetY = range.y;
+            Pieces* target_piece =  Chessboard::getInstance()->getPieceAt(targetX, targetY);
             if (target_piece==nullptr && isEffectTargetInGrid(targetX,targetY)) {
                 if (configureEffectHandler(targetX,targetY,target_piece,effect_instance)) {
                     //GameEngine::getInstance()->setLastPieceTouchedByEffect(target_piece);

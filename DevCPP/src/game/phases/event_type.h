@@ -1,0 +1,27 @@
+//
+// Created by sebas on 23/02/2025.
+//
+
+#ifndef EVENT_TYPE_H
+#define EVENT_TYPE_H
+
+enum event_type {
+  EVENT_MOVE,
+  EVENT_KILL,
+  EVENT_SPELL_USED,
+  EVENT_EFFECT_TRIGGERED,
+  EVENT_EFFECT_APPLY,
+  EVENT_EFFECT_UPDATE,
+  EVENT_EFFECT_END,
+  EVENT_EVOLVED
+};
+
+enum kill_types {
+  KILL_NORMAL,
+  KILL_EN_PASSANT,
+  KILL_KILL_EFFECT,
+  KILL_AOE_EFFECT,
+  KILL_SACRIFICE
+};
+
+#endif //EVENT_TYPE_H

@@ -19,9 +19,9 @@ void Sesshoin_Kiara::setPieceGameMode(int piece_game_mode) {
 }
 
 
-vector<pair<int, int> > Sesshoin_Kiara::getEffectRange(Effect_List effect) const {
+vector<glm::ivec2> Sesshoin_Kiara::getEffectRange(Effect_List effect) const {
 
-    vector<std::pair<int, int>> effect_range;
+    vector<glm::ivec2> effect_range;
     if (effect == CHANGE_CONTROL_ADVANCE){
         for (int i = 0; i < 8; ++i){
             for (int j = 0; j < 8; ++j){

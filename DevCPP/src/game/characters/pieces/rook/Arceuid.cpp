@@ -17,8 +17,8 @@ void Arceuid::setPieceGameMode(int piece_game_mode) {
     return;
 }
 
-vector<pair<int, int> > Arceuid::getMoves() {
-    vector<std::pair<int, int>> moves;
+vector<glm::ivec2> Arceuid::getMoves() {
+    vector<glm::ivec2> moves;
     for (int i = 1; i < 8; ++i) {
         if (coordX + i < 8) moves.emplace_back(coordX + i, coordY);
         if (coordX - i >= 0) moves.emplace_back(coordX - i, coordY);
@@ -38,9 +38,9 @@ vector<pair<int, int> > Arceuid::getMoves() {
 
 
 
-vector<pair<int, int> > Arceuid::getEffectRange(Effect_List effect) const {
+vector<glm::ivec2> Arceuid::getEffectRange(Effect_List effect) const {
 
-    vector<std::pair<int, int>> effect_range;
+    vector<glm::ivec2> effect_range;
     if (effect == AOE){
         if (CNTGainEffect >=16){
             if (coordX + 1 < 8) effect_range.emplace_back(coordX + 1, coordY);

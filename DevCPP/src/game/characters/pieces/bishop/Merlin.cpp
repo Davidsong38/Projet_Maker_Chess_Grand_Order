@@ -20,9 +20,9 @@ void Merlin::setPieceGameMode(int piece_game_mode) {
 }
 
 
-vector<pair<int, int> > Merlin::getEffectRange(Effect_List effect) const {
+vector<glm::ivec2> Merlin::getEffectRange(Effect_List effect) const {
 
-    vector<std::pair<int, int>> effect_range;
+    vector<glm::ivec2> effect_range;
 
     if (effect == IMMUNITY_EFFECT && !chooseSpell) {
         if (coordX + 1 < 8) effect_range.emplace_back(coordX + 1, coordY);

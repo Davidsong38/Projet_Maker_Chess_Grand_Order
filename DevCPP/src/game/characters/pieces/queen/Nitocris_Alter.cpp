@@ -9,13 +9,13 @@
 
 
 void Nitocris_Alter::setPieceGameMode(int piece_game_mode) {
-    return;
+
 }
 
 
-vector<pair<int, int> > Nitocris_Alter::getEffectRange(Effect_List effect) const {
+vector<glm::ivec2> Nitocris_Alter::getEffectRange(Effect_List effect) const {
 
-    vector<std::pair<int, int>> effect_range;
+    vector<glm::ivec2> effect_range;
 
     if (effect == SPAWN_PIECES){
         for (int i = 1; i < 3; ++i) {

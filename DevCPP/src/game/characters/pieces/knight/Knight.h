@@ -13,7 +13,7 @@ class Knight : public Pieces{
             : Pieces(startX, startY, white, hero, pieces_root) {
         }
 
-        [[nodiscard]] vector<pair<int, int>> getMoves() override;
+        [[nodiscard]] vector<glm::ivec2> getMoves() override;
 
 };
 

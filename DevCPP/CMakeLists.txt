@@ -56,6 +56,7 @@ target_sources(Chess_Grand_Order PRIVATE
         src/game/inputs/clickables/Button.cpp
         src/game/inputs/clickables/RadioButton.cpp
         src/game/inputs/clickables/clickables.cpp
+        src/game/phases/PhaseHandler.cpp
         src/physics/PhysicsEngine.cpp
         src/rendering/RenderEngine.cpp
         src/rendering/opengl/glFunctions.cpp
@@ -102,6 +103,7 @@ target_include_directories(Chess_Grand_Order PRIVATE
         src/game/effects/
         src/game/inputs/
         src/game/inputs/clickables/
+        src/game/phases/
         src/physics/
         src/rendering/
         src/rendering/opengl/

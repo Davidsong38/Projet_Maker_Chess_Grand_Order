@@ -10,8 +10,8 @@ void Gilgamesh::setPieceGameMode(int piece_game_mode) {
         pieceGameMode = piece_game_mode;
 }
 
-vector<pair<int, int> > Gilgamesh::getMoves() {
-    vector<std::pair<int, int>> moves;
+vector<glm::ivec2> Gilgamesh::getMoves() {
+    vector<glm::ivec2> moves;
 
     if (!evolved || movesMode == 0){
         if (coordX + 1 < 8 && coordY + 1 < 8) moves.emplace_back(coordX + 1, coordY + 1);
@@ -70,9 +70,9 @@ vector<pair<int, int> > Gilgamesh::getMoves() {
 
 
 
-vector<pair<int, int> > Gilgamesh::getEffectRange(Effect_List effect) const {
+vector<glm::ivec2> Gilgamesh::getEffectRange(Effect_List effect) const {
 
-    vector<std::pair<int, int>> effect_range;
+    vector<glm::ivec2> effect_range;
     if (effect == MOVE_CHANGING){
         for (int i = 0; i < 8; ++i){
             for (int j = 0; j < 8; ++j){

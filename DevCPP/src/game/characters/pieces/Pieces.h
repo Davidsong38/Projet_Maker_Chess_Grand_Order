@@ -5,11 +5,8 @@
 #ifndef PIECES_H
 #define PIECES_H
 #include <functional>
-#include <iostream>
 #include <string>
-#include <utility>
 #include <vector>
-#include <memory>
 #include <SpriteTarget.h>
 
 #include "Pieces_List.h"
@@ -39,14 +36,16 @@ class Pieces : public SpriteTarget{
         //int lastPosY = coordY;
         int pieceGameMode = 0;
         int movesMode = 0;
-        vector<pair<int, int>> AllMovesDoneBefore;
+        vector<glm::ivec2> AllMovesDoneBefore;
 
         vector<EffectInstance> activeEffects ;
         //vector<Character_Instance> characters ;
         Characters_List characters;
         Pieces_List pieces_origin;
         string name;
-        function<vector<pair<int,int>>()> overrideMoves = nullptr;
+        function<vector<glm::ivec2>()> overrideMoves = nullptr;
+
+        std::vector<void*> events;
 
     public:
         bool selected = false;
@@ -57,8 +56,6 @@ class Pieces : public SpriteTarget{
         explicit Pieces(int startX, int startY, bool white, Characters_List hero, Pieces_List pieces_root)
         : coordX(startX), coordY(startY),isWhite(white) , characters(hero) , pieces_origin(pieces_root), name(Characters_List_to_string[characters]) {}
 
-        //explicit Pieces(string name);
-
         ~Pieces() override = default;;
 
         float getSpriteX() override;
@@ -68,8 +65,10 @@ class Pieces : public SpriteTarget{
         glm::vec4 getDefaultColor() override;
         bool isHidden() override;
 
-        void setIsAlive(bool is_alive);
+        void gotUnalivedBy(Pieces* killer, int killType);
+        void gotResurrectedAt(Pieces* caster, glm::ivec2 pos);
 
+        [[nodiscard]] bool hasThisEffect(Effect_List chosenEffect) const;
         [[nodiscard]] bool getIsFirstMove() const;
         [[nodiscard]] bool getFirstMoveLastTurn() const;
         [[nodiscard]] int getTurnStamp() const;
@@ -80,16 +79,14 @@ class Pieces : public SpriteTarget{
         [[nodiscard]] bool getIsOnAMove() const;
         [[nodiscard]] int getNB_TurnWithoutMoving() const;
         [[nodiscard]] bool getHasRoqued() const;
-        [[nodiscard]] vector<pair<int, int>> getAllMovesDoneBefore() const;
+        [[nodiscard]] vector<glm::ivec2> getAllMovesDoneBefore() const;
         [[nodiscard]] int getMovesMode() const;
-        [[nodiscard]] function<vector<pair<int, int>>()> getOverrideMoves() const;
+        [[nodiscard]] function<vector<glm::ivec2>()> getOverrideMoves() const;
 
         void setMovesMode(int moves_mode);
         void clearOverrideMoves();
-        void setOverrideMoves(const function<vector<pair<int, int>>()>& override_moves);
+        void setOverrideMoves(const function<vector<glm::ivec2>()>& override_moves);
         void addToAllMovesDoneBefore(int lastCoordX, int lastCoordY);
-        //void setLastPosX(int last_pos_x);
-        //void setLastPosY(int last_pos_y);
         void setHasRoqued(bool has_roqued);
         void setNB_TurnWithoutMoving(int nb_turn_without_moving);
         void setIsOnAMove(bool is_on_a_move);
@@ -108,7 +105,6 @@ class Pieces : public SpriteTarget{
         void setPosition(int newX,int newY);
 
         void addEffectStatus (EffectInstance effect_instance);
-        //void affectCharacter(const Character_Instance& character_instance);
         [[nodiscard]] bool hasEffectStatus (Effect_List effect) const;
         void updateEffectStatus ();
         void deleteEffect(Effect_List effect);
@@ -129,23 +125,16 @@ class Pieces : public SpriteTarget{
 
         [[nodiscard]] int getCNTMove() const;
 
-        // [[nodiscard]] vector<Character_Instance> getCharacters() const {
-      //     return characters;
-      // }
+        [[nodiscard]] virtual vector<glm::ivec2> getMoves() = 0;
+        [[nodiscard]] virtual vector<glm::ivec2> getEffectRange(Effect_List effect) const = 0;
 
-        [[nodiscard]] virtual vector<pair<int, int>> getMoves() = 0;
-        [[nodiscard]] virtual vector<pair<int, int>> getEffectRange(Effect_List effect) const = 0;
-
-
-
-        //[[nodiscard]] virtual vector<Effect_List> getCasterEffects() const = 0;
         [[nodiscard]] virtual bool isCheating() const {return false;}
         virtual bool passive(void* context) = 0;
         virtual bool canEvolve(void* context) = 0;
         virtual bool evolvedForm(void* context) = 0;
         virtual bool SpellActivationCheck(void* context) = 0;
 
-
+        void goToPosition(int x, int y);
 };
 
 

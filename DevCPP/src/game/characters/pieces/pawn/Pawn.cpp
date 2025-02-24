@@ -4,8 +4,8 @@
 
 #include "Pawn.h"
 
-vector<pair<int, int> > Pawn::getMoves() {
-    vector<std::pair<int, int>> moves;
+vector<glm::ivec2> Pawn::getMoves() {
+    vector<glm::ivec2> moves;
     if (pieces_origin == QUEEN) {
         for (int i = 1; i < 8; ++i) {
             if (coordX + i < 8 && coordY + i < 8) moves.emplace_back(coordX + i, coordY + i);

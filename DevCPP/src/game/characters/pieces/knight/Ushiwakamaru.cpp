@@ -7,12 +7,12 @@
 
 
 void Ushiwakamaru::setPieceGameMode(int piece_game_mode) {
-    return;
+
 }
 
 
-vector<pair<int, int> > Ushiwakamaru::getMoves() {
-    vector<std::pair<int, int>> moves;
+vector<glm::ivec2> Ushiwakamaru::getMoves() {
+    vector<glm::ivec2> moves;
     if (coordX + 1 < 8 && coordY + 2 < 8) moves.emplace_back(coordX + 1, coordY + 2);
     if (coordX - 1 >= 0 && coordY + 2 < 8) moves.emplace_back(coordX - 1, coordY + 2);
     if (coordX + 1 < 8 && coordY- 2 >= 0) moves.emplace_back(coordX + 1, coordY - 2);
@@ -31,9 +31,9 @@ vector<pair<int, int> > Ushiwakamaru::getMoves() {
 
 
 
-vector<pair<int, int> > Ushiwakamaru::getEffectRange(Effect_List effect) const {
+vector<glm::ivec2> Ushiwakamaru::getEffectRange(Effect_List effect) const {
 
-    vector<std::pair<int, int>> effect_range;
+    vector<glm::ivec2> effect_range;
 
     if (effect == STUN) {
         if (coordX + 1 < 8 && coordY + 1 < 8) effect_range.emplace_back(coordX + 1, coordY + 1);

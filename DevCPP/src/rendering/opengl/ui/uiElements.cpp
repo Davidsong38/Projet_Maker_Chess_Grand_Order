@@ -42,15 +42,15 @@ void addAdditionalUIElement(Texture* texture, const glm::vec2 size, SpriteTarget
   addAdditionalUIElement(reinterpret_cast<Displayable *>(new SpriteWithFilter(texture, size, target)));
 }
 
-void loadPossibleMoves(const std::vector<std::pair<int, int>>& possible_moves, const glm::vec4 color) {
-  for (const auto&[fst, snd] : possible_moves) {
+void loadPossibleMoves(const std::vector<glm::ivec2>& possible_moves, const glm::vec4 color) {
+  for (const auto& possible_move : possible_moves) {
     spritePositioner_type sprite_positioner{};
     constexpr float offset = 1.0f / BOARD_SIZE;
     constexpr float offset_2 = 2.0f / BOARD_SIZE;
     sprite_positioner.position = glm::vec3(offset - 1.0f, 1.0f - offset, LAYER_GROUND);
-    sprite_positioner.position.x += offset_2 * static_cast<float>(snd);
+    sprite_positioner.position.x += offset_2 * static_cast<float>(possible_move.y);
     sprite_positioner.position.x *= RenderEngine::getWindowInverseAspectRatio();
-    sprite_positioner.position.y -= offset_2 * static_cast<float>(fst);
+    sprite_positioner.position.y -= offset_2 * static_cast<float>(possible_move.x);
     sprite_positioner.size = glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE);
     sprite_positioner.defaultColor = color;
     possible_moves_sprite_group->addPosition(sprite_positioner);

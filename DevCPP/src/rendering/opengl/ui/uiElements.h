@@ -17,7 +17,7 @@ void initUIElements();
 void addAdditionalUIElement(Displayable* sprite);
 void addAdditionalUIElement(Texture* texture, glm::vec2 size, SpriteTarget* target);
 
-void loadPossibleMoves(const std::vector<std::pair<int, int>>& possible_moves, glm::vec4 color);
+void loadPossibleMoves(const std::vector<glm::ivec2>& possible_moves, glm::vec4 color);
 void unloadPossibleMoves();
 
 bool compareRenderOrder(Displayable* a, Displayable* b);

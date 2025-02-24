@@ -13,9 +13,9 @@ void Xu_Fu::setPieceGameMode(int piece_game_mode) {
 }
 
 
-vector<pair<int, int> > Xu_Fu::getEffectRange(Effect_List effect) const {
+vector<glm::ivec2> Xu_Fu::getEffectRange(Effect_List effect) const {
 
-    vector<std::pair<int, int>> effect_range;
+    vector<glm::ivec2> effect_range;
     if (effect == IMMORTALITY){
         for (int i = 0; i < 8; ++i){
             for (int j = 0; j < 8; ++j){
@@ -52,7 +52,6 @@ bool Xu_Fu::SpellActivationCheck(void *arg) {
             evolved = true;
         }
         if (GameEngine::getInstance()->receivedClick && evolved){
-            //std::cout << "ayayayayayayayayayayayayayayayayayay" << std::endl;
             if (evolvedForm(context)){
                 setIsOnAMove(false);
                 return true;

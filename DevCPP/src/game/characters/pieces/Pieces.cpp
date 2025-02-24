@@ -5,10 +5,11 @@
 #include "Pieces.h"
 
 #include <Context.h>
+#include <GameEngine.h>
 #include <iostream>
 #include <utility>
 #include "Effect_List.h"
-//Pieces::Pieces(string name) : name(std::move(name)) {}
+#include "Event.h"
 
 float Pieces::getSpriteX() {
     return (-0.875f + 0.25f * static_cast<float>(coordY)) * 1080.0f / 1920.0f;
@@ -41,6 +42,14 @@ glm::vec4 Pieces::getDefaultColor() {
 
 string Pieces::getName() {
     return name;
+}
+
+bool Pieces::hasThisEffect(const Effect_List chosenEffect) const {
+    for (const auto& e : activeEffects) {
+        if (e.effect == chosenEffect)
+            return true;
+        }
+    return false;
 }
 
 bool Pieces::getIsEvolved() const{
@@ -91,7 +100,7 @@ bool Pieces::getHasRoqued() const{
     return hasRoqued;
 }
 
-vector<pair<int, int>> Pieces::getAllMovesDoneBefore() const{
+vector<glm::ivec2> Pieces::getAllMovesDoneBefore() const{
     return AllMovesDoneBefore;
 }
 
@@ -99,7 +108,7 @@ int Pieces::getMovesMode() const{
     return movesMode;
 }
 
-function<vector<pair<int, int>>()> Pieces::getOverrideMoves() const{
+function<vector<glm::ivec2>()> Pieces::getOverrideMoves() const{
     return overrideMoves;
 }
 
@@ -112,7 +121,7 @@ void Pieces::clearOverrideMoves(){
 }
 
 
-void Pieces::setOverrideMoves(const function<vector<pair<int, int>>()>& override_moves){
+void Pieces::setOverrideMoves(const function<vector<glm::ivec2>()>& override_moves){
     overrideMoves = override_moves;
 }
 
@@ -178,10 +187,6 @@ bool Pieces::isHidden() {
     return !isAlive;
 }
 
-void Pieces::setIsAlive(bool is_alive) {
-    isAlive = is_alive;
-}
-
 
 void Pieces::addEffectStatus(EffectInstance effect_instance) {
 
@@ -194,12 +199,6 @@ Characters_List Pieces::getCharacters() const {
 Pieces_List Pieces::getPiecesOrigin() const {
     return pieces_origin;
 }
-
-
-//void Pieces::affectCharacter(const Character_Instance& character_instance) {
-//    characters.emplace_back(character_instance);
-//}
-
 
 bool Pieces::hasEffectStatus(Effect_List effect) const {
     for (const auto& e : activeEffects) {
@@ -241,29 +240,27 @@ void Pieces::deleteEffect(Effect_List effect)
 }
 
 void Pieces::activateEffect(Effect_List effect) {
-    //std::cout << "Yaharo0000"<<std::endl;
     for ( auto& e : activeEffects) {
-        //std::cout << Effect_List_to_string[e.effect] << "Yaharo"<<std::endl;
         if (e.caster_piece != nullptr && (e.effect == IMMUNITY_AOE || e.effect == IMMUNITY_EFFECT)){
             static_cast<Pieces*>(e.caster_piece)->evolved = true;
-            //std::cout << static_cast<Pieces*>(e.caster_piece)->getName() << static_cast<Pieces*>(e.caster_piece)->evolved <<std::endl;
         }
         if (e.effect == effect && !e.isExpired()) {
-            //std::cout << e.effect_amount << " je vais devenir fou " <<std::endl;
-            //std::cout << e.effect_duration << " je vais devenir fou " <<std::endl;
             e.activation();
-            //std::cout << "Effect " << Effect_List_to_string[e.effect] << " activated on piece!" << std::endl;
-
         }
     }
 }
 
 void Pieces::displayEffect() {
     for (const auto& e : activeEffects) {
-        std::cout << "Effect: " << Effect_List_to_string[e.effect]
-                  << ", Duration: " << (e.effect_duration == -1 ? "Infinite" : std::to_string(e.effect_duration))
-                  << ", Activations: " << (e.effect_amount == -1 ? "Infinite" : std::to_string(e.effect_amount))
-                  << std::endl;
+        ltr_log_info(
+            CONSOLE_COLOR_MAGENTA,
+            "Effect: ",
+            Effect_List_to_string[e.effect],
+            ", Duration: ",
+            e.effect_duration == -1 ? "Infinite" : std::to_string(e.effect_duration),
+            ", Activations: ",
+            e.effect_amount == -1 ? "Infinite" : std::to_string(e.effect_amount)
+        );
     }
 }
 
@@ -317,3 +314,92 @@ bool Pieces::isKing() const {
     return false;
 }
 
+void Pieces::goToPosition(const int x, const int y) {
+    ltr_log_info(
+        CONSOLE_COLOR_YELLOW,
+        isWhite? "White " : "Black ",
+        name,
+        " moved from (",
+        coordX,
+        ", ",
+        coordY,
+        ") to (",
+        x,
+        ", ",
+        y,
+        ")."
+    );
+    Chessboard::getInstance()->placePiece(x, y, this);
+    Chessboard::getInstance()->deletePiece(this);
+    auto* moveEvent = new EventMove(this);
+    coordX = x;
+    coordY = y;
+    isFirstMove = false;
+    moveEvent->setEndPos(glm::ivec2(x, y));
+    GameEngine::getInstance()->addEvent(moveEvent);
+    this->events.emplace_back(moveEvent);
+}
+
+void Pieces::gotUnalivedBy(Pieces* killer, const int killType) {
+    auto* killEvent = new EventKill(
+        this,
+        killer,
+        glm::ivec2(coordX, coordY),
+        killType
+    );
+    isAlive = false;
+    GameEngine::getInstance()->addEvent(killEvent);
+    this->events.emplace_back(killEvent);
+    Chessboard::getInstance()->addToDeadList(this);
+    if (killer != nullptr)
+        killer->setHasJustKilled(true);
+    if (isWhite)
+        GameEngine::getInstance()->NB_WhiteDead++;
+    else
+        GameEngine::getInstance()->NB_BlackDead++;
+    if (Chessboard::getInstance()->getPieceAt(coordX, coordY) == this)
+        Chessboard::getInstance()->deletePiece(this);
+    if (killer != nullptr)
+        ltr_log_info(
+            CONSOLE_COLOR_RED,
+            killer->getIsWhite() ? "White " : "Black ",
+            killer->getName(),
+            " killed ",
+            isWhite ? "White " : "Black ",
+            name
+        );
+    else
+        ltr_log_info(
+            CONSOLE_COLOR_RED,
+            isWhite ? "White " : "Black ",
+            name,
+            " somehow died"
+        );
+}
+
+void Pieces::gotResurrectedAt(Pieces* caster, const glm::ivec2 pos) {
+    if (Chessboard::getInstance()->getPieceAt(pos.x, pos.y) != nullptr)
+        ltr_log_info("Pieces::gotResurrectedAt::error couldn't resurrect at ", pos.x, " ", pos.y);
+    isAlive = true;
+    Chessboard::getInstance()->removeFromDeadList(this);
+    coordX = pos.x;
+    coordY = pos.y;
+    Chessboard::getInstance()->placePiece(pos.x, pos.y, this);
+    if (caster != nullptr)
+        ltr_log_info(
+            CONSOLE_COLOR_MAGENTA,
+            isWhite ? "White " : "Black ",
+            name,
+            " got resurrected by ",
+            caster->getName(),
+            " and deadList is now of size ",
+            Chessboard::getInstance()->getDeadList().size()
+        );
+    else
+        ltr_log_info(
+            CONSOLE_COLOR_MAGENTA,
+            isWhite ? "White " : "Black ",
+            name,
+            " got resurrected by a miracle"
+        );
+}
