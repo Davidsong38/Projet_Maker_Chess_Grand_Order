@@ -20,40 +20,34 @@ using namespace std;
 
 class Pieces : public SpriteTarget{
     protected:
-        int coordX;
-        int coordY;
+        int coordX, coordY;
         bool isWhite = false;
         bool evolved = false;
         bool isFirstMove = true;
         bool isAlive = true;
-        //bool canGetPassed = false;
         bool firstMoveLastTurn = false;
         bool canActivateEffects = false;
         bool hasJustKilled = false;
         bool isOnAMove = false;
         bool hasRoqued = false;
-        //int lastPosX = coordX;
-        //int lastPosY = coordY;
         int pieceGameMode = 0;
         int movesMode = 0;
         vector<glm::ivec2> AllMovesDoneBefore;
 
         vector<EffectInstance> activeEffects ;
-        //vector<Character_Instance> characters ;
         Characters_List characters;
         Pieces_List pieces_origin;
         string name;
         function<vector<glm::ivec2>()> overrideMoves = nullptr;
 
         std::vector<void*> events;
-
     public:
         bool selected = false;
         int CNTMove = 0;
         int TurnStamp = 0;
         int NB_TurnWithoutMoving = 0;
 
-        explicit Pieces(int startX, int startY, bool white, Characters_List hero, Pieces_List pieces_root)
+        explicit Pieces(const int startX, const int startY, const bool white, const Characters_List hero, const Pieces_List pieces_root)
         : coordX(startX), coordY(startY),isWhite(white) , characters(hero) , pieces_origin(pieces_root), name(Characters_List_to_string[characters]) {}
 
         ~Pieces() override = default;;
@@ -116,12 +110,12 @@ class Pieces : public SpriteTarget{
         [[nodiscard]] Characters_List getCharacters() const;
         [[nodiscard]] Pieces_List getPiecesOrigin() const;
 
-        [[nodiscard]] bool isPawn() const;
-        [[nodiscard]] bool isKnight() const;
-        [[nodiscard]] bool isBishop() const;
-        [[nodiscard]] bool isRook() const;
-        [[nodiscard]] bool isQueen() const;
-        [[nodiscard]] bool isKing() const;
+        [[nodiscard]] bool isPawn() const {return pieces_origin == PAWN;}
+        [[nodiscard]] bool isKnight() const {return pieces_origin == KNIGHT;}
+        [[nodiscard]] bool isBishop() const {return pieces_origin == BISHOP;}
+        [[nodiscard]] bool isRook() const {return pieces_origin == ROOK;}
+        [[nodiscard]] bool isQueen() const {return pieces_origin == QUEEN;}
+        [[nodiscard]] bool isKing() const {return pieces_origin == KING;}
 
         [[nodiscard]] int getCNTMove() const;
 

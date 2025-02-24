@@ -14,9 +14,6 @@ void glInitFrameBuffers();
 void glClearScreen();
 
 void glRender();
-void glRenderWorld();
-void glRenderSkyBox();
-void glWorldPostProcessing();
 void glRenderUI();
 
 #endif //GLRENDERER_H

@@ -16,6 +16,7 @@ using namespace std;
 struct chessboard_cell {
     Pieces* piece;
     bool selected;
+    glm::ivec2 pos;
 };
 
 
@@ -29,6 +30,11 @@ public:
     explicit Chessboard(const int size) : grid(size, vector<chessboard_cell>(size)) {
         instance = this;
         this->size = size;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                grid[i][j].pos = glm::ivec2(i, j);
+            }
+        }
     };
     static Chessboard* getInstance();
     void placePiece(int coordX, int coordY, Pieces* piece);
@@ -50,6 +56,7 @@ public:
     [[nodiscard]] bool isPathAllClear(int startX, int startY, int endX, int endY) const ;
     [[nodiscard]] bool isInGrid(int to_coordX, int to_coordY) const;
     [[nodiscard]] Pieces* getPieceAt(int coordX, int coordY) const;
+    [[nodiscard]] chessboard_cell* getCellAt(int coordX, int coordY);
     [[nodiscard]] int getSize() const {return size;}
 
     void deletePiece(const Pieces *piece);

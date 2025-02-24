@@ -32,15 +32,20 @@ enum GameState{
 };
 
 struct selection_type {
-    std::vector<Pieces*> white_pieces;
-    std::vector<Pieces*> black_pieces;
-    std::vector<glm::ivec2> empty_pieces;
+    std::vector<chessboard_cell*> white_pieces;
+    std::vector<chessboard_cell*> black_pieces;
+    std::vector<chessboard_cell*> empty_pieces;
+    int whites{0};
+    int blacks{0};
+    int emptys{0};
 };
 
 struct selection_request_type {
-    int whites;
-    int blacks;
-    int emptys;
+    int whites{0};
+    int blacks{0};
+    int emptys{0};
+    bool instantValidation{true};
+    std::vector<chessboard_cell*> banned_cells;
 };
 
 
@@ -76,30 +81,34 @@ public:
 
     [[nodiscard]] int getTurnNumber() const {return NB_Turn;}
 
-    void requestSelection(selection_request_type to_select);
-    [[nodiscard]] selection_type* getSelection() const {return current_selection;}
+    void requestSelection(const selection_request_type& to_select);
+    void validateSelection();
+    [[nodiscard]] selection_type* getSelection();
 
-    void addEvent(Event* event);
+    void addEvent(Event* event) const;
 private:
-    GameState current_state;
-    GameState last_state;
+    GameState current_state{};
+    GameState last_state{};
 
     Pieces* black_king{nullptr};
     Pieces* white_king{nullptr};
 
-    selection_type* current_selection;
-    selection_request_type required_selection;
-    phase_context_type current_phase_context;
-    std::vector<phase_context_type> phase_contexts;
+    selection_type* current_selection{nullptr};
+    selection_request_type required_selection{};
+    bool selectionGotValidated{false};
 
+    phase_context_type* current_phase_context = new phase_context_type();
+    std::vector<phase_context_type*> phase_contexts;
 
     inline static GameEngine* instance = nullptr;
-    context_type* context = new context_type();
     unordered_map<GameState, function<void()>> state_handlers;
+    context_type* context = new context_type();
 
-    void saveLastState() {last_state = current_state;};
+    void saveLastState() {last_state = current_state;}
+    void loadLastState() {current_state = last_state;}
+    void push_phase_context();
 
-    void handleInitialisation();
+    // States
 
     void handleStartWhitePhase();
     void handleSelectWhitePhase();
@@ -113,8 +122,8 @@ private:
     void handleCheckingBlackPhase();
     void handleEndBlackPhase();
 
+    void handleInitialisation();
     void handleSelectAny();
-
     void handleEndGame();
     void handleGameClose();
 };

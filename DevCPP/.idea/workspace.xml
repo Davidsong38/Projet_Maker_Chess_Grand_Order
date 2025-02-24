@@ -32,67 +32,19 @@
     <list default="true" id="5ba82fa2-512b-4253-af3b-1ba77aac3bc6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/.cmake/api/v1/query/cache-v2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/.cmake/api/v1/query/cmakeFiles-v1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/.cmake/api/v1/query/codemodel-v2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/.cmake/api/v1/query/toolchains-v1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeCache.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeFiles/3.30.5/CMakeCCompiler.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeFiles/3.30.5/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeFiles/3.30.5/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeFiles/3.30.5/CMakeRCCompiler.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeFiles/3.30.5/CMakeSystem.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeFiles/3.30.5/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeFiles/3.30.5/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmake-build-debug/CMakeFiles/cmake.check_cache" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/GameEngine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/GameEngine.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/GameEngine.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/GameEngine.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/board/context.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/context.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Bishop.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Bishop.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Bishop.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Bishop.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Merlin.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Merlin.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Merlin.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Merlin.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/King.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/King.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/King.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/King.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Knight.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Knight.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Knight.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Knight.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Okita.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Okita.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Okita.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Okita.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Pawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Pawn.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Pawn.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Pawn.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Nitocris_Alter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Nitocris_Alter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Nitocris_Alter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Nitocris_Alter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Queen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Queen.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Queen.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Queen.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Arceuid.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Arceuid.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Arceuid.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Arceuid.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Rook.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Rook.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Rook.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Rook.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/ui/uiElements.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/ui/uiElements.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/ui/uiElements.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/ui/uiElements.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/phases/phase_context.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/phases/phase_context.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/glRenderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/glRenderer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/glRenderer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/glRenderer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/textures/CubeMap.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/textures/CubeMap.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/textures/cubemaps.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/textures/cubemaps.h" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -270,7 +222,7 @@
       <workItem from="1740131848266" duration="40412000" />
       <workItem from="1740246858500" duration="22487000" />
       <workItem from="1740310083216" duration="19586000" />
-      <workItem from="1740385428953" duration="3794000" />
+      <workItem from="1740385428953" duration="10444000" />
     </task>
     <servers />
   </component>

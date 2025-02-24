@@ -11,7 +11,7 @@
 struct phase_context_type {
     Pieces* firstSelectedPiece;
     std::vector<Event*> events;
-    int phaseNumber;
+    int phaseNumber{0}, turnNumber{1};
 };
 
 #endif //PHASE_CONTEXT_H

@@ -37,6 +37,14 @@ Pieces* Chessboard::getPieceAt(const int coordX, const int coordY) const {
     return nullptr;
 }
 
+chessboard_cell* Chessboard::getCellAt(const int coordX, const int coordY) {
+    if (coordX >= 0 && coordX < grid.size() && coordY >= 0 && coordY < grid.size()) {
+        return &grid[coordX][coordY];
+    }
+    ltr_log_fatal("Invalid cell coordinates : ", coordX, " ", coordY);
+    return &grid[0][0];
+}
+
 vector<Pieces*> Chessboard::getDeadList() const{
     return deadList;
 }

@@ -63,8 +63,6 @@ target_sources(Chess_Grand_Order PRIVATE
         src/rendering/opengl/glRenderer.cpp
         src/rendering/opengl/shading/Shader.cpp
         src/rendering/opengl/shading/shaders.cpp
-        src/rendering/opengl/textures/CubeMap.cpp
-        src/rendering/opengl/textures/cubemaps.cpp
         src/rendering/opengl/textures/Texture.cpp
         src/rendering/opengl/textures/textures.cpp
         src/rendering/opengl/vao/VAO.cpp

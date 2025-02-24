@@ -272,48 +272,6 @@ void Pieces::setPiecesOrigin(Pieces_List pieces_origin) {
             this->pieces_origin = pieces_origin;
         }
 
-bool Pieces::isPawn() const {
-    if (pieces_origin == PAWN){
-        return true;
-        }
-    return false;
-}
-
-bool Pieces::isKnight() const {
-    if (pieces_origin == KNIGHT) {
-        return true;
-    }
-    return false;
-}
-
-bool Pieces::isBishop() const {
-    if (pieces_origin == BISHOP) {
-        return true;
-    }
-    return false;
-}
-
-bool Pieces::isRook() const {
-    if (pieces_origin == ROOK) {
-        return true;
-    }
-    return false;
-}
-
-bool Pieces::isQueen() const {
-    if (pieces_origin == QUEEN) {
-        return true;
-    }
-    return false;
-}
-
-bool Pieces::isKing() const {
-    if (pieces_origin == KING) {
-        return true;
-    }
-    return false;
-}
-
 void Pieces::goToPosition(const int x, const int y) {
     ltr_log_info(
         CONSOLE_COLOR_YELLOW,
