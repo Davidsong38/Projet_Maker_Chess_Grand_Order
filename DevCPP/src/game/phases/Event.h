@@ -1,5 +1,5 @@
 //
-// Created by sebas on 23/02/2025.
+// Created by david on 23/02/2025.
 //
 
 #ifndef EVENT_H
@@ -56,31 +56,98 @@ protected:
 
 class EventSpellUsed : public Event {
 public:
-  EventSpellUsed(const Pieces* casterPiece, const int spellType, const bool success)
-  : Event(EVENT_SPELL_USED), casterPiece(casterPiece), spellType(spellType), success(success) {
+  explicit EventSpellUsed(const EffectInstance *effect_instance)
+  : Event(EVENT_SPELL_USED), casterPiece(static_cast<const Pieces*>(effect_instance->caster_piece)), spellType(effect_instance->effect) {
+    this->casterPosition.x = casterPiece->getCoordX();
+    this->casterPosition.y = casterPiece->getCoordY();
+    for (auto &target: effect_instance->target_pieces) {
+      const auto piece = static_cast<Pieces*>(target);
+      targetPieces.emplace_back(piece);
+      spellPositions.emplace_back(piece->getCoordX(), piece->getCoordY());
+    }
+    for (auto &target: effect_instance->target_cells) {
+      const auto cell = static_cast<chessboard_cell*>(target);
+      targetCells.emplace_back(cell);
+      spellPositions.emplace_back(cell->pos);
+    }
+  }
+  void setSuccess(const bool success) {
+    if (this->success != -1)
+      return;
+    this->success = success ? 1 : 0;
+  }
+  const Pieces* casterPiece;
+  const int spellType;
+  [[nodiscard]] glm::ivec2 getCasterPosition() const {return casterPosition;}
+  [[nodiscard]] std::vector<Pieces *> getTargetPieces() const {return targetPieces;}
+  [[nodiscard]] std::vector<glm::ivec2> getSpellPositions() const {return spellPositions;}
+  [[nodiscard]] bool getSuccess() const {
+    return success == 1;
+  }
+protected:
+  glm::ivec2 casterPosition{};
+  std::vector<Pieces*> targetPieces;
+  std::vector<chessboard_cell*> targetCells{};
+  std::vector<glm::ivec2> spellPositions;
+  int success = -1;
+};
+
+class EventEffectTriggered : public Event {
+public:
+  explicit EventEffectTriggered(const EffectInstance *effect_instance)
+  : Event(EVENT_EFFECT_TRIGGERED), casterPiece(static_cast<const Pieces*>(effect_instance->caster_piece)), spellType(effect_instance->effect) {
     this->casterPosition.x = casterPiece->getCoordX();
     this->casterPosition.y = casterPiece->getCoordY();
   }
-  void addTargetPiece(Pieces* targetPiece) { this->targetPieces.emplace_back(targetPiece); }
-  void addSpellPosition(glm::ivec2 spellPosition) { this->spellPositions.emplace_back(spellPosition); }
+  void addTargetPiece(Pieces* targetPiece) {
+    this->targetPieces.emplace_back(targetPiece);
+    this->spellPositions.emplace_back(targetPiece->getCoordX(), targetPiece->getCoordY());
+  }
+  void addTargetCells(chessboard_cell* targetCell) {
+    this->targetCells.emplace_back(targetCell);
+    this->spellPositions.emplace_back(targetCell->pos);
+  }
   const Pieces* casterPiece;
   const int spellType;
-  const bool success;
   [[nodiscard]] glm::ivec2 getCasterPosition() const {return casterPosition;}
   [[nodiscard]] std::vector<Pieces *> getTargetPieces() const {return targetPieces;}
+  [[nodiscard]] std::vector<chessboard_cell *> getTargetCells() const {return targetCells;}
   [[nodiscard]] std::vector<glm::ivec2> getSpellPositions() const {return spellPositions;}
 protected:
   glm::ivec2 casterPosition{};
   std::vector<Pieces*> targetPieces;
+  std::vector<chessboard_cell*> targetCells{};
   std::vector<glm::ivec2> spellPositions;
 };
 
-class EventEffectTriggered {
-  ///TODO
-};
-
-class EventEffectApply {
-  ///TODO
+class EventEffectApply : public Event {
+public:
+  explicit EventEffectApply(const EffectInstance *effect_instance)
+  : Event(EVENT_EFFECT_APPLY), casterPiece(static_cast<const Pieces*>(effect_instance->caster_piece)), spellType(effect_instance->effect), duration(effect_instance->effect_duration), amount(effect_instance->effect_amount) {
+    this->casterPosition.x = casterPiece->getCoordX();
+    this->casterPosition.y = casterPiece->getCoordY();
+  }
+  void addTargetPiece(Pieces* targetPiece) {
+    this->targetPieces.emplace_back(targetPiece);
+    this->spellPositions.emplace_back(targetPiece->getCoordX(), targetPiece->getCoordY());
+  }
+  void addTargetCells(chessboard_cell* targetCell) {
+    this->targetCells.emplace_back(targetCell);
+    this->spellPositions.emplace_back(targetCell->pos);
+  }
+  const Pieces* casterPiece;
+  const int spellType;
+  const int duration;
+  const int amount;
+  [[nodiscard]] glm::ivec2 getCasterPosition() const {return casterPosition;}
+  [[nodiscard]] std::vector<Pieces *> getTargetPieces() const {return targetPieces;}
+  [[nodiscard]] std::vector<chessboard_cell *> getTargetCells() const {return targetCells;}
+  [[nodiscard]] std::vector<glm::ivec2> getSpellPositions() const {return spellPositions;}
+protected:
+  glm::ivec2 casterPosition{};
+  std::vector<Pieces*> targetPieces;
+  std::vector<chessboard_cell*> targetCells{};
+  std::vector<glm::ivec2> spellPositions;
 };
 
 class EventEffectUpdate {

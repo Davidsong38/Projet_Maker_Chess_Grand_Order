@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "Effect_List.h"
+#include "effects.h"
 #include "Pieces.h"
 
 using namespace std;
@@ -49,7 +49,7 @@ public:
 
     static bool isMoveable(const Pieces* piece) ; // vérifie si la pièce n'est pas affecté par des effets d'immobilisation
     bool isKilled(const Pieces* piece) const; // vérifie si la pièce est morte
-    static bool isAlly(Pieces* piece, Pieces* target_piece);
+    static bool isAlly(const Pieces* piece, const Pieces* target_piece);
     bool isPathClear(int endX, int endY, Pieces* piece) const ;
     bool isPathClear(int startX, int startY, int endX, int endY, Pieces* piece) const ;
     bool isPathAllClear(int endX, int endY, Pieces* piece) const ;

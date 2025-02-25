@@ -51,10 +51,12 @@ vector<Pieces*> Chessboard::getDeadList() const{
 
 void Chessboard::addToDeadList(Pieces* piece){
     deadList.emplace_back(piece);
+    ltr_log_info(CONSOLE_COLOR_GREEN, "Added dead piece ", piece->getName());
 }
 
 void Chessboard::removeFromDeadList(Pieces* piece){
-    deadList.erase(std::remove(deadList.begin(), deadList.end(), piece));
+    std::erase(deadList, piece);
+    ltr_log_info(CONSOLE_COLOR_RED, "Removed dead piece ", piece->getName());
 }
 
 void Chessboard::deletePiece (const Pieces* piece) {
@@ -68,7 +70,7 @@ void Chessboard::deletePiece (const Pieces* piece) {
 }
 
 
-bool Chessboard::isAlly(Pieces *piece, Pieces *target_piece) {
+bool Chessboard::isAlly(const Pieces *piece, const Pieces *target_piece) {
     if (piece->getIsWhite() == target_piece->getIsWhite()) {
         return true;
     }
@@ -498,8 +500,8 @@ bool Chessboard::isKillable(const Pieces *piece,Pieces* target_piece) {
     if (piece->isKing())
         return true;
     for (const auto& e : target_piece->getActive_effects()) {
-        if (e.effect == SHIELD || e.effect == IMMORTALITY ) {
-            target_piece->activateEffect(e.effect);
+        if (e->effect == SHIELD || e->effect == IMMORTALITY ) {
+            target_piece->activateEffect(e->effect);
             return false;
         }
 
@@ -584,7 +586,7 @@ bool Chessboard::isKilled(const Pieces *piece) const {
 
 bool Chessboard::isMoveable(const Pieces* piece) {
     for (const auto& e : piece->getActive_effects()) {
-        if (e.effect == STUN) {
+        if (e->effect == STUN) {
             return false;
         }
     }

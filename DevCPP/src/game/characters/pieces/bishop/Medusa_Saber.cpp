@@ -60,7 +60,15 @@ bool Medusa_Saber::SpellActivationCheck(void *arg) {
 
 bool Medusa_Saber::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (EffectHandler::applyEffectToTargets(this,EffectInstance{STUN,2,1,1}))
+    auto * effect_instance = new EffectInstance(
+        STUN,
+        this,
+        2,
+        2,
+        1
+    );
+    EffectHandler::selectRandomTargetPieces(effect_instance);
+    if (EffectHandler::applyToTargets(effect_instance))
         CNT_StunEffect++;
     return true;
 }
@@ -78,7 +86,15 @@ bool Medusa_Saber::canEvolve(void *arg) {
 bool Medusa_Saber::evolvedForm(void *arg) {
     auto * context = static_cast<context_type *>(arg);
     evolved = true;
-    EffectHandler::applyEffectToTargets(this,EffectInstance{AOE,1,1,-1});
+    auto *  effect_instance = new EffectInstance(
+        AOE,
+        this,
+        1,
+        1,
+        -1
+    );
+    EffectHandler::selectRandomTargetPieces(effect_instance);
+    EffectHandler::applyToTargets(effect_instance);
     return true;
 
 

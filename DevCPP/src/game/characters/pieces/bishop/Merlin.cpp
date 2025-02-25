@@ -98,9 +98,24 @@ bool Merlin::SpellActivationCheck(void *arg) {
 
 bool Merlin::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    EffectHandler::applyEffectToTargets(this,EffectInstance{IMMUNITY_EFFECT,-1,1,1,this});
-    EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{IMMUNITY_AOE,-1,1,1,this},
-        GameEngine::getInstance()->getLastPieceTouchedByEffect()->getCoordX(),GameEngine::getInstance()->getLastPieceTouchedByEffect()->getCoordY());
+    auto *  effect_instance_1 = new EffectInstance(
+        IMMUNITY_EFFECT,
+        this,
+        -1,
+        1,
+        1
+    );
+    auto *  effect_instance_2 = new EffectInstance(
+        IMMUNITY_AOE,
+        this,
+        -1,
+        1,
+        1
+    );
+    EffectHandler::selectRandomTargetPieces(effect_instance_1);
+    effect_instance_2->copyTargets(effect_instance_1);
+    EffectHandler::applyToTargets(effect_instance_1);
+    EffectHandler::applyToTargets(effect_instance_2);
     return true;
 }
 
@@ -116,10 +131,24 @@ bool Merlin::canEvolve(void *arg) {
 
 bool Merlin::evolvedForm(void *arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{IMMUNITY_EFFECT,-1,1,1,this}) &&
-        EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{IMMUNITY_AOE,-1,1,1,this})){
-        EffectHandler::applyBuffToSelf(this,EffectInstance{ONE_MORE_MOVE,1,1,1});
+    auto *  effect_instance_1 = new EffectInstance(
+        IMMUNITY_EFFECT,
+        this,
+        -1,
+        1,
+        1
+    );
+    auto *  effect_instance_2 = new EffectInstance(
+        IMMUNITY_AOE,
+        this,
+        -1,
+        1,
+        1
+    );
+    EffectHandler::selectRandomTargetPieces(effect_instance_1);
+    effect_instance_2->copyTargets(effect_instance_1);
+    if (EffectHandler::applyToTargets(effect_instance_1) && EffectHandler::applyToTargets(effect_instance_2))
         return true;
-    }
+    ///TODO ONE MORE MOVE
     return false;
 }

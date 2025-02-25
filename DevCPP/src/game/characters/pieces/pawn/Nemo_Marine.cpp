@@ -55,9 +55,16 @@ bool Nemo_Marine::SpellActivationCheck(void *arg) {
 
 bool Nemo_Marine::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    EffectHandler::applyEffectToTargets(context->piece,EffectInstance{STUN,2,2,1});
-    CNT_StunEffect++;
-
+    auto *  effect_instance = new EffectInstance(
+        STUN,
+        this,
+        2,
+        2,
+        1
+    );
+    EffectHandler::selectRandomTargetPieces(effect_instance);
+    if (EffectHandler::applyToTargets(effect_instance))
+        CNT_StunEffect++;
     return true;
 }
 

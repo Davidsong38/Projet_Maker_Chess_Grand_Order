@@ -4,6 +4,8 @@
 
 #include "mouseInputs.h"
 
+#include <log.h>
+
 #include "platform.h"
 #include "clickables.h"
 

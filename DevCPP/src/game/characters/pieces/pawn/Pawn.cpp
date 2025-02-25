@@ -20,7 +20,7 @@ vector<glm::ivec2> Pawn::getMoves() {
     }
 
     for (const auto& eff : activeEffects){
-        if (eff.effect == SUPP_RANGE){
+        if (eff->effect == SUPP_RANGE){
             for (int i = 1; i < 3; ++i) {
                     if (isWhite){
                         if (coordX - i >= 0 && coordY + i < 8) moves.emplace_back(coordX - i, coordY + i);

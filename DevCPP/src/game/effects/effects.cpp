@@ -4,11 +4,14 @@
 
 #include <iostream>
 
-#include "Effect_List.h"
+#include "effects.h"
+
+#include <log.h>
 
 string Effect_List_to_string[EFFECT_COUNT];
 bool isBuff_List[EFFECT_COUNT];
 bool isTriggerEffect_List[EFFECT_COUNT];
+
 void loadEffectList() {
     Effect_List_to_string[STUN] = "stun";
     Effect_List_to_string[CHANGE_CONTROL] = "changeControl";
@@ -31,6 +34,7 @@ void loadEffectList() {
     Effect_List_to_string[ENEMY_TELEPORT] = "enemy teleport";
     Effect_List_to_string[EVOLVE] = "evolve";
     Effect_List_to_string[SUPP_LUCK] = "suppLuck";
+
     isBuff_List[STUN] = false;
     isBuff_List[CHANGE_CONTROL] = false;
     isBuff_List[CHANGE_CONTROL_ADVANCE] = false;
@@ -52,6 +56,7 @@ void loadEffectList() {
     isBuff_List[ENEMY_TELEPORT] = false;
     isBuff_List[EVOLVE] = true;
     isBuff_List[SUPP_LUCK] = true;
+
     isTriggerEffect_List[STUN] = false;
     isTriggerEffect_List[CHANGE_CONTROL] = true;
     isTriggerEffect_List[CHANGE_CONTROL_ADVANCE] = true;
@@ -77,9 +82,6 @@ void loadEffectList() {
 
 }
 
-//EffectInstance::EffectInstance(const Effect_List effect, int effect_duration, int effect_amount , int NB_Target, void* context)
-//    :effect(effect), effect_duration(effect_duration), effect_amount(effect_amount) , NB_Target(NB_Target) , caster_piece(context){}
-
 bool EffectInstance::isInfinite() const {
     return effect_amount == -1 && effect_duration == -1;
 }
@@ -88,15 +90,24 @@ bool EffectInstance::isExpired() const {
     return effect_amount == 0 || effect_duration == 0;
 }
 
+bool EffectInstance::isBuff() const {
+    return isBuff_List[effect];
+}
+
 void EffectInstance::activation()  {
-    if (effect_amount > 0) {
-        effect_amount--;
-        std::cout << "remaining : " << effect_amount << std::endl;
-    }
+    if (effect_amount <= 0)
+        return;
+    effect_amount--;
+    ltr_log_info("EffectInstance::activation(), amount remaining : ", effect_amount);
 }
 
 void EffectInstance::decrement_duration() {
-    if (effect_duration > 0) {
-        effect_duration--;
-    }
+    if (effect_amount <= 0)
+        return;
+    effect_duration--;
+}
+
+void EffectInstance::copyTargets(const EffectInstance* effect_instance) {
+    this->target_pieces = effect_instance->target_pieces;
+    this->target_cells = effect_instance->target_cells;
 }

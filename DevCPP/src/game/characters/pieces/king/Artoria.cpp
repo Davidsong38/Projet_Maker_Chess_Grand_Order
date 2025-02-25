@@ -139,7 +139,7 @@ bool Artoria::SpellActivationCheck(void *arg) {
 
 bool Artoria::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    EffectHandler::applyEffectToTargets(this,EffectInstance{AOE,1,1,-1});
+    //EffectHandler::applyEffectToTargets(this,EffectInstance{AOE,1,1,-1});
 
 
     return true;

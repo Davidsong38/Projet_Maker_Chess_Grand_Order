@@ -8,7 +8,7 @@
 #include <GameEngine.h>
 #include <iostream>
 #include <utility>
-#include "Effect_List.h"
+#include "effects.h"
 #include "Event.h"
 
 float Pieces::getSpriteX() {
@@ -46,7 +46,7 @@ string Pieces::getName() {
 
 bool Pieces::hasThisEffect(const Effect_List chosenEffect) const {
     for (const auto& e : activeEffects) {
-        if (e.effect == chosenEffect)
+        if (e->effect == chosenEffect)
             return true;
         }
     return false;
@@ -188,9 +188,8 @@ bool Pieces::isHidden() {
 }
 
 
-void Pieces::addEffectStatus(EffectInstance effect_instance) {
-
-    activeEffects.emplace_back(effect_instance.getEffect(),effect_instance.getEffectDuration(),effect_instance.getEffectAmount(),effect_instance.getNB_Target(),effect_instance.caster_piece);
+void Pieces::addEffectStatus(EffectInstance* effect_instance) {
+    activeEffects.emplace_back(effect_instance);
 }
 
 Characters_List Pieces::getCharacters() const {
@@ -202,7 +201,7 @@ Pieces_List Pieces::getPiecesOrigin() const {
 
 bool Pieces::hasEffectStatus(Effect_List effect) const {
     for (const auto& e : activeEffects) {
-        if (e.effect == effect && !e.isExpired()) {
+        if (e->effect == effect && !e->isExpired()) {
             return true;
         }
     }
@@ -211,41 +210,38 @@ bool Pieces::hasEffectStatus(Effect_List effect) const {
 }
 
 void Pieces::updateEffectStatus() {
-    for (auto effect=activeEffects.begin(); effect!=activeEffects.end();) {
+    for (EffectInstance* effect : activeEffects) {
         if (effect->effect == CHANGE_CONTROL && (effect->effect_duration == 1 || effect->effect_amount == 0)){
-            //std::cout << "allllllezzzzz" << std::endl;
             this->setIsWhite(not this->getIsWhite());
         }
         if (effect->effect == MOVE_CHANGING && effect->effect_amount == 0){
             setMovesMode(0);
             clearOverrideMoves();
-            std::cout << "abracadabra" << std::endl;
         }
         effect->decrement_duration();
         if (effect->isExpired()) {
-            effect= activeEffects.erase(effect);
+            activeEffects.erase(std::remove(activeEffects.begin(), activeEffects.end(), effect));
         } else {
-            ++effect;
+            effect++;
         }
     }
 }
 
-void Pieces::deleteEffect(Effect_List effect)
-{
+void Pieces::deleteEffect(const Effect_List effect) {
     for (auto& e : activeEffects){
-        if (e.effect == effect && !e.isExpired()){
-            e.setEffectAmount(0);
+        if (e->effect == effect && !e->isExpired()){
+            e->effect_amount = 0;
         }
     }
 }
 
 void Pieces::activateEffect(Effect_List effect) {
     for ( auto& e : activeEffects) {
-        if (e.caster_piece != nullptr && (e.effect == IMMUNITY_AOE || e.effect == IMMUNITY_EFFECT)){
-            static_cast<Pieces*>(e.caster_piece)->evolved = true;
+        if (e->caster_piece != nullptr && (e->effect == IMMUNITY_AOE || e->effect == IMMUNITY_EFFECT)){
+            static_cast<Pieces*>(e->caster_piece)->evolved = true;
         }
-        if (e.effect == effect && !e.isExpired()) {
-            e.activation();
+        if (e->effect == effect && !e->isExpired()) {
+            e->activation();
         }
     }
 }
@@ -255,16 +251,16 @@ void Pieces::displayEffect() {
         ltr_log_info(
             CONSOLE_COLOR_MAGENTA,
             "Effect: ",
-            Effect_List_to_string[e.effect],
+            Effect_List_to_string[e->effect],
             ", Duration: ",
-            e.effect_duration == -1 ? "Infinite" : std::to_string(e.effect_duration),
+            e->effect_duration == -1 ? "Infinite" : std::to_string(e->effect_duration),
             ", Activations: ",
-            e.effect_amount == -1 ? "Infinite" : std::to_string(e.effect_amount)
+            e->effect_amount == -1 ? "Infinite" : std::to_string(e->effect_amount)
         );
     }
 }
 
-vector<EffectInstance> Pieces::getActive_effects() const {
+vector<EffectInstance*> Pieces::getActive_effects() const {
     return activeEffects;
 }
 

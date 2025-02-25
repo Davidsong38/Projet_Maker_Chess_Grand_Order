@@ -141,7 +141,7 @@ bool Gilgamesh::canEvolve(void *arg) {
 }
 
 bool Gilgamesh::evolvedForm(void *arg) {
-    if (EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{MOVE_CHANGING,-1,3,1,this}))
-        return true;
+    //if (EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{MOVE_CHANGING,-1,3,1,this}))
+    //    return true;
     return false;
 }

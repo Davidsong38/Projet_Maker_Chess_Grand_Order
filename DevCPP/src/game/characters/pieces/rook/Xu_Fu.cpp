@@ -52,6 +52,7 @@ bool Xu_Fu::SpellActivationCheck(void *arg) {
             evolved = true;
         }
         if (GameEngine::getInstance()->receivedClick && evolved){
+            GameEngine::getInstance()->ghostClick = true;
             if (evolvedForm(context)){
                 setIsOnAMove(false);
                 return true;
@@ -69,11 +70,17 @@ bool Xu_Fu::SpellActivationCheck(void *arg) {
 
 bool Xu_Fu::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    int chance = rand() % 100;
-    if (chance < ShieldChance){
-        if (EffectHandler::applyEffectToTargets(this,EffectInstance{SHIELD,-1,1,1,this})){
+    if (int chance = rand() % 100; chance < ShieldChance){
+        auto *  effect_instance = new EffectInstance(
+            SHIELD,
+            this,
+            -1,
+            1,
+            1
+        );
+        EffectHandler::selectRandomTargetPieces(effect_instance);
+        if (EffectHandler::applyToTargets(effect_instance))
             CNT_Shield++;
-        }
     }
     return true;
 }
@@ -90,12 +97,49 @@ bool Xu_Fu::canEvolve(void *arg) {
 bool Xu_Fu::evolvedForm(void *arg) {
     auto * context = static_cast<context_type *>(arg);
     if (GameEngine::getInstance()->getLastClickX() == coordX && GameEngine::getInstance()->getLastClickY() == coordY){
-        EffectHandler::applyBuffToSelf(this,EffectInstance{SHIELD,-1,2,1});
+        auto *  effect_instance = new EffectInstance(
+            SHIELD,
+            this,
+            -1,
+            2,
+            1
+        );
+        EffectHandler::applyBuffToSelf(effect_instance);
         return true;
     }
-    if (EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{IMMORTALITY,-1,-1,1,this})){
-        EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{SUPP_RANGE,-1,1,1,this});
-        std::cout << "Special competence"<<std::endl;
+    static EffectInstance * effect_instance_1 = nullptr;
+    static EffectInstance * effect_instance_2 = nullptr;
+    if (effect_instance_1 == nullptr) {
+        effect_instance_1 = new EffectInstance(
+            IMMORTALITY,
+            this,
+            -1,
+            -1,
+            1
+        );
+        effect_instance_2 = new EffectInstance(
+            SUPP_RANGE,
+            this,
+            -1,
+            1,
+            1
+        );
+    }
+    selection_request_type selection_request;
+    // selection_request.whites = isWhite ? 1 : 0;
+    // selection_request.blacks = isWhite ? 0 : 1;
+    ///TODO ya un truc pas définitif ici je crois mais pas sûr
+    selection_request.whites = isWhite ? 5 : 3;
+    selection_request.blacks = isWhite ? 3 : 5;
+    selection_request.emptys = 12;
+    selection_request.instantValidation = false;
+    if (!EffectHandler::selectManualTargetCells(effect_instance_1, selection_request))
+        return false;
+    effect_instance_2->copyTargets(effect_instance_1);
+    if (EffectHandler::applyToTargets(effect_instance_1)) {
+        EffectHandler::applyToTargets(effect_instance_2);
+        effect_instance_1 = nullptr;
+        effect_instance_2 = nullptr;
         return true;
     }
     return false;

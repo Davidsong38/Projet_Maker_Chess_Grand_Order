@@ -8,6 +8,7 @@
 #include <Context.h>
 
 #include "Engine.h"
+#include "selection.h"
 
 
 enum GameState{
@@ -29,24 +30,13 @@ enum GameState{
 
     END_GAME,
     GAME_CLOSE,
+
+    GAME_STATE_COUNT
 };
 
-struct selection_type {
-    std::vector<chessboard_cell*> white_pieces;
-    std::vector<chessboard_cell*> black_pieces;
-    std::vector<chessboard_cell*> empty_pieces;
-    int whites{0};
-    int blacks{0};
-    int emptys{0};
-};
+extern std::string game_state_to_string[GAME_STATE_COUNT];
 
-struct selection_request_type {
-    int whites{0};
-    int blacks{0};
-    int emptys{0};
-    bool instantValidation{true};
-    std::vector<chessboard_cell*> banned_cells;
-};
+void game_state_names_Init();
 
 
 
@@ -76,6 +66,7 @@ public:
     void setLastState(GameState state);
     int lastClickX{-1}, lastClickY{-1};
     bool receivedClick = false;
+    bool ghostClick = false;
     bool receivedRightClick = false;
     Pieces* lastPieceTouchedByEffect{nullptr};
 
@@ -89,6 +80,7 @@ public:
 private:
     GameState current_state{};
     GameState last_state{};
+    GameState last_main_state{};
 
     Pieces* black_king{nullptr};
     Pieces* white_king{nullptr};
@@ -104,8 +96,19 @@ private:
     unordered_map<GameState, function<void()>> state_handlers;
     context_type* context = new context_type();
 
-    void saveLastState() {last_state = current_state;}
-    void loadLastState() {current_state = last_state;}
+    void goToState(const GameState state) {
+        ltr_log_debug(CONSOLE_COLOR_GRAY, "Going from : ", game_state_to_string[current_state], ", to ", game_state_to_string[state], ", btw ", game_state_to_string[last_main_state]);
+        last_state = current_state;
+        if (current_state != SELECT_ANY)
+            last_main_state = current_state;
+        current_state = state;
+    }
+    void loadLastState() {
+        ltr_log_debug(CONSOLE_COLOR_GRAY, "Loading last state : ", game_state_to_string[current_state], " to ", game_state_to_string[last_state]);
+        const auto tmp = current_state;
+        current_state = last_state;
+        last_state = tmp;
+    }
     void push_phase_context();
 
     // States

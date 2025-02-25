@@ -74,7 +74,15 @@ bool Sesshoin_Kiara::SpellActivationCheck(void *arg) {
 
 bool Sesshoin_Kiara::passive(void* arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{CHANGE_CONTROL,5,1,1})){
+    auto *  effect_instance = new EffectInstance(
+        CHANGE_CONTROL,
+        this,
+        5,
+        1,
+        1
+    );
+    EffectHandler::selectRandomTargetPieces(effect_instance);
+    if (EffectHandler::applyToTargets(effect_instance)) {
         CNT_Charm++;
         return true;
     }
@@ -92,8 +100,15 @@ bool Sesshoin_Kiara::canEvolve(void *arg) {
 
 bool Sesshoin_Kiara::evolvedForm(void *arg) {
     auto * context = static_cast<context_type *>(arg);
-    if (EffectHandler::applyEffectToSelectionnedTarget(this,EffectInstance{CHANGE_CONTROL_ADVANCE,-1,1,1})){
-        std::cout << "Special competence"<<std::endl;
+    auto *  effect_instance = new EffectInstance(
+        CHANGE_CONTROL_ADVANCE,
+        this,
+        -1,
+        1,
+        1
+    );
+    EffectHandler::selectRandomTargetPieces(effect_instance);
+    if (EffectHandler::applyToTargets(effect_instance)) {
         evolved = true;
         return true;
     }

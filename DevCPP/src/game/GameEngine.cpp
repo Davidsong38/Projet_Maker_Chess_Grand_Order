@@ -7,7 +7,7 @@
 #include <clickables.h>
 #include <cstring>
 
-#include "effect_List.h"
+#include "effects.h"
 #include "characters_List.h"
 #include "pieces_List.h"
 #include "piece_loader.h"
@@ -18,6 +18,25 @@
 #include <uiElements.h>
 
 #include "Gilgamesh.h"
+
+std::string game_state_to_string[GAME_STATE_COUNT];
+
+void game_state_names_Init() {
+    game_state_to_string[INITIALISATION] = "initialisation";
+    game_state_to_string[START_WHITE_PHASE] = "start_white_phase";
+    game_state_to_string[SELECT_WHITE_PHASE] = "select_white_phase";
+    game_state_to_string[MOVING_WHITE_PHASE] = "moving_white_phase";
+    game_state_to_string[CHECKING_WHITE_PHASE] = "checking_white_phase";
+    game_state_to_string[END_WHITE_PHASE] = "end_white_phase";
+    game_state_to_string[START_BLACK_PHASE] = "start_black_phase";
+    game_state_to_string[SELECT_BLACK_PHASE] = "select_black_phase";
+    game_state_to_string[MOVING_BLACK_PHASE] = "moving_black_phase";
+    game_state_to_string[CHECKING_BLACK_PHASE] = "checking_black_phase";
+    game_state_to_string[END_BLACK_PHASE] = "end_black_phase";
+    game_state_to_string[SELECT_ANY] = "select_any";
+    game_state_to_string[END_GAME] = "end_game";
+    game_state_to_string[GAME_CLOSE] = "game_close";
+}
 
 GameEngine::GameEngine() : current_state(INITIALISATION), last_state(INITIALISATION) {
     ltr_log_info("Creating Game Engine");
@@ -40,6 +59,8 @@ GameEngine::GameEngine() : current_state(INITIALISATION), last_state(INITIALISAT
 
     state_handlers[END_GAME]                = [this]() { handleEndGame(); };
     state_handlers[GAME_CLOSE]              = [this]() { handleGameClose(); };
+
+    game_state_names_Init();
 
     keys_init();
 }
@@ -67,8 +88,7 @@ void GameEngine::handleInitialisation() {
     loadPiecesList();
     init_pieces();
     std::cout<< "---------------------------------------------------WHITE TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
-    setLastState(current_state);
-    setState(START_WHITE_PHASE);
+    goToState(START_WHITE_PHASE);
 
 }
 
@@ -90,8 +110,7 @@ void GameEngine::handleStartWhitePhase() {
     }
     context->piece = selectedPiece;
     /// TODO change
-    saveLastState();
-    current_state = SELECT_WHITE_PHASE;
+    goToState(SELECT_WHITE_PHASE);
 }
 
 void GameEngine::handleSelectWhitePhase() {
@@ -113,68 +132,61 @@ void GameEngine::handleSelectWhitePhase() {
 
     if (receivedRightClick){
         context->piece->setPieceGameMode(1);
-        std::cout<< "Received right-click piece game mode"<< std::endl;
     }
     receivedRightClick = false;
     if (context->piece->getPieceGameMode() != 0){
-        std::cout << "Unlimited BladeWorks" << std::endl;
-        setLastState(current_state);
-        setState((CHECKING_WHITE_PHASE));
+        goToState(CHECKING_WHITE_PHASE);
         return;
     }
     if (context->piece->getCoordX() == lastClickX && context->piece->getCoordY() == lastClickY && !context->piece->getIsOnAMove()) {
         context->piece->selected = false;
         context->piece = nullptr;
         unloadPossibleMoves();
-        setLastState(current_state);
-        setState(START_WHITE_PHASE);
+        goToState(START_WHITE_PHASE);
         return;
     }
     if (Chessboard::getInstance()->getPieceAt(lastClickX, lastClickY) != nullptr){
         context->target_piece = Chessboard::getInstance()->getPieceAt(lastClickX, lastClickY);
-        //std::cout << context->target_piece->getPiecesOrigin() << std::endl;
     }
-    if (Chessboard::getInstance()->movePiece(context->piece, lastClickX, lastClickY)){
-        setLastState(current_state);
-        setState(MOVING_WHITE_PHASE);
+    if (Chessboard::getInstance()->movePiece(context->piece, lastClickX, lastClickY)) {
+        goToState(MOVING_WHITE_PHASE);
     }
 }
 
 void GameEngine::handleMovingWhitePhase() {
-    setLastState(current_state);
-    setState(CHECKING_WHITE_PHASE);
+    goToState(CHECKING_WHITE_PHASE);
 }
 
 void GameEngine::handleCheckingWhitePhase() {
     unloadPossibleMoves();
-    if (last_state == SELECT_WHITE_PHASE)
+    if (last_main_state == SELECT_WHITE_PHASE)
         receivedRightClick = false;
-    if (!context->piece->SpellActivationCheck(context)){
-        setLastState(current_state);
+    if (!context->piece->SpellActivationCheck(context)) {
+        last_main_state = current_state;
         receivedClick = false;
         return;
     }
-    //std::cout << "SEIIIIBAAAAA" << std::endl;
     context->piece->setPieceGameMode(0);
-    //std::cout<< context->piece->getPieceGameMode()<< " le pere fouettard " << std::endl;
     if (current_state == SELECT_WHITE_PHASE){
-        std::cout << "CANCEL" << std::endl;
+        ltr_log_error("\"Ne doit plus arriver\" - Dave 25/02/2025");
         receivedRightClick = false;
         return;
     }
     context->piece->setHasJustKilled(false);
     if (context->piece->getIsEvolved())
-        std::cout << (context->piece->getIsWhite()? "White " : "Black ") << context->piece->getName() << " has evolved!" << std::endl;
-    setLastState(current_state);
-    setState(END_WHITE_PHASE);
+        ltr_log_info(
+            context->piece->getIsWhite()? "White " : "Black ",
+            context->piece->getName(),
+            " has evolved!"
+        );
+    goToState(END_WHITE_PHASE);
 }
 
 void GameEngine::handleEndWhitePhase() {
     receivedClick = false;
     if (black_king->isHidden()) {
-        std::cout<<"White has win!" << std::endl;
-        setLastState(current_state);
-        setState(END_GAME);
+        std::cout << "White has win!" << std::endl;
+        goToState(END_GAME);
     } else {
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
             piece->updateEffectStatus();
@@ -196,8 +208,7 @@ void GameEngine::handleEndWhitePhase() {
         NB_WhiteDeadLastPhase = NB_WhiteDead;
         NB_BlackDeadLastPhase = NB_BlackDead;
         std::cout<< "---------------------------------------------------BLACK TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
-        setLastState(current_state);
-        setState(START_BLACK_PHASE);
+        goToState(START_BLACK_PHASE);
     }
     push_phase_context();
 }
@@ -220,8 +231,7 @@ void GameEngine::handleStartBlackPhase() {
     }
     context->piece = selectedPiece;
     /// TODO change
-    saveLastState();
-    current_state = SELECT_BLACK_PHASE;
+    goToState(SELECT_BLACK_PHASE);
 }
 
 void GameEngine::handleSelectBlackPhase() {
@@ -236,7 +246,6 @@ void GameEngine::handleSelectBlackPhase() {
     loadPossibleMoves(possible_moves, context->piece->getDefaultColor());
 
     if (!receivedClick && !receivedRightClick) {
-        setLastState(current_state);
         return;
     }
     receivedClick = false;
@@ -246,8 +255,7 @@ void GameEngine::handleSelectBlackPhase() {
     }
     receivedRightClick = false;
     if (context->piece->getPieceGameMode() != 0) {
-        setLastState(current_state);
-        setState((CHECKING_BLACK_PHASE));
+        goToState(CHECKING_BLACK_PHASE);
         return;
     }
 
@@ -255,55 +263,52 @@ void GameEngine::handleSelectBlackPhase() {
         context->piece->selected = false;
         context->piece = nullptr;
         unloadPossibleMoves();
-        setLastState(current_state);
-        setState(START_BLACK_PHASE);
+        goToState(START_BLACK_PHASE);
         return;
     }
     if (Chessboard::getInstance()->getPieceAt(lastClickX, lastClickY) != nullptr){
         context->target_piece = Chessboard::getInstance()->getPieceAt(lastClickX, lastClickY);
-        //std::cout << context->target_piece->getPiecesOrigin() << std::endl;
     }
     if (Chessboard::getInstance()->movePiece(context->piece, lastClickX, lastClickY)){
-
-        setLastState(current_state);
-        setState(MOVING_BLACK_PHASE);
+        goToState(MOVING_BLACK_PHASE);
     }
 }
 
 void GameEngine::handleMovingBlackPhase() {
-    setLastState(current_state);
-    setState(CHECKING_BLACK_PHASE);
+    goToState(CHECKING_BLACK_PHASE);
 }
 
 void GameEngine::handleCheckingBlackPhase() {
     unloadPossibleMoves();
-    if (last_state == SELECT_BLACK_PHASE)
+    if (last_main_state == SELECT_BLACK_PHASE)
         receivedRightClick = false;
-    if (!context->piece->SpellActivationCheck(context)){
-        setLastState(current_state);
+    if (!context->piece->SpellActivationCheck(context)) {
+        last_main_state = current_state;
         receivedClick = false;
         return;
     }
-    std::cout << "SEIIIIBAAAAA" << std::endl;
     context->piece->setPieceGameMode(0);
     if (current_state == SELECT_BLACK_PHASE){
+        ltr_log_error("\"Ne doit plus arriver\" - Dave 25/02/2025");
         receivedRightClick = false;
         return;
     }
     context->piece->setHasJustKilled(false);
     if (context->piece->getIsEvolved())
-        std::cout << (context->piece->getIsWhite()? "White " : "Black ") << context->piece->getName() << " has evolved!" << std::endl;
-    setLastState(current_state);
-    setState(END_BLACK_PHASE);
+        ltr_log_info(
+            context->piece->getIsWhite()? "White " : "Black ",
+            context->piece->getName(),
+            " has evolved!"
+        );
+    goToState(END_BLACK_PHASE);
 }
 
 
 void GameEngine::handleEndBlackPhase() {
     receivedClick = false;
     if (white_king->isHidden()) {
-        std::cout<<"Black has win!" << std::endl;
-        setLastState(current_state);
-        setState(END_GAME);
+        std::cout << "Black has win!" << std::endl;
+        goToState(END_GAME);
     } else {
         NB_Turn++;
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
@@ -326,26 +331,49 @@ void GameEngine::handleEndBlackPhase() {
         NB_WhiteDeadLastPhase = NB_WhiteDead;
         NB_BlackDeadLastPhase = NB_BlackDead;
         std::cout<< "---------------------------------------------------WHITE TURN "<< NB_Turn <<"---------------------------------------------------"<< std::endl;
-        setLastState(current_state);
-        setState(START_WHITE_PHASE);
+        goToState(START_WHITE_PHASE);
     }
     push_phase_context();
 }
 
 void GameEngine::handleSelectAny() {
+    updateSelectionSpriteGroup();
+    if (current_selection == nullptr) {
+        ltr_log_error("No current_selection");
+        return;
+    }
     if (
         (required_selection.instantValidation || selectionGotValidated)
         && required_selection.whites == current_selection->whites
         && required_selection.blacks == current_selection->blacks
         && required_selection.emptys == current_selection->emptys
     ) {
+        ltr_log_debug("Selection complete");
         loadLastState();
         selectionGotValidated = false;
+        if (required_selection.effect_instance != nullptr) {
+            ltr_log_debug("Selection was from effect_instance");
+            for (const auto& cell : current_selection->white_pieces)
+                required_selection.effect_instance->target_pieces.emplace_back(cell->piece);
+            for (const auto& cell : current_selection->black_pieces)
+                required_selection.effect_instance->target_pieces.emplace_back(cell->piece);
+            for (const auto& cell : current_selection->empty_pieces)
+                required_selection.effect_instance->target_cells.emplace_back(cell);
+            for (const auto& sel : current_selection->white_pieces)
+                sel->selected = false;
+            for (const auto& sel : current_selection->black_pieces)
+                sel->selected = false;
+            for (const auto& sel : current_selection->empty_pieces)
+                sel->selected = false;
+            delete current_selection;
+            current_selection = nullptr;
+        }
         return;
     }
-    if (receivedClick == false)
+    if (receivedClick == false && ghostClick == false)
         return;
     receivedClick = false;
+    ghostClick = false;
     chessboard_cell* selectedCell = Chessboard::getInstance()->getCellAt(lastClickX, lastClickY);
     if (ranges::find(required_selection.banned_cells,selectedCell) != required_selection.banned_cells.end())
         return;
@@ -361,11 +389,13 @@ void GameEngine::handleSelectAny() {
                 current_selection->empty_pieces,
                 selectedCell
             );
+            ltr_log_debug("Deselecting cell at ", selectedCell->pos.x, " ", selectedCell->pos.y);
             return;
         }
         selectedCell->selected = true;
         current_selection->emptys++;
         current_selection->empty_pieces.emplace_back(selectedCell);
+        ltr_log_debug("Selecting cell at ", selectedCell->pos.x, " ", selectedCell->pos.y);
         return;
     }
     if (selectedCell->piece->getIsWhite()) {
@@ -380,11 +410,13 @@ void GameEngine::handleSelectAny() {
                 current_selection->white_pieces,
                 selectedCell
             );
+            ltr_log_debug("Deselecting piece at ", selectedCell->pos.x, " ", selectedCell->pos.y);
             return;
         }
         selectedCell->selected = true;
         current_selection->whites++;
         current_selection->white_pieces.emplace_back(selectedCell);
+        ltr_log_debug("Selecting piece at ", selectedCell->pos.x, " ", selectedCell->pos.y);
         return;
     }
     if (
@@ -398,17 +430,18 @@ void GameEngine::handleSelectAny() {
             current_selection->black_pieces,
             selectedCell
         );
+        ltr_log_debug("Deselecting piece at ", selectedCell->pos.x, " ", selectedCell->pos.y);
         return;
     }
     selectedCell->selected = true;
     current_selection->blacks++;
     current_selection->black_pieces.emplace_back(selectedCell);
+    ltr_log_debug("Selecting piece at ", selectedCell->pos.x, " ", selectedCell->pos.y);
 }
 
 void GameEngine::handleEndGame() {
     cout << "END GAME" << endl;
-    saveLastState();
-    setState(GAME_CLOSE);
+    goToState(GAME_CLOSE);
 }
 
 void GameEngine::handleGameClose() {
@@ -416,8 +449,7 @@ void GameEngine::handleGameClose() {
 }
 
 void GameEngine::requestSelection(const selection_request_type& to_select) {
-    saveLastState();
-    current_state = SELECT_ANY;
+    goToState(SELECT_ANY);
     required_selection = to_select;
     current_selection = new selection_type();
 }
@@ -439,7 +471,18 @@ void GameEngine::update(double deltaTime_ms) {
     if (get_key(KEY_P)->didKeyGetPressed())
         screen_blocker->toggle();
     if (get_key(KEY_O)->didKeyGetPressed())
-        ltr_log_debug("Current State: ", current_state);
+        ltr_log_debug(
+            "Current State: ", current_state,
+            ", Last State: ", last_state,
+            "\n\trequested_selection.whites: ", required_selection.whites,
+            "\n\trequested_selection.blacks: ", required_selection.blacks,
+            "\n\trequested_selection.emptys: ", required_selection.emptys,
+            "\n\tcurrent_selection.whites: ", (current_selection == nullptr) ? -1 : current_selection->whites,
+            "\n\tcurrent_selection.blacks: ", (current_selection == nullptr) ? -1 : current_selection->blacks,
+            "\n\tcurrent_selection.emptys: ", (current_selection == nullptr) ? -1 : current_selection->emptys
+            );
+    if (get_key(KEY_SPACE)->didKeyGetPressed())
+        validateSelection();
     keys_update();
 }
 
@@ -450,7 +493,6 @@ void GameEngine::clickBoardAtPos(int x, int y) {
 }
 void GameEngine::inputRightClick(){
     receivedRightClick = true;
-
 }
 
 

@@ -46,7 +46,7 @@ target_sources(Chess_Grand_Order PRIVATE
         src/game/characters/pieces/rook/Xu_Fu.cpp
         src/game/characters/pieces/queen/Nitocris_Alter.cpp
         src/game/characters/pieces/king/Gilgamesh.cpp
-        src/game/effects/effect_List.cpp
+        src/game/effects/effects.cpp
         src/game/effects/EffectHandler.cpp
         src/game/inputs/mouseInputs.cpp
         src/game/inputs/Key.cpp

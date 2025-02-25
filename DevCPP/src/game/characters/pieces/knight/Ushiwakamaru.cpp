@@ -97,6 +97,6 @@ bool Ushiwakamaru::canEvolve(void *arg) {
 }
 
 bool Ushiwakamaru::evolvedForm(void *arg) {
-    EffectHandler::applyBuffToSelf(this,EffectInstance{ONE_MORE_MOVE,1,1,1});
+    // EffectHandler::applyBuffToSelf(EffectInstance{ONE_MORE_MOVE,1,1,1});
     return true;
 }

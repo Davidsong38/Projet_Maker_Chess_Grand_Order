@@ -1,5 +1,5 @@
 //
-// Created by sebas on 23/02/2025.
+// Created by david on 23/02/2025.
 //
 
 #ifndef EVENT_TYPE_H

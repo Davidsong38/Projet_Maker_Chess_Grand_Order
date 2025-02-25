@@ -91,8 +91,15 @@ bool Arceuid::canEvolve(void *arg) {
 
 bool Arceuid::evolvedForm(void *arg) {
     if (evolved && (CNTGainEffect >= 30 || hasJustKilled && CNTGainEffect >= 8)) {
-        EffectHandler::applyEffectToTargets(this,EffectInstance{AOE,1,1,-1});
-
+        auto *  effect_instance = new EffectInstance(
+            AOE,
+            this,
+            1,
+            1,
+            -1
+        );
+        EffectHandler::selectRandomTargetPieces(effect_instance);
+        EffectHandler::applyToTargets(effect_instance);
     }
     return true;
 }

@@ -4,6 +4,7 @@
 
 #ifndef PIECES_H
 #define PIECES_H
+
 #include <functional>
 #include <string>
 #include <vector>
@@ -11,7 +12,7 @@
 
 #include "Pieces_List.h"
 #include "Characters_List.h"
-#include "Effect_List.h"
+#include "effects.h"
 
 
 
@@ -34,7 +35,7 @@ class Pieces : public SpriteTarget{
         int movesMode = 0;
         vector<glm::ivec2> AllMovesDoneBefore;
 
-        vector<EffectInstance> activeEffects ;
+        vector<EffectInstance*> activeEffects ;
         Characters_List characters;
         Pieces_List pieces_origin;
         string name;
@@ -98,7 +99,7 @@ class Pieces : public SpriteTarget{
         [[nodiscard]] int getCoordY() const;
         void setPosition(int newX,int newY);
 
-        void addEffectStatus (EffectInstance effect_instance);
+        void addEffectStatus(EffectInstance* effect_instance);
         [[nodiscard]] bool hasEffectStatus (Effect_List effect) const;
         void updateEffectStatus ();
         void deleteEffect(Effect_List effect);
@@ -106,7 +107,7 @@ class Pieces : public SpriteTarget{
         void displayEffect();
 
         [[nodiscard]] bool getIsWhite() const;
-        [[nodiscard]] vector<EffectInstance> getActive_effects() const;
+        [[nodiscard]] vector<EffectInstance*> getActive_effects() const;
         [[nodiscard]] Characters_List getCharacters() const;
         [[nodiscard]] Pieces_List getPiecesOrigin() const;
 

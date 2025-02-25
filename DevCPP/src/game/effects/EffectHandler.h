@@ -4,31 +4,44 @@
 
 #ifndef EFFECTHANDLER_H
 #define EFFECTHANDLER_H
+
 #include <functional>
 #include <unordered_map>
 #include "Chessboard.h"
-#include "Effect_List.h"
+#include "effects.h"
+#include "selection.h"
+
 using namespace std;
 
 
 class EffectHandler {
-    private:
-        static unordered_map<Effect_List, function<bool()>> effectBehaviors;
-    public:
-        static void executeEffect(Effect_List Effect,Pieces* pieces);
-        static bool addEffectBehavior(Effect_List effect, function<bool()> behavior);
-        static bool configureEffectHandler(int coordX,int coordY,Pieces *piece, EffectInstance effect_instance);
-        static int applyEffectToTargets(Pieces *caster_piece, EffectInstance effect_instance);
-        static int applyEffectToSelectionnedTarget(Pieces* caster_piece, EffectInstance effect_instance);
-        static int applyEffectToSelectionnedTarget(Pieces* caster_piece, EffectInstance effect_instance, int targetX, int targetY);
-        static bool applyBuffToSelf(Pieces* caster_piece, EffectInstance effect_instance);
-        static bool applyToEmptyCell(Pieces* caster_piece, EffectInstance effect_instance);
-        static bool validTargetGettingEffect(Pieces *caster_piece, Pieces * target_piece, EffectInstance effect_instance);
-        static bool isEffectTargetInGrid(Pieces *target_piece);
-        static bool isEffectTargetInGrid(int coordX, int coordY);
-        static bool isTriggerEffect(Effect_List effect);
-        static bool isBuff(Effect_List effect);
-        explicit EffectHandler() = default;
+public:
+    static bool validTargetForEffect(const Pieces* target_piece, const EffectInstance *effect_instance);
+
+    static int selectRandomTargetPieces(EffectInstance *effect_instance);
+    static int selectRandomTargetDeadPieces(EffectInstance *effect_instance);
+    static int selectRandomTargetCells(EffectInstance *effect_instance);
+    static int selectRandomTargetEmptyCells(EffectInstance *effect_instance);
+    static int selectRandomTargetNonEmptyCells(EffectInstance *effect_instance);
+    static bool selectManualTargetCells(EffectInstance *effect_instance, selection_request_type request);
+
+    static bool applyToTargets(EffectInstance *effect_instance);
+    static bool applyBuffToSelf(EffectInstance *effect_instance);
+
+    explicit EffectHandler() = default;
+private:
+    static unordered_map<Effect_List, function<bool()>> effectBehaviors;
+
+    static bool addEffectBehavior(Effect_List effect, function<bool()> behavior);
+    static bool configureEffectHandler(EffectInstance* effect_instance);
+
+    static function<bool()> getStunEffect(EffectInstance* effect_instance);
+    static function<bool()> getAoeEffect(EffectInstance* effect_instance);
+    static function<bool()> getChangeControlEffect(EffectInstance* effect_instance);
+    static function<bool()> getImmunityEffect(EffectInstance* effect_instance);
+    static function<bool()> getShieldEffect(EffectInstance* effect_instance);
+    static function<bool()> getKillEffect(EffectInstance* effect_instance);
+    static function<bool()> getSpawnPieceEffect(EffectInstance* effect_instance);
 };
 
 

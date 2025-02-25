@@ -21,5 +21,6 @@ void loadPossibleMoves(const std::vector<glm::ivec2>& possible_moves, glm::vec4 
 void unloadPossibleMoves();
 
 bool compareRenderOrder(Displayable* a, Displayable* b);
+void updateSelectionSpriteGroup();
 
 #endif //UIELEMENTS_H
