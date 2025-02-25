@@ -4,39 +4,11 @@
 
 #include "Arceuid.h"
 #include <iostream>
-#include "Context.h"
-
-//vector<Effect_List> Arceuid::getCasterEffects() const {
-//    if (evolved==true) {
-//        return {STUN,AOE};
-//    }
-//    return {STUN};
-//}
+#include "EffectHandler.h"
 
 void Arceuid::setPieceGameMode(int piece_game_mode) {
-    return;
+
 }
-
-vector<glm::ivec2> Arceuid::getMoves() {
-    vector<glm::ivec2> moves;
-    for (int i = 1; i < 8; ++i) {
-        if (coordX + i < 8) moves.emplace_back(coordX + i, coordY);
-        if (coordX - i >= 0) moves.emplace_back(coordX - i, coordY);
-        if (coordY- i >= 0) moves.emplace_back(coordX, coordY - i);
-        if (coordY + i < 8) moves.emplace_back(coordX, coordY + i);
-    }
-    if (CNTGainEffect >= 8){
-        for (int i = 1; i < 3; ++i){
-            if (coordX + i < 8 && coordY + i < 8) moves.emplace_back(coordX + i, coordY + i);
-            if (coordX - i >= 0 && coordY + i < 8) moves.emplace_back(coordX - i, coordY + i);
-            if (coordX + i < 8 && coordY- i >= 0) moves.emplace_back(coordX + i, coordY - i);
-            if (coordX - i >= 0 && coordY - i >= 0) moves.emplace_back(coordX - i, coordY - i);
-        }
-    }
-    return moves;
-}
-
-
 
 vector<glm::ivec2> Arceuid::getEffectRange(Effect_List effect) const {
 
@@ -63,18 +35,17 @@ vector<glm::ivec2> Arceuid::getEffectRange(Effect_List effect) const {
 }
 
 bool Arceuid::SpellActivationCheck(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
-    std::cout << "CNT : " << CNTGainEffect << std::endl;
-    if (canEvolve(context)){
+    if (canEvolve(arg)){
         evolved = true;
         CNTGainEffect = NB_TurnWithoutMoving;
+        if (CNTGainEffect >= 8)
+            this->default_piece_move = arceuid_buff_move;
     }
-    evolvedForm(context);
+    evolvedForm(arg);
     return true;
 }
 
 bool Arceuid::passive(void* arg) {
-    auto * context = static_cast<context_type *>(arg);
     return true;
 }
 
@@ -82,11 +53,9 @@ bool Arceuid::canEvolve(void *arg) {
     if (!evolved && hasRoqued) {
         evolved = true;
         CNTGainEffect = NB_TurnWithoutMoving;
-        std::cout << "Ready to evolve!!!"<<std::endl;
         return true;
     }
     return false;
-
 }
 
 bool Arceuid::evolvedForm(void *arg) {

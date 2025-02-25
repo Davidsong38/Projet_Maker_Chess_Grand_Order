@@ -3,38 +3,14 @@
 //
 
 #include "Ushiwakamaru.h"
-#include "Context.h"
-
+#include "phase_context.h"
 
 void Ushiwakamaru::setPieceGameMode(int piece_game_mode) {
 
 }
 
-
-vector<glm::ivec2> Ushiwakamaru::getMoves() {
-    vector<glm::ivec2> moves;
-    if (coordX + 1 < 8 && coordY + 2 < 8) moves.emplace_back(coordX + 1, coordY + 2);
-    if (coordX - 1 >= 0 && coordY + 2 < 8) moves.emplace_back(coordX - 1, coordY + 2);
-    if (coordX + 1 < 8 && coordY- 2 >= 0) moves.emplace_back(coordX + 1, coordY - 2);
-    if (coordX - 1 >= 0 && coordY - 2 >= 0) moves.emplace_back(coordX - 1, coordY - 2);
-    if (coordX + 2 < 8 && coordY + 1 < 8) moves.emplace_back(coordX + 2, coordY + 1);
-    if (coordX - 2 >= 0 && coordY + 1 < 8) moves.emplace_back(coordX - 2, coordY + 1);
-    if (coordX + 2 < 8 && coordY- 1 >= 0) moves.emplace_back(coordX + 2, coordY - 1);
-    if (coordX - 2 >= 0 && coordY - 1 >= 0) moves.emplace_back(coordX - 2, coordY - 1);
-    if (coordX + 1 < 8) moves.emplace_back(coordX + 1, coordY);
-    if (coordX - 1 >= 0) moves.emplace_back(coordX - 1, coordY);
-    if (coordY- 1 >= 0) moves.emplace_back(coordX, coordY - 1);
-    if (coordY + 1 < 8) moves.emplace_back(coordX, coordY + 1);
-    return moves;
-
-}
-
-
-
 vector<glm::ivec2> Ushiwakamaru::getEffectRange(Effect_List effect) const {
-
     vector<glm::ivec2> effect_range;
-
     if (effect == STUN) {
         if (coordX + 1 < 8 && coordY + 1 < 8) effect_range.emplace_back(coordX + 1, coordY + 1);
         if (coordX - 1 >= 0 && coordY + 1 < 8) effect_range.emplace_back(coordX - 1, coordY + 1);
@@ -58,24 +34,21 @@ vector<glm::ivec2> Ushiwakamaru::getEffectRange(Effect_List effect) const {
     }
     return effect_range;
 }
+
 bool Ushiwakamaru::SpellActivationCheck(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
-    if (canEvolve(context))
+    if (canEvolve(arg))
         evolved = true;
     if (evolved && hasCharged){
-        passive(context);
-        evolvedForm(context);
+        passive(arg);
+        evolvedForm(arg);
         return true;
     }
-    if (!passive(context))
+    if (!passive(arg))
         this->setIsOnAMove(false);
-
     return true;
 }
 
-
 bool Ushiwakamaru::passive(void* arg) {
-    auto * context = static_cast<context_type *>(arg);
     if (evolved && hasJustKilled && !isOnAMove){
         if (!hasCharged){
             hasCharged = true;
@@ -87,13 +60,11 @@ bool Ushiwakamaru::passive(void* arg) {
 }
 
 bool Ushiwakamaru::canEvolve(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
-    if (hasJustKilled && !context->target_piece->isPawn() && !context->target_piece->isRook() && !evolved) {
-        std::cout << "Ready to evolve!!!"<<std::endl;
+    auto * context = static_cast<phase_context_type *>(arg);
+    if (hasJustKilled && !context->mainTargetPiece->isPawn() && !context->mainTargetPiece->isRook() && !evolved) {
         return true;
     }
     return false;
-
 }
 
 bool Ushiwakamaru::evolvedForm(void *arg) {

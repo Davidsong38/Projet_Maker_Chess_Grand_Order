@@ -4,23 +4,13 @@
 
 #include "Sesshoin_Kiara.h"
 #include <GameEngine.h>
-#include "Context.h"
-
-
-//vector<Effect_List> Sesshoin_Kiara::getCasterEffects() const {
-//    if (evolved==true) {
-//        return {STUN,AOE};
-//    }
-//    return {STUN};
-//}
+#include "EffectHandler.h"
 
 void Sesshoin_Kiara::setPieceGameMode(int piece_game_mode) {
     pieceGameMode = piece_game_mode;
 }
 
-
 vector<glm::ivec2> Sesshoin_Kiara::getEffectRange(Effect_List effect) const {
-
     vector<glm::ivec2> effect_range;
     if (effect == CHANGE_CONTROL_ADVANCE){
         for (int i = 0; i < 8; ++i){
@@ -42,9 +32,7 @@ vector<glm::ivec2> Sesshoin_Kiara::getEffectRange(Effect_List effect) const {
 }
 
 bool Sesshoin_Kiara::SpellActivationCheck(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
     if (GameEngine::getInstance()->receivedRightClick){
-        std::cout << "gekooo" << std::endl;
         if (this->getIsWhite()){
             GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
             GameEngine::getInstance()->setState(SELECT_WHITE_PHASE);
@@ -57,13 +45,12 @@ bool Sesshoin_Kiara::SpellActivationCheck(void *arg) {
     }
     if (this->getPieceGameMode() != 0){
         if (GameEngine::getInstance()->receivedClick){
-            //std::cout << "ayayayayayayayayayayayayayayayayayay" << std::endl;
-            if (canEvolve(context)){
-                if (evolvedForm(context))
+            if (canEvolve(arg)){
+                if (evolvedForm(arg))
                     return true;
                 return false;
             }
-            if (passive(context))
+            if (passive(arg))
                 return true;
         }
         return false;
@@ -71,9 +58,7 @@ bool Sesshoin_Kiara::SpellActivationCheck(void *arg) {
     return true;
 }
 
-
 bool Sesshoin_Kiara::passive(void* arg) {
-    auto * context = static_cast<context_type *>(arg);
     auto *  effect_instance = new EffectInstance(
         CHANGE_CONTROL,
         this,
@@ -90,16 +75,13 @@ bool Sesshoin_Kiara::passive(void* arg) {
 }
 
 bool Sesshoin_Kiara::canEvolve(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
     if (evolved == false && CNT_Charm > 2) {
-        std::cout << "Ready to evolve!!!"<<std::endl;
         return true;
     }
     return false;
 }
 
 bool Sesshoin_Kiara::evolvedForm(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
     auto *  effect_instance = new EffectInstance(
         CHANGE_CONTROL_ADVANCE,
         this,

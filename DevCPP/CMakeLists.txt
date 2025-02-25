@@ -29,23 +29,18 @@ target_sources(Chess_Grand_Order PRIVATE
         src/game/characters/characters_List.cpp
         src/game/characters/pieces/Pieces.cpp
         src/game/characters/pieces/pieces_List.cpp
-        src/game/characters/pieces/bishop/Bishop.cpp
         src/game/characters/pieces/bishop/Medusa_Saber.cpp
-        src/game/characters/pieces/king/King.cpp
         src/game/characters/pieces/king/Artoria.cpp
-        src/game/characters/pieces/knight/Knight.cpp
         src/game/characters/pieces/knight/Ushiwakamaru.cpp
-        src/game/characters/pieces/pawn/Pawn.cpp
         src/game/characters/pieces/pawn/Nemo_Marine.cpp
-        src/game/characters/pieces/queen/Queen.cpp
         src/game/characters/pieces/queen/Sesshoin_Kiara.cpp
-        src/game/characters/pieces/rook/Rook.cpp
         src/game/characters/pieces/rook/Arceuid.cpp
         src/game/characters/pieces/bishop/Merlin.cpp
         src/game/characters/pieces/knight/Okita.cpp
         src/game/characters/pieces/rook/Xu_Fu.cpp
         src/game/characters/pieces/queen/Nitocris_Alter.cpp
         src/game/characters/pieces/king/Gilgamesh.cpp
+        src/game/characters/moves/piece_moves.cpp
         src/game/effects/effects.cpp
         src/game/effects/EffectHandler.cpp
         src/game/inputs/mouseInputs.cpp
@@ -98,6 +93,7 @@ target_include_directories(Chess_Grand_Order PRIVATE
         src/game/characters/pieces/pawn/
         src/game/characters/pieces/queen/
         src/game/characters/pieces/rook/
+        src/game/characters/moves/
         src/game/effects/
         src/game/inputs/
         src/game/inputs/clickables/

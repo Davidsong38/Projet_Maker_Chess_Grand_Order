@@ -4,18 +4,14 @@
 
 #include "Okita.h"
 
-#include <Context.h>
+#include <phase_context.h>
 
 void Okita::setPieceGameMode(int piece_game_mode) {
-    return;
+
 }
 
-
-
 vector<glm::ivec2> Okita::getEffectRange(Effect_List effect) const {
-
     vector<glm::ivec2> effect_range;
-
     if (effect == STUN) {
         if (coordX + 1 < 8 && coordY + 1 < 8) effect_range.emplace_back(coordX + 1, coordY + 1);
         if (coordX - 1 >= 0 && coordY + 1 < 8) effect_range.emplace_back(coordX - 1, coordY + 1);
@@ -28,7 +24,6 @@ vector<glm::ivec2> Okita::getEffectRange(Effect_List effect) const {
             if (coordX - 1 >= 0) effect_range.emplace_back(coordX - 1, coordY);
             if (coordY - 1 >= 0) effect_range.emplace_back(coordX, coordY - 1);
             if (coordY + 1 < 8) effect_range.emplace_back(coordX, coordY + 1);
-
         }
         if (effect == AOE) {
             if (coordX + 1 < 8 && coordY + 1 < 8) effect_range.emplace_back(coordX + 1, coordY + 1);
@@ -39,40 +34,35 @@ vector<glm::ivec2> Okita::getEffectRange(Effect_List effect) const {
     }
     return effect_range;
 }
-bool Okita::SpellActivationCheck(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
 
-    passive(context);
-    if (canEvolve(context))
+bool Okita::SpellActivationCheck(void *arg) {
+    passive(arg);
+    if (canEvolve(arg))
         evolved = true;
     if (evolved && CNT_Charge != 0){
         CNT_Charge--;
-        evolvedForm(context);
+        evolvedForm(arg);
         return true;
     }
     if (CNT_Charge == 0)
         setIsOnAMove(false);
-
     return true;
 }
 
-
 bool Okita::passive(void* arg) {
-    auto * context = static_cast<context_type *>(arg);
-    if (!evolved && hasJustKilled && !isOnAMove && !context->target_piece->isPawn()){
+    auto * context = static_cast<phase_context_type *>(arg);
+    if (!evolved && hasJustKilled && !isOnAMove && !context->mainTargetPiece->isPawn()){
         CNT_Charge++;
     }
     return true;
 }
 
 bool Okita::canEvolve(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
-    if (hasJustKilled && !evolved &&(context->target_piece->isQueen() || context->target_piece->isRook())) {
-        std::cout << "Ready to evolve!!!"<<std::endl;
+    auto * context = static_cast<phase_context_type *>(arg);
+    if (hasJustKilled && !evolved &&(context->mainTargetPiece->isQueen() || context->mainTargetPiece->isRook())) {
         return true;
     }
     return false;
-
 }
 
 bool Okita::evolvedForm(void *arg) {

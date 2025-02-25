@@ -6,7 +6,7 @@
 #define XU_FU_H
 
 
-#include <Rook.h>
+#include <Pieces.h>
 #include <textures.h>
 #include <uiElements.h>
 #include "RenderEngine.h"
@@ -19,9 +19,8 @@ class Xu_Fu final : public Rook{
     int CNT_Shield = 0;
     int ShieldChance = 100;
 public:
-    Xu_Fu(int startX, int startY, bool white, Characters_List hero,
-        Pieces_List pieces_root)
-        : Rook(startX, startY, white, hero, pieces_root) {
+    Xu_Fu(const int startX, const int startY, const bool white, const Characters_List hero)
+            : Rook(startX, startY, white, hero)  {
         addAdditionalUIElement(
             xufuTexture,
             glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),

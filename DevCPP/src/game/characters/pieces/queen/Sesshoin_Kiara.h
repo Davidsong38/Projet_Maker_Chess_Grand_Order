@@ -10,23 +10,21 @@
 #include "RenderEngine.h"
 #include "rendering_cfg.h"
 
-#include "Queen.h"
+#include "Pieces.h"
 
 
 class Sesshoin_Kiara final : public Queen{
     protected :
     int CNT_Charm = 0;
     public:
-        Sesshoin_Kiara(int startX, int startY, bool white, Characters_List hero,
-            Pieces_List pieces_root)
-            : Queen(startX, startY, white, hero, pieces_root) {
+    Sesshoin_Kiara(const int startX, const int startY, const bool white, const Characters_List hero)
+        : Queen(startX, startY, white, hero)  {
             addAdditionalUIElement(
                 kiaraTexture,
                 glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
                 this
             );
         }
-
 
         [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) const override;
         bool passive(void* arg) override;

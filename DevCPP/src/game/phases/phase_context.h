@@ -10,6 +10,7 @@
 
 struct phase_context_type {
     Pieces* firstSelectedPiece;
+    Pieces* mainTargetPiece;
     std::vector<Event*> events;
     int phaseNumber{0}, turnNumber{1};
 };

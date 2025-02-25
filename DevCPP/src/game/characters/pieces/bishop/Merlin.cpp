@@ -4,21 +4,16 @@
 
 #include "Merlin.h"
 
-#include <Context.h>
+#include <EffectHandler.h>
 #include <GameEngine.h>
 
-
 void Merlin::setPieceGameMode(int piece_game_mode) {
-    //std::cout<< MerlinPowerON<< "tuer moi par pitie" << std::endl;
-    //std::cout<< pieceGameMode<< "HHHEEEEEELLLLPPPP" << std::endl;
     if (evolved && MerlinPowerON){
-        //std::cout<< MerlinPowerON<< "HHHEEEEEELLLLPPPP" << std::endl;
         pieceGameMode = piece_game_mode;
     } else{
         pieceGameMode = 0;
     }
 }
-
 
 vector<glm::ivec2> Merlin::getEffectRange(Effect_List effect) const {
 
@@ -58,11 +53,8 @@ vector<glm::ivec2> Merlin::getEffectRange(Effect_List effect) const {
 }
 
 bool Merlin::SpellActivationCheck(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
-    //std::cout << "merlin power : " << MerlinPowerON <<std::endl;
     if (evolved && MerlinPowerON){
         if (GameEngine::getInstance()->receivedRightClick){
-            //std::cout << "gekooo" << std::endl;
             if (this->getIsWhite()){
                 GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
                 GameEngine::getInstance()->setState(SELECT_WHITE_PHASE);
@@ -76,28 +68,24 @@ bool Merlin::SpellActivationCheck(void *arg) {
         if (this->getPieceGameMode() != 0){
             if (GameEngine::getInstance()->receivedClick){
                 chooseSpell = true;
-                if (evolvedForm(context)){
+                if (evolvedForm(arg)){
                     chooseSpell = false;
                     MerlinPowerON = false;
                     return true;
                 }
                 chooseSpell = false;
-
-
             }
             return false;
         }
     }
     if (evolved && !MerlinPowerON && !isOnAMove)
         MerlinPowerON = true;
-    passive(context);
+    passive(arg);
     setIsOnAMove(false);
     return true;
 }
 
-
 bool Merlin::passive(void* arg) {
-    auto * context = static_cast<context_type *>(arg);
     auto *  effect_instance_1 = new EffectInstance(
         IMMUNITY_EFFECT,
         this,
@@ -120,9 +108,7 @@ bool Merlin::passive(void* arg) {
 }
 
 bool Merlin::canEvolve(void *arg) {
-    //std::cout <<CNT_StunEffect<<std::endl;
     if (evolved == false ) {
-        //std::cout <<"Ready to evolve!!!"<<std::endl;
         return true;
     }
     return false;
@@ -130,7 +116,6 @@ bool Merlin::canEvolve(void *arg) {
 }
 
 bool Merlin::evolvedForm(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
     auto *  effect_instance_1 = new EffectInstance(
         IMMUNITY_EFFECT,
         this,

@@ -3,24 +3,15 @@
 //
 
 #include "Nemo_Marine.h"
-#include "Context.h"
+#include "phase_context.h"
+#include "EffectHandler.h"
 
-
-//vector<Effect_List> Nemo_Marine::getCasterEffects() const {
-//    if (evolved==true) {
-//        return {STUN,AOE};
-//    }
-//    return {STUN};
-//}
 void Nemo_Marine::setPieceGameMode(int piece_game_mode) {
 
 }
 
-
 vector<glm::ivec2> Nemo_Marine::getEffectRange(Effect_List effect) const {
-
     vector<glm::ivec2> effect_range;
-
     if (effect == STUN) {
         if (coordX + 1 < 8 && coordY + 1 < 8) effect_range.emplace_back(coordX + 1, coordY + 1);
         if (coordX - 1 >= 0 && coordY + 1 < 8) effect_range.emplace_back(coordX - 1, coordY + 1);
@@ -46,15 +37,14 @@ vector<glm::ivec2> Nemo_Marine::getEffectRange(Effect_List effect) const {
 }
 
 bool Nemo_Marine::SpellActivationCheck(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
-    if (context->piece->getHasJustKilled())
-        passive(context);
+    auto * context = static_cast<phase_context_type *>(arg);
+    if (context->firstSelectedPiece->getHasJustKilled())
+        passive(arg);
     return true;
 }
 
 
 bool Nemo_Marine::passive(void* arg) {
-    auto * context = static_cast<context_type *>(arg);
     auto *  effect_instance = new EffectInstance(
         STUN,
         this,
@@ -74,11 +64,9 @@ bool Nemo_Marine::canEvolve(void *arg) {
         return true;
     }
     return false;
-
 }
 
 bool Nemo_Marine::evolvedForm(void *arg) {
     evolved = true;
-
     return true;
 }

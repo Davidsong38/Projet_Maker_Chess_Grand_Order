@@ -4,7 +4,6 @@
 
 #include "Pieces.h"
 
-#include <Context.h>
 #include <GameEngine.h>
 #include <iostream>
 #include <utility>
@@ -40,7 +39,7 @@ glm::vec4 Pieces::getDefaultColor() {
             return glm::vec4();
 }
 
-string Pieces::getName() {
+string Pieces::getName() const {
     return name;
 }
 
@@ -66,10 +65,6 @@ void Pieces::setIsWhite(bool is_white) {
 
 bool Pieces::getIsFirstMove() const{
     return isFirstMove;
-}
-
-bool Pieces::getFirstMoveLastTurn() const {
-    return firstMoveLastTurn;
 }
 
 int Pieces::getTurnStamp() const {
@@ -104,38 +99,9 @@ vector<glm::ivec2> Pieces::getAllMovesDoneBefore() const{
     return AllMovesDoneBefore;
 }
 
-int Pieces::getMovesMode() const{
-    return movesMode;
-}
-
-function<vector<glm::ivec2>()> Pieces::getOverrideMoves() const{
-    return overrideMoves;
-}
-
-void Pieces::setMovesMode(int moves_mode){
-    movesMode = moves_mode;
-}
-
-void Pieces::clearOverrideMoves(){
-    overrideMoves = nullptr;
-}
-
-
-void Pieces::setOverrideMoves(const function<vector<glm::ivec2>()>& override_moves){
-    overrideMoves = override_moves;
-}
-
 void Pieces::addToAllMovesDoneBefore(int lastCoordX, int lastCoordY){
     AllMovesDoneBefore.emplace_back(lastCoordX,lastCoordY);
 }
-
-//void Pieces::setLastPosX(int last_pos_x){
-//    lastPosX = last_pos_x;
-//}
-//
-//void Pieces::setLastPosY(int last_pos_y){
-//    lastPosY = last_pos_y;
-//}
 
 void Pieces::setHasRoqued(bool has_roqued){
     hasRoqued = has_roqued;
@@ -153,12 +119,6 @@ void Pieces::setHasJustKilled(bool has_just_killed) {
     hasJustKilled = has_just_killed;
 }
 
-void Pieces::setFirstMoveLastTurn(bool first_move_last_turn) {
-    firstMoveLastTurn = first_move_last_turn;
-}
-
-
-
 void Pieces::setTurnStamp(int turn_stamp) {
     TurnStamp = turn_stamp;
 }
@@ -172,11 +132,6 @@ int Pieces::getCoordX() const {
 }
 int Pieces::getCoordY() const {
     return coordY;
-}
-void Pieces::setPosition(int newX, int newY) {
-    coordX = newX;
-    coordY = newY;
-    isFirstMove = false;
 }
 
 void Pieces::setCanActivateEffects(bool can_activate_effects) {
@@ -211,19 +166,13 @@ bool Pieces::hasEffectStatus(Effect_List effect) const {
 
 void Pieces::updateEffectStatus() {
     for (EffectInstance* effect : activeEffects) {
-        if (effect->effect == CHANGE_CONTROL && (effect->effect_duration == 1 || effect->effect_amount == 0)){
+        if (effect->effect == CHANGE_CONTROL && (effect->effect_duration == 1 || effect->effect_amount == 0))
             this->setIsWhite(not this->getIsWhite());
-        }
-        if (effect->effect == MOVE_CHANGING && effect->effect_amount == 0){
-            setMovesMode(0);
-            clearOverrideMoves();
-        }
+        if (effect->effect == MOVE_CHANGING && effect->effect_amount == 0)
+            override_piece_move = nullptr;
         effect->decrement_duration();
-        if (effect->isExpired()) {
-            activeEffects.erase(std::remove(activeEffects.begin(), activeEffects.end(), effect));
-        } else {
-            effect++;
-        }
+        if (effect->isExpired())
+            std::erase(activeEffects, effect);
     }
 }
 
@@ -331,7 +280,7 @@ void Pieces::gotUnalivedBy(Pieces* killer, const int killType) {
         );
 }
 
-void Pieces::gotResurrectedAt(Pieces* caster, const glm::ivec2 pos) {
+void Pieces::gotResurrectedAt(const Pieces* caster, const glm::ivec2 pos) {
     if (Chessboard::getInstance()->getPieceAt(pos.x, pos.y) != nullptr)
         ltr_log_info("Pieces::gotResurrectedAt::error couldn't resurrect at ", pos.x, " ", pos.y);
     isAlive = true;
@@ -356,4 +305,10 @@ void Pieces::gotResurrectedAt(Pieces* caster, const glm::ivec2 pos) {
             name,
             " got resurrected by a miracle"
         );
+}
+
+piece_move* Pieces::getCurrentPieceMove() const {
+    if (override_piece_move == nullptr)
+        return default_piece_move;
+    return override_piece_move;
 }

@@ -5,6 +5,7 @@
 #ifndef EFFECTS_H
 #define EFFECTS_H
 
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -55,6 +56,8 @@ struct EffectInstance {
 
     std::vector<void*> target_pieces;
     std::vector<void*> target_cells;
+
+    std::function<bool(const void*)> check_condition = [](const void*){return true;};
 
     EffectInstance(
         const Effect_List effect,

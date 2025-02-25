@@ -147,13 +147,16 @@ bool EffectHandler::validTargetForEffect(const Pieces* target_piece, const Effec
         || effect_instance->effect == IMMORTALITY
     ) return false;
     if (
-        (target_piece != nullptr
+        (
+            target_piece != nullptr
             && !Chessboard::isAlly(static_cast<const Pieces*>(effect_instance->caster_piece), target_piece)
             && !effect_instance->isBuff()
+            && effect_instance->check_condition(target_piece)
         ) || (
             target_piece != nullptr
             && Chessboard::isAlly(static_cast<const Pieces*>(effect_instance->caster_piece), target_piece)
             && effect_instance->isBuff())
+            && effect_instance->check_condition(target_piece)
     ) return true;
     return false;
 }
@@ -210,6 +213,8 @@ int EffectHandler::selectRandomTargetCells(EffectInstance* effect_instance) {
             && NB_targetSelected == effect_instance->NB_Target
         ) break;
         chessboard_cell* target_cell =  Chessboard::getInstance()->getCellAt(target.x, target.y);
+        if (!effect_instance->check_condition(target_cell))
+            continue;
         NB_targetSelected++;
         effect_instance->target_cells.emplace_back(target_cell);
     }
@@ -229,7 +234,7 @@ int EffectHandler::selectRandomTargetEmptyCells(EffectInstance* effect_instance)
             && NB_targetSelected == effect_instance->NB_Target
         ) break;
         chessboard_cell* target_cell =  Chessboard::getInstance()->getCellAt(target.x, target.y);
-        if (target_cell->piece != nullptr)
+        if (target_cell->piece != nullptr || !effect_instance->check_condition(target_cell))
             continue;
         NB_targetSelected++;
         effect_instance->target_cells.emplace_back(target_cell);
@@ -250,7 +255,7 @@ int EffectHandler::selectRandomTargetNonEmptyCells(EffectInstance* effect_instan
             && NB_targetSelected == effect_instance->NB_Target
         ) break;
         chessboard_cell* target_cell =  Chessboard::getInstance()->getCellAt(target.x, target.y);
-        if (target_cell->piece == nullptr)
+        if (target_cell->piece == nullptr || !effect_instance->check_condition(target_cell))
             continue;
         NB_targetSelected++;
         effect_instance->target_cells.emplace_back(target_cell);

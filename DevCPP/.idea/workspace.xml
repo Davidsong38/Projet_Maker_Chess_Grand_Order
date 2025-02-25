@@ -7,6 +7,7 @@
     <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexRemoved" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -36,32 +37,48 @@
       <change beforePath="$PROJECT_DIR$/src/game/GameEngine.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/GameEngine.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/board/context.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/board/piece_loader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/piece_loader.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Bishop.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Bishop.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Merlin.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Merlin.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Merlin.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Merlin.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Artoria.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/King.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/King.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Knight.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Knight.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Okita.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Okita.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Okita.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Okita.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Pawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Pawn.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Pawn.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Pawn.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Nitocris_Alter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Nitocris_Alter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Nitocris_Alter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Nitocris_Alter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Queen.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Queen.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Arceuid.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Arceuid.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Arceuid.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Arceuid.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Rook.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Rook.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/effects/EffectHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/EffectHandler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/effects/effect_List.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/effects/effect_List.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/inputs/mouseInputs.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/inputs/mouseInputs.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/effects/effects.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/effects.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/phases/Event.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/phases/Event.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/phases/PhaseHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/phases/PhaseHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/phases/PhaseHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/phases/PhaseHandler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/phases/event_type.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/phases/event_type.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/phases/phase_context.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/phases/phase_context.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/ui/uiElements.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/ui/uiElements.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rendering/opengl/ui/uiElements.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/rendering/opengl/ui/uiElements.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,15 +177,15 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Chess_Grand_Order">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Unnamed" type="CMakeListConfigurationType" factoryName="CMakeListConfigurationFactory">
       <method v="2" />
     </configuration>
     <configuration name="Chess_Grand_Order" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Chess_Grand_Order" TARGET_NAME="Chess_Grand_Order" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Chess_Grand_Order" RUN_TARGET_NAME="Chess_Grand_Order">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -239,7 +256,8 @@
       <workItem from="1740131848266" duration="40412000" />
       <workItem from="1740246858500" duration="22487000" />
       <workItem from="1740310083216" duration="19586000" />
-      <workItem from="1740385428953" duration="22818000" />
+      <workItem from="1740385428953" duration="24016000" />
+      <workItem from="1740481710359" duration="4795000" />
     </task>
     <servers />
   </component>

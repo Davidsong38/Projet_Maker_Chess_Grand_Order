@@ -4,19 +4,15 @@
 
 #include "Nitocris_Alter.h"
 
-#include <Context.h>
+#include <EffectHandler.h>
 #include <GameEngine.h>
-
 
 void Nitocris_Alter::setPieceGameMode(int piece_game_mode) {
 
 }
 
-
 vector<glm::ivec2> Nitocris_Alter::getEffectRange(Effect_List effect) const {
-
     vector<glm::ivec2> effect_range;
-
     if (effect == SPAWN_PIECES){
         for (int i = 1; i < 3; ++i) {
             if (coordX + i < 8) effect_range.emplace_back(coordX + i, coordY);
@@ -37,21 +33,18 @@ vector<glm::ivec2> Nitocris_Alter::getEffectRange(Effect_List effect) const {
         }
 
     }
-
     return effect_range;
 }
 
 bool Nitocris_Alter::SpellActivationCheck(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
     if (evolved && hasJustKilled) {
-        evolvedForm(context);
+        evolvedForm(arg);
     }
     return true;
 }
 
 
 bool Nitocris_Alter::passive(void* arg) {
-    auto * context = static_cast<context_type *>(arg);
     if (isWhite){
         CNT_4Turn += GameEngine::getInstance()->NB_WhiteDead - GameEngine::getInstance()->NB_WhiteDeadLastPhase;
     } else {
@@ -80,10 +73,8 @@ bool Nitocris_Alter::passive(void* arg) {
 }
 
 bool Nitocris_Alter::canEvolve(void *arg) {
-    //std::cout <<CNT_StunEffect<<std::endl;
     if (evolved == false && CNT_Revive>1) {
         evolved = true;
-        //std::cout <<"Ready to evolve!!!"<<std::endl;
         return true;
     }
     return false;
@@ -91,7 +82,6 @@ bool Nitocris_Alter::canEvolve(void *arg) {
 }
 
 bool Nitocris_Alter::evolvedForm(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
     auto *  effect_instance_1 = new EffectInstance(
         SPAWN_PIECES,
         this,
@@ -112,6 +102,4 @@ bool Nitocris_Alter::evolvedForm(void *arg) {
     EffectHandler::selectRandomTargetPieces(effect_instance_2);
     EffectHandler::applyToTargets(effect_instance_2);
     return true;
-
-
 }

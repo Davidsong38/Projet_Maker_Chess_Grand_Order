@@ -10,16 +10,15 @@
 #include "RenderEngine.h"
 #include "rendering_cfg.h"
 
-#include "King.h"
+#include "Pieces.h"
 
 
 class Artoria final: public King{
     protected :
         int CNT_GodMove = 0;
     public:
-        Artoria(int startX, int startY, bool white, Characters_List hero,
-            Pieces_List pieces_root)
-            : King(startX, startY, white, hero, pieces_root) {
+    Artoria(const int startX, const int startY, const bool white, const Characters_List hero)
+        : King(startX, startY, white, hero)  {
             addAdditionalUIElement(
                 artoriaTexture,
                 glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
@@ -33,9 +32,6 @@ class Artoria final: public King{
         bool evolvedForm(void* arg) override;
         bool SpellActivationCheck(void *arg) override;
         void setPieceGameMode(int piece_game_mode) override;
-        [[nodiscard]] vector<glm::ivec2> getMoves() override;
-
-
 };
 
 

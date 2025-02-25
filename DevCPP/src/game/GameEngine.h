@@ -5,10 +5,12 @@
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
 
-#include <Context.h>
+// #include <Context.h>
 
 #include "Engine.h"
 #include "selection.h"
+#include "Event.h"
+#include "phase_context.h"
 
 
 enum GameState{
@@ -74,6 +76,7 @@ public:
 
     void requestSelection(const selection_request_type& to_select);
     void validateSelection();
+    void deselectAllPieces();
     [[nodiscard]] selection_type* getSelection();
 
     void addEvent(Event* event) const;
@@ -94,7 +97,6 @@ private:
 
     inline static GameEngine* instance = nullptr;
     unordered_map<GameState, function<void()>> state_handlers;
-    context_type* context = new context_type();
 
     void goToState(const GameState state) {
         ltr_log_debug(CONSOLE_COLOR_GRAY, "Going from : ", game_state_to_string[current_state], ", to ", game_state_to_string[state], ", btw ", game_state_to_string[last_main_state]);

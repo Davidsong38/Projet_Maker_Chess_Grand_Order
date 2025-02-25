@@ -7,8 +7,7 @@
 #include <Arceuid.h>
 #include <Artoria.h>
 #include <Chessboard.h>
-#include <EffectHandler.h>
-#include <exponential.hpp>
+#include <GameEngine.h>
 
 #include "game_cfg.h"
 #include "log.h"
@@ -83,7 +82,11 @@ Characters_List choose_queen(bool isWhite) {
 
 void add_piece_to_board(int x, int y, bool isWhite, Characters_List character) {
     auto* piece = get_piece(x,y,isWhite,character);
-    //EffectHandler::configureEffectHandler(piece);
+    if (piece->isKing())
+        if (isWhite)
+            GameEngine::getInstance()->setWhiteKing(piece);
+        else
+            GameEngine::getInstance()->setBlackKing(piece);
     Chessboard::getInstance()->placePiece(x,y,piece);
     piece->addToAllMovesDoneBefore(piece->getCoordX(),piece->getCoordY());
 }
@@ -92,73 +95,73 @@ Pieces* get_piece(int x, int y, bool isWhite, Characters_List character) {
     Pieces* piece;
     switch (character) {
         case MEDUSA_SABER:
-        piece = new Medusa_Saber(x,y,isWhite,character,BISHOP);
+        piece = new Medusa_Saber(x,y,isWhite,character);
         break;
         case MERLIN:
-        piece = new Merlin(x,y,isWhite,character,BISHOP);
+        piece = new Merlin(x,y,isWhite,character);
         break;
         //case ASTOLFO:
-        //piece = new Astolfo(x,y,isWhite,character,PAWN);
+        //piece = new Astolfo(x,y,isWhite,character);
         //break;
         //case TAMAMO_NO_MAE:
-        //piece = new Tanamo_No_Mae(x,y,isWhite,character,PAWN);
+        //piece = new Tanamo_No_Mae(x,y,isWhite,character);
         //break;
         case USHIWAKAMARU:
-        piece = new Ushiwakamaru(x,y,isWhite,character,KNIGHT);
+        piece = new Ushiwakamaru(x,y,isWhite,character);
         break;
         case OKITA:
-        piece = new Okita(x,y,isWhite,character,KNIGHT);
+        piece = new Okita(x,y,isWhite,character);
         break;
         //case KINTOKI_RIDER:
-        //piece = new Kintoki_Rider(x,y,isWhite,character,PAWN);
+        //piece = new Kintoki_Rider(x,y,isWhite,character);
         //break;
         //case ZHOU_YU:
-        //piece = new Zhou_Yu(x,y,isWhite,character,PAWN);
+        //piece = new Zhou_Yu(x,y,isWhite,character);
         //break;
         case ARCEUID:
-        piece = new Arceuid(x,y,isWhite,character,ROOK);
+        piece = new Arceuid(x,y,isWhite,character);
         break;
         case XU_FU:
-        piece = new Xu_Fu(x,y,isWhite,character,ROOK);
+        piece = new Xu_Fu(x,y,isWhite,character);
         break;
         //case MELUSINE:
-        //piece = new Melusine(x,y,isWhite,character,PAWN);
+        //piece = new Melusine(x,y,isWhite,character);
         //break;
         //case MASH:
-        //piece = new Mash(x,y,isWhite,character,PAWN);
+        //piece = new Mash(x,y,isWhite,character);
         //break;
         case SESSHOIN_KIARA:
-        piece = new Sesshoin_Kiara(x,y,isWhite,character,QUEEN);
+        piece = new Sesshoin_Kiara(x,y,isWhite,character);
         break;
         case NITOCRIS_ALTER:
-        piece = new Nitocris_Alter(x,y,isWhite,character,QUEEN);
+        piece = new Nitocris_Alter(x,y,isWhite,character);
         break;
         //case BB_DUBAI:
-        //piece = new Bb_Dubai(x,y,isWhite,character,PAWN);
+        //piece = new Bb_Dubai(x,y,isWhite,character);
         //break;
         //case KUKULKAN:
-        //piece = new Kukulkan(x,y,isWhite,character,PAWN);
+        //piece = new Kukulkan(x,y,isWhite,character);
         break;
         case ARTORIA:
-        piece = new Artoria(x,y,isWhite,character,KING);
+        piece = new Artoria(x,y,isWhite,character);
         break;
         case GILGAMESH:
-        piece = new Gilgamesh(x,y,isWhite,character,KING);
+        piece = new Gilgamesh(x,y,isWhite,character);
         break;
         //case OBERON:
-        //piece = new Oberon(x,y,isWhite,character,PAWN);
+        //piece = new Oberon(x,y,isWhite,character);
         //break;
         //case ZHUGE_LIANG:
-        //piece = new Zhuge_Liang(x,y,isWhite,character,PAWN);
+        //piece = new Zhuge_Liang(x,y,isWhite,character);
         //break;
         case NEMO_MARINE:
-        piece = new Nemo_Marine(x,y,isWhite,character,PAWN);
+        piece = new Nemo_Marine(x,y,isWhite,character);
         break;
         //case NOBU:
-        //piece = new Nobu(x,y,isWhite,character,PAWN);
+        //piece = new Nobu(x,y,isWhite,character);
         //break;
         default:
-        piece = new Nemo_Marine(x,y,isWhite,character,PAWN);
+        piece = new Nemo_Marine(x,y,isWhite,character);
         ltr_log_error("Piece type not found in piece_loader.hpp");
         break;
     }

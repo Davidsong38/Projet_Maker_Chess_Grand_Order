@@ -10,6 +10,7 @@
 #include <event_type.h>
 #include <Pieces.h>
 #include <glm.hpp>
+#include <Chessboard.h>
 
 class Event {
 public:

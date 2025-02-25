@@ -4,20 +4,17 @@
 
 #include "Chessboard.h"
 
-#include <King.h>
 #include <log.h>
+#include <event_type.h>
 
-#include "Characters_List.h"
-#include "Pawn.h"
 #include "game_cfg.h"
 #include "RenderEngine.h"
 
 Chessboard* Chessboard::instance = nullptr;
 
 Chessboard* Chessboard::getInstance() {
-    if (!instance) {
+    if (!instance)
         return new Chessboard(BOARD_SIZE);
-    }
     return instance;
 }
 
@@ -85,11 +82,11 @@ bool Chessboard::isInGrid(int to_coordX, int to_coordY) const {
     return false;
 }
 
-bool Chessboard::isPathClear(int endX, int endY, Pieces* piece) const {
+bool Chessboard::isPathClear(int endX, int endY, const Pieces* piece) const {
     return isPathClear(piece->getCoordX(), piece->getCoordY(), endX, endY, piece);
 }
 
-bool Chessboard::isPathClear(int startX, int startY, int endX, int endY, Pieces* piece) const {
+bool Chessboard::isPathClear(int startX, int startY, int endX, int endY, const Pieces* piece) const {
     int dx = (endX - startX) == 0 ? 0 : (endX - startX) / abs(endX - startX);  // Direction en X
     int dy = (endY - startY) == 0 ? 0 : (endY - startY) / abs(endY - startY);  // Direction en Y
 
@@ -158,33 +155,256 @@ vector<Pieces*> Chessboard::getAllPieces() {
 
 
 
-bool Chessboard::isEndangeredByWhite(glm::ivec2 cell) {
-    vector<Pieces*> piecesList = getAllPieces();
-    for (const auto character : piecesList) {
-        if (character->getIsWhite()) {
-            for (const auto move : getValidMoves(character)) {
-                if (move == cell) {
-                    return true;
-                }
+bool Chessboard::isEndangeredByWhite(const glm::ivec2 cell) {
+    for (vector<Pieces*> piecesList = getAllPieces(); const auto character : piecesList) {
+        if (!character->getIsWhite())
+            continue;
+        for (const auto move : getValidMoves(character))
+            if (move == cell)
+                return true;
+    }
+    return false;
+}
+
+bool Chessboard::isEndangeredByBlack(const glm::ivec2 cell) {
+    for (vector<Pieces*> piecesList = getAllPieces(); const auto character : piecesList) {
+        if (character->getIsWhite())
+            continue;
+        for (const auto move : getValidMoves(character))
+            if (move == cell)
+                return true;
+    }
+    return false;
+}
+
+bool Chessboard::hasJustFirstMove(Pieces* piece) {
+    if (piece->getTurnStamp() == 1)
+        return true;
+
+    else {
+        //piece->setFirstMoveLastTurn(false);
+        return false;
+    }
+}
+
+bool Chessboard::notBrokenMove(Pieces* piece, const Pieces* target_piece){
+    if (target_piece != nullptr && piece->getIsOnAMove() && target_piece->isKing())
+        return false;
+    if (target_piece != nullptr && piece->hasThisEffect(IMMORTALITY) && target_piece->isKing())
+        return false;
+    return true;
+}
+
+vector<glm::ivec2> Chessboard::getValidMoves(Pieces* piece) const {
+    const piece_move* pieceMove = piece->getCurrentPieceMove();
+    vector<glm::ivec2> moves_list = pieceMove->get_positions(glm::ivec2(piece->getCoordX(), piece->getCoordY()));
+    if (pieceMove->pathAlwaysClear)
+        return moves_list;
+    vector<glm::ivec2> valid_moves;
+    for (const auto& move : moves_list) {
+        const int to_coordX = move.x;
+        const int to_coordY = move.y;
+        if (!isInGrid(to_coordX, to_coordY))
+            ltr_log_fatal("Chessboard::getValidMoves: move is not in grid : ", to_coordX, to_coordY);
+        const auto* target_piece = getPieceAt(to_coordX, to_coordY);
+        const bool emptySquare = target_piece == nullptr;
+        bool isTargetAlly = false;
+        bool isTargetKing = false;
+        if (!emptySquare) {
+            isTargetAlly = isAlly(piece, target_piece);
+            isTargetKing = target_piece->isKing();
+        }
+        bool pathClear = true;
+        if (!pieceMove->ignoresObstacles)
+            pathClear = isPathClear(to_coordX,to_coordY, piece);
+        if (
+            (emptySquare || (!isTargetAlly && pieceMove->canKill))
+            && pathClear
+            && (isTargetKing || pieceMove->canKillKing)
+        ) valid_moves.emplace_back(move);
+    }
+    return valid_moves;
+}
+
+
+
+bool Chessboard::isMovePossible(Pieces* piece, const int to_coordX, const int to_coordY) const {
+    for (const auto& moves : getValidMoves(piece)) {
+        if (moves.x == to_coordX && moves.y == to_coordY)
+            return true;
+    }
+    return false;
+}
+
+bool Chessboard::movePiece(Pieces* piece, const int to_coordX, const int to_coordY) {
+    const int coordX = piece->getCoordX();
+    const int coordY = piece->getCoordY();
+    piece->addToAllMovesDoneBefore(coordX, coordY);
+    if (littleRoque(piece,to_coordX,to_coordY))
+        return true;
+    if (bigRoque(piece,to_coordX,to_coordY))
+        return true;
+    if (!isMoveable(piece))
+        return false;
+    if (!isMovePossible(piece, to_coordX, to_coordY))
+        return false;
+    if (KillInPassing(piece,to_coordX,to_coordY))
+        return true;
+    Pieces* target_piece = getPieceAt(to_coordX, to_coordY);
+    if (target_piece == nullptr) {
+        piece->goToPosition(to_coordX, to_coordY);
+        piece->CNTMove++;
+    } else {
+        KillCheck(piece, target_piece);
+    }
+    PawnReachingEndOfBoard(piece);
+    piece->activateEffect(MOVE_CHANGING);
+    return true;
+}
+
+
+bool Chessboard::isKillable(const Pieces *piece,Pieces* target_piece) {
+    if (piece->isKing())
+        return true;
+    for (const auto& e : target_piece->getActive_effects()) {
+        if (e->effect == SHIELD || e->effect == IMMORTALITY ) {
+            target_piece->activateEffect(e->effect);
+            return false;
+        }
+
+    }
+    return true;
+}
+
+bool Chessboard::KillCheck(Pieces *piece, Pieces *target_piece) {
+    const int coordX2 = target_piece->getCoordX();
+    const int coordY2 = target_piece->getCoordY();
+    if (!isKillable(piece,target_piece) || isAlly(piece,target_piece))
+        return false;
+    if (target_piece->hasThisEffect(CHANGE_CONTROL)){
+        target_piece->activateEffect(CHANGE_CONTROL);
+        return true;
+    }
+    piece->goToPosition(coordX2, coordY2);
+    target_piece->gotUnalivedBy(piece, KILL_NORMAL);
+    return true;
+}
+
+bool Chessboard::KillInPassing(Pieces *piece, const int to_coordX, const int to_coordY) {
+    const int coordX1 = piece->getCoordX();
+    if (!piece->isPawn() || piece->hasThisEffect(MOVE_CHANGING))
+        return false;
+    const int pawnDirection = piece->getIsWhite() ? -1 : 1;
+    const int board_size = static_cast<int>(grid.size());
+    const int board_limit = piece->getIsWhite() ? 0 : board_size - 1;
+    const int en_passant_pos = board_limit - 3 * pawnDirection;
+    const int coordX2 = to_coordX - pawnDirection;
+    const int coordY2 = to_coordY;
+    if (
+        Pieces* realTargetPiece = getPieceAt(coordX2,coordY2);
+        realTargetPiece != nullptr
+        && isKillable(piece,realTargetPiece)
+        && !isAlly(piece,realTargetPiece)
+        && realTargetPiece->isPawn()
+        && coordX1 == en_passant_pos && coordX2 == en_passant_pos
+        && realTargetPiece->getTurnStamp() == 1
+    ) {
+        deletePiece(realTargetPiece);
+        piece->goToPosition(to_coordX, to_coordY);
+        piece->CNTMove++;
+        realTargetPiece->gotUnalivedBy(piece, KILL_EN_PASSANT);
+        return true;
+    }
+    return false;
+}
+
+bool Chessboard::PawnReachingEndOfBoard(Pieces *piece) {
+    int coordX = piece->getCoordX();
+    if (piece->isPawn()) {
+        if (piece->getIsWhite()) {
+            if (coordX == 0){
+                piece->setPiecesOrigin(QUEEN);
+                piece->activateEffect(SUPP_RANGE);
+                piece->deleteEffect(IMMORTALITY);
+                return true;
+            }
+        } else {
+            if (coordX == 7){
+                piece->setPiecesOrigin(QUEEN);
+                piece->activateEffect(SUPP_RANGE);
+                piece->deleteEffect(IMMORTALITY);
+                return true;
             }
         }
     }
     return false;
 }
 
-bool Chessboard::isEndangeredByBlack(glm::ivec2 cell) {
-    vector<Pieces*> piecesList = getAllPieces();
-    for (const auto character : piecesList) {
-        if (!character->getIsWhite()) {
-            for (const auto move : getValidMoves(character)) {
-                if (move == cell) {
-                    return true;
-                }
+bool Chessboard::isKilled(const Pieces *piece) const {
+    for (const auto &row : grid) {
+        for (const auto &cell : row) {
+            if (cell.piece == piece) {
+                return false;
             }
         }
     }
-    return false;
+    return true;
 }
+
+bool Chessboard::isMoveable(const Pieces* piece) {
+    for (const auto& e : piece->getActive_effects()) {
+        if (e->effect == STUN) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool Chessboard::getPosInBoard(const glm::vec2 screenPos, glm::ivec2 &boardPos) const {
+    auto transformed_screenPos = glm::vec2(
+        screenPos.x * RenderEngine::getWindowAspectRatio(),
+        screenPos.y
+    );
+    transformed_screenPos.x *= static_cast<float>(size);
+    float offsetX = (1 - RenderEngine::getWindowInverseAspectRatio()) * static_cast<float>(size);
+    offsetX += RenderEngine::getWindowAspectRatio() + 1;
+    offsetX *= 0.5f;
+    transformed_screenPos.x -= offsetX;
+    transformed_screenPos.y *= static_cast<float>(size);
+    boardPos.y = static_cast<int>(floor(transformed_screenPos.x));
+    boardPos.x = static_cast<int>(floor(transformed_screenPos.y));
+    if (boardPos.y < 0 || boardPos.y >= size || boardPos.x < 0 || boardPos.x >= size)
+        return false;
+    return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 bool Chessboard::canLittleRoque(Pieces* piece) {
     int coordX = piece->getCoordX();
@@ -364,249 +584,4 @@ bool Chessboard::pawnMenacingBigRoque(Pieces* king) {
         }
     }
     return false;
-}
-
-
-bool Chessboard::hasJustFirstMove(Pieces* piece) {
-    if (piece->getTurnStamp() == 1)
-        return true;
-
-    else {
-        //piece->setFirstMoveLastTurn(false);
-        return false;
-    }
-}
-
-bool Chessboard::notBrokenMove(Pieces* piece, const Pieces* target_piece){
-    if (target_piece != nullptr && piece->getIsOnAMove() && target_piece->isKing())
-        return false;
-    if (target_piece != nullptr && piece->hasThisEffect(IMMORTALITY) && target_piece->isKing())
-        return false;
-    return true;
-}
-
-vector<glm::ivec2> Chessboard::getValidMoves(Pieces* piece) const {
-    vector<glm::ivec2> valid_moves;
-    vector<glm::ivec2> piece_moves = piece->getMoves();
-    if (piece->getOverrideMoves() != nullptr){
-        piece_moves = piece->getOverrideMoves()();
-    } else if (piece->isPawn() && piece->getMoves().empty()) {
-        const int pawnDirection = piece->getIsWhite() ? -1 : 1;
-        const int currentX = piece->getCoordX();
-        const int currentY = piece->getCoordY();
-        const bool FirstMove = piece->getIsFirstMove();
-        const int board_size = static_cast<int>(grid.size());
-        const int board_limit = piece->getIsWhite() ? 0 : board_size - 1;
-        const int en_passant_pos = board_limit - 3 * pawnDirection;
-        if (
-            (currentX + pawnDirection) * pawnDirection <= board_limit * pawnDirection
-            && getPieceAt(currentX + pawnDirection, currentY) == nullptr
-        ) valid_moves.emplace_back(currentX + pawnDirection, currentY );
-        if (
-            FirstMove
-            && (currentX + 2 * pawnDirection) * pawnDirection <= board_limit * pawnDirection
-            && isPathClear(currentX, currentY,currentX + 2 * pawnDirection,currentY, piece)
-            && getPieceAt(currentX + 2 * pawnDirection, currentY) == nullptr
-        ) valid_moves.emplace_back(currentX + 2 * pawnDirection, currentY);
-        if (
-            currentX == en_passant_pos
-            && isInGrid(currentX, currentY - 1)
-            && getPieceAt(currentX, currentY - 1) != nullptr
-            && getPieceAt(currentX, currentY - 1)->isPawn()
-            && !getPieceAt(currentX, currentY - 1)->getIsWhite()
-            && getPieceAt(currentX, currentY - 1)->getTurnStamp() == 1
-            ) valid_moves.emplace_back(currentX + pawnDirection, currentY - 1);
-        if (
-            currentX == en_passant_pos
-            && isInGrid(currentX, currentY + 1)
-            && getPieceAt(currentX, currentY + 1) != nullptr
-            && getPieceAt(currentX, currentY + 1)->isPawn()
-            && !getPieceAt(currentX, currentY + 1)->getIsWhite()
-            && getPieceAt(currentX, currentY + 1)->getTurnStamp() == 1
-        ) valid_moves.emplace_back(currentX + pawnDirection, currentY + 1);
-        for (
-            const vector<glm::ivec2> diagonalAttack = {{pawnDirection, -1}, {pawnDirection, 1}};
-            const auto& offset : diagonalAttack
-        ) {
-            const int diagX = currentX + offset.x;
-            const int diagY = currentY + offset.y;
-            if (
-                isInGrid(diagX, diagY)
-                && getPieceAt(diagX, diagY) != nullptr
-                && !isAlly(piece, getPieceAt(diagX, diagY))
-            ) {
-                valid_moves.emplace_back(diagX, diagY);
-            }
-        }
-        return valid_moves;
-    }
-    for (const auto& move : piece_moves) {
-        const int to_coordX = move.x;
-        const int to_coordY = move.y;
-        const bool inGrid = isInGrid(to_coordX, to_coordY);
-        const bool emptySquare = getPieceAt(to_coordX, to_coordY) == nullptr;
-        bool isTargetAlly = false;
-        const bool notBroken = notBrokenMove(piece, getPieceAt(to_coordX, to_coordY));
-        if (!emptySquare)
-            isTargetAlly = isAlly(piece, getPieceAt(to_coordX, to_coordY));
-        const bool knight = piece->isKnight();
-        bool pathClear = true;
-        if (!knight && piece->getMovesMode() != 3 || knight && piece->getMovesMode() != 0 && piece->getMovesMode() != 3)
-            pathClear = isPathClear(to_coordX,to_coordY, piece);
-        if (inGrid && (emptySquare || !isTargetAlly) && pathClear && notBroken)
-            valid_moves.emplace_back(move);
-    }
-    return valid_moves;
-}
-
-
-
-bool Chessboard::isMovePossible(Pieces* piece, const int to_coordX, const int to_coordY) const {
-    for (const auto& moves : getValidMoves(piece)) {
-        if (moves.x == to_coordX && moves.y == to_coordY)
-            return true;
-    }
-    return false;
-}
-
-bool Chessboard::movePiece(Pieces* piece, const int to_coordX, const int to_coordY) {
-    const int coordX = piece->getCoordX();
-    const int coordY = piece->getCoordY();
-    piece->addToAllMovesDoneBefore(coordX, coordY);
-    if (littleRoque(piece,to_coordX,to_coordY))
-        return true;
-    if (bigRoque(piece,to_coordX,to_coordY))
-        return true;
-    if (!isMoveable(piece))
-        return false;
-    if (!isMovePossible(piece, to_coordX, to_coordY))
-        return false;
-    if (KillInPassing(piece,to_coordX,to_coordY))
-        return true;
-    Pieces* target_piece = getPieceAt(to_coordX, to_coordY);
-    if (target_piece == nullptr) {
-        piece->goToPosition(to_coordX, to_coordY);
-        piece->CNTMove++;
-    } else {
-        KillCheck(piece, target_piece);
-    }
-    PawnReachingEndOfBoard(piece);
-    piece->activateEffect(MOVE_CHANGING);
-    return true;
-}
-
-
-bool Chessboard::isKillable(const Pieces *piece,Pieces* target_piece) {
-    if (piece->isKing())
-        return true;
-    for (const auto& e : target_piece->getActive_effects()) {
-        if (e->effect == SHIELD || e->effect == IMMORTALITY ) {
-            target_piece->activateEffect(e->effect);
-            return false;
-        }
-
-    }
-    return true;
-}
-
-bool Chessboard::KillCheck(Pieces *piece, Pieces *target_piece) {
-    const int coordX2 = target_piece->getCoordX();
-    const int coordY2 = target_piece->getCoordY();
-    if (!isKillable(piece,target_piece) || isAlly(piece,target_piece))
-        return false;
-    if (target_piece->hasThisEffect(CHANGE_CONTROL)){
-        target_piece->activateEffect(CHANGE_CONTROL);
-        return true;
-    }
-    piece->goToPosition(coordX2, coordY2);
-    target_piece->gotUnalivedBy(piece, KILL_NORMAL);
-    return true;
-}
-
-bool Chessboard::KillInPassing(Pieces *piece, const int to_coordX, const int to_coordY) {
-    const int coordX1 = piece->getCoordX();
-    if (!piece->isPawn() || piece->hasThisEffect(MOVE_CHANGING))
-        return false;
-    const int pawnDirection = piece->getIsWhite() ? -1 : 1;
-    const int board_size = static_cast<int>(grid.size());
-    const int board_limit = piece->getIsWhite() ? 0 : board_size - 1;
-    const int en_passant_pos = board_limit - 3 * pawnDirection;
-    const int coordX2 = to_coordX - pawnDirection;
-    const int coordY2 = to_coordY;
-    if (
-        Pieces* realTargetPiece = getPieceAt(coordX2,coordY2);
-        realTargetPiece != nullptr
-        && isKillable(piece,realTargetPiece)
-        && !isAlly(piece,realTargetPiece)
-        && realTargetPiece->isPawn()
-        && coordX1 == en_passant_pos && coordX2 == en_passant_pos
-        && realTargetPiece->getTurnStamp() == 1
-    ) {
-        deletePiece(realTargetPiece);
-        piece->goToPosition(to_coordX, to_coordY);
-        piece->CNTMove++;
-        realTargetPiece->gotUnalivedBy(piece, KILL_EN_PASSANT);
-        return true;
-    }
-    return false;
-}
-
-bool Chessboard::PawnReachingEndOfBoard(Pieces *piece) {
-    int coordX = piece->getCoordX();
-    if (piece->isPawn()) {
-        if (piece->getIsWhite()) {
-            if (coordX == 0){
-                piece->setPiecesOrigin(QUEEN);
-                piece->activateEffect(SUPP_RANGE);
-                piece->deleteEffect(IMMORTALITY);
-                return true;
-            }
-        } else {
-            if (coordX == 7){
-                piece->setPiecesOrigin(QUEEN);
-                piece->activateEffect(SUPP_RANGE);
-                piece->deleteEffect(IMMORTALITY);
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-bool Chessboard::isKilled(const Pieces *piece) const {
-    for (const auto &row : grid) {
-        for (const auto &cell : row) {
-            if (cell.piece == piece) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-bool Chessboard::isMoveable(const Pieces* piece) {
-    for (const auto& e : piece->getActive_effects()) {
-        if (e->effect == STUN) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool Chessboard::getPosInBoard(const glm::vec2 screenPos, glm::ivec2 &boardPos) const {
-    auto transformed_screenPos = glm::vec2(
-        screenPos.x * RenderEngine::getWindowAspectRatio(),
-        screenPos.y
-    );
-    transformed_screenPos.x *= static_cast<float>(size);
-    float offsetX = (1 - RenderEngine::getWindowInverseAspectRatio()) * static_cast<float>(size);
-    offsetX += RenderEngine::getWindowAspectRatio() + 1;
-    offsetX *= 0.5f;
-    transformed_screenPos.x -= offsetX;
-    transformed_screenPos.y *= static_cast<float>(size);
-    boardPos.y = static_cast<int>(floor(transformed_screenPos.x));
-    boardPos.x = static_cast<int>(floor(transformed_screenPos.y));
-    if (boardPos.y < 0 || boardPos.y >= size || boardPos.x < 0 || boardPos.x >= size)
-        return false;
-    return true;
 }

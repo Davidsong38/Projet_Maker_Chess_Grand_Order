@@ -4,7 +4,8 @@
 
 #ifndef MERLIN_H
 #define MERLIN_H
-#include <Bishop.h>
+
+#include <Pieces.h>
 #include <RenderEngine.h>
 #include <rendering_cfg.h>
 #include <textures.h>
@@ -16,9 +17,8 @@ class Merlin final : public Bishop{
         bool chooseSpell = false;
         bool MerlinPowerON = false;
 public:
-    Merlin(int startX, int startY, bool white, Characters_List hero,
-         Pieces_List pieces_root)
-        : Bishop(startX, startY, white, hero, pieces_root) {
+    Merlin(const int startX, const int startY, const bool white, const Characters_List hero)
+            : Bishop(startX, startY, white, hero) {
         addAdditionalUIElement(
             merlinTexture,
             glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
@@ -26,7 +26,6 @@ public:
         );
     }
 
-    //[[nodiscard]] vector<Effect_List> getCasterEffects() const override;
     [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) const override;
     bool passive(void* arg) override;
     bool canEvolve(void* arg) override;

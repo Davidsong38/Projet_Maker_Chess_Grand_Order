@@ -4,74 +4,14 @@
 
 #include "Gilgamesh.h"
 
+#include "GameEngine.h"
 
 void Gilgamesh::setPieceGameMode(int piece_game_mode) {
     if (!evolved)
         pieceGameMode = piece_game_mode;
 }
 
-vector<glm::ivec2> Gilgamesh::getMoves() {
-    vector<glm::ivec2> moves;
-
-    if (!evolved || movesMode == 0){
-        if (coordX + 1 < 8 && coordY + 1 < 8) moves.emplace_back(coordX + 1, coordY + 1);
-        if (coordX - 1 >= 0 && coordY + 1 < 8) moves.emplace_back(coordX - 1, coordY + 1);
-        if (coordX + 1 < 8 && coordY- 1 >= 0) moves.emplace_back(coordX + 1, coordY - 1);
-        if (coordX - 1 >= 0 && coordY - 1 >= 0) moves.emplace_back(coordX - 1, coordY - 1);
-        if (coordX + 1 < 8) moves.emplace_back(coordX + 1, coordY);
-        if (coordX - 1 >= 0) moves.emplace_back(coordX - 1, coordY);
-        if (coordY- 1 >= 0) moves.emplace_back(coordX, coordY - 1);
-        if (coordY + 1 < 8) moves.emplace_back(coordX, coordY + 1);
-    }
-    if (movesMode == 1 && evolved){
-        for (int i = 1; i < 8; ++i) {
-            if (coordX + i < 8) moves.emplace_back(coordX + i, coordY);
-            if (coordX - i >= 0) moves.emplace_back(coordX - i, coordY);
-            if (coordY- i >= 0) moves.emplace_back(coordX, coordY - i);
-            if (coordY + i < 8) moves.emplace_back(coordX, coordY + i);
-        }
-    }
-
-    if (movesMode == 2 && evolved){
-        for (int i = 1; i < 8; ++i) {
-            if (coordX + i < 8 && coordY + i < 8) moves.emplace_back(coordX + i, coordY + i);
-            if (coordX - i >= 0 && coordY + i < 8) moves.emplace_back(coordX - i, coordY + i);
-            if (coordX + i < 8 && coordY- i >= 0) moves.emplace_back(coordX + i, coordY - i);
-            if (coordX - i >= 0 && coordY - i >= 0) moves.emplace_back(coordX - i, coordY - i);
-        }
-    }
-    if (movesMode == 3 && evolved){
-        if (coordX + 1 < 8 && coordY + 2 < 8) moves.emplace_back(coordX + 1, coordY + 2);
-        if (coordX - 1 >= 0 && coordY + 2 < 8) moves.emplace_back(coordX - 1, coordY + 2);
-        if (coordX + 1 < 8 && coordY- 2 >= 0) moves.emplace_back(coordX + 1, coordY - 2);
-        if (coordX - 1 >= 0 && coordY - 2 >= 0) moves.emplace_back(coordX - 1, coordY - 2);
-        if (coordX + 2 < 8 && coordY + 1 < 8) moves.emplace_back(coordX + 2, coordY + 1);
-        if (coordX - 2 >= 0 && coordY + 1 < 8) moves.emplace_back(coordX - 2, coordY + 1);
-        if (coordX + 2 < 8 && coordY- 1 >= 0) moves.emplace_back(coordX + 2, coordY - 1);
-        if (coordX - 2 >= 0 && coordY - 1 >= 0) moves.emplace_back(coordX - 2, coordY - 1);
-
-    }
-
-    if (movesMode == 4 && evolved){
-        for (int i = 1; i < 8; ++i) {
-            if (coordX + i < 8 && coordY + i < 8) moves.emplace_back(coordX + i, coordY + i);
-            if (coordX - i >= 0 && coordY + i < 8) moves.emplace_back(coordX - i, coordY + i);
-            if (coordX + i < 8 && coordY- i >= 0) moves.emplace_back(coordX + i, coordY - i);
-            if (coordX - i >= 0 && coordY - i >= 0) moves.emplace_back(coordX - i, coordY - i);
-            if (coordX + i < 8) moves.emplace_back(coordX + i, coordY);
-            if (coordX - i >= 0) moves.emplace_back(coordX - i, coordY);
-            if (coordY- i >= 0) moves.emplace_back(coordX, coordY - i);
-            if (coordY + i < 8) moves.emplace_back(coordX, coordY + i);
-        }
-    }
-
-    return moves;
-}
-
-
-
 vector<glm::ivec2> Gilgamesh::getEffectRange(Effect_List effect) const {
-
     vector<glm::ivec2> effect_range;
     if (effect == MOVE_CHANGING){
         for (int i = 0; i < 8; ++i){
@@ -84,9 +24,9 @@ vector<glm::ivec2> Gilgamesh::getEffectRange(Effect_List effect) const {
 }
 
 bool Gilgamesh::SpellActivationCheck(void *arg) {
-    auto * context = static_cast<context_type *>(arg);
+    auto * context = static_cast<phase_context_type *>(arg);
     if (this->getPieceGameMode() != 0 && !evolved){
-        passive(context);
+        passive(arg);
         return true;
     }
     if (canEvolve(context)){
@@ -95,8 +35,7 @@ bool Gilgamesh::SpellActivationCheck(void *arg) {
             CNT_EvolvedForm = 4;
     }
     if (evolved && CNT_EvolvedForm == 4){
-        if (GameEngine::getInstance()->receivedClick && evolvedForm(context)){
-            std::cout << "ZASHHUUU" << std::endl;
+        if (GameEngine::getInstance()->receivedClick && evolvedForm(context)) {
             CNT_EvolvedForm--;
             return true;
         }
@@ -106,20 +45,17 @@ bool Gilgamesh::SpellActivationCheck(void *arg) {
         CNT_EvolvedForm--;
     if (CNT_EvolvedForm == 0){
         evolved = false;
-        std::cout << "yorokobe" << std::endl;
     }
     return true;
 }
 
-
-
 bool Gilgamesh::passive(void* arg) {
-    auto * context = static_cast<context_type *>(arg);
-    if (this != context->piece){
+    auto * context = static_cast<phase_context_type *>(arg);
+    if (this != context->firstSelectedPiece){
         CNT_NotMove++;
         return true;
     }
-    if (GameEngine::getInstance()->getLastState() == SELECT_BLACK_PHASE || GameEngine::getInstance()->getLastState() == SELECT_WHITE_PHASE){
+    if (GameEngine::getInstance()->getLastState() == SELECT_BLACK_PHASE || GameEngine::getInstance()->getLastState() == SELECT_WHITE_PHASE) {
         std::cout <<"MovesMode : " <<movesMode << std::endl;
         movesMode = rand() % 4 + 1;
         std::cout <<"MovesMode !!!! : " <<movesMode << std::endl;
@@ -133,11 +69,9 @@ bool Gilgamesh::canEvolve(void *arg) {
     if (!evolved && CNT_NotMove >= 8 && (GameEngine::getInstance()->getLastState() == MOVING_BLACK_PHASE
         || GameEngine::getInstance()->getLastState() == MOVING_WHITE_PHASE)) {
         std::cout << CNT_NotMove << std::endl;
-        std::cout << "Ready to evolve!!!"<<std::endl;
         return true;
     }
     return false;
-
 }
 
 bool Gilgamesh::evolvedForm(void *arg) {

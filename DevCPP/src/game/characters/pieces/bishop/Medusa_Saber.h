@@ -10,16 +10,15 @@
 #include "RenderEngine.h"
 #include "rendering_cfg.h"
 
-#include "Bishop.h"
+#include "Pieces.h"
 
 
 class Medusa_Saber final : public Bishop{
     protected :
         int CNT_StunEffect = 0;
     public:
-        Medusa_Saber(int startX, int startY, bool white, Characters_List hero,
-             Pieces_List pieces_root)
-            : Bishop(startX, startY, white, hero, pieces_root) {
+        Medusa_Saber(const int startX, const int startY, const bool white, const Characters_List hero)
+            : Bishop(startX, startY, white, hero) {
             addAdditionalUIElement(
                 medusaTexture,
                 glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
@@ -27,7 +26,6 @@ class Medusa_Saber final : public Bishop{
             );
         }
 
-        //[[nodiscard]] vector<Effect_List> getCasterEffects() const override;
         [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) const override;
         bool passive(void* arg) override;
         bool canEvolve(void* arg) override;
