@@ -121,8 +121,8 @@ bool Xu_Fu::evolvedForm(void *arg) {
         );
     }
     selection_request_type selection_request;
-    selection_request.whites = isWhite ? 1 : 0;
-    selection_request.blacks = isWhite ? 0 : 1;
+    selection_request.whites = isWhite ? 8 : 0;
+    selection_request.blacks = isWhite ? 0 : 8;
     selection_request.instantValidation = false;
     if (!EffectHandler::selectManualTargetCells(effect_instance_1, selection_request))
         return false;

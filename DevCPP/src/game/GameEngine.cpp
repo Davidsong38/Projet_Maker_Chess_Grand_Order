@@ -64,6 +64,7 @@ GameEngine::GameEngine() : current_state(INITIALISATION), last_state(INITIALISAT
 
     game_state_names_Init();
     init_moves();
+    init_event_type();
 
     keys_init();
 }
@@ -193,20 +194,20 @@ void GameEngine::handleEndWhitePhase() {
     } else {
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
             piece->updateEffectStatus();
-            if (piece->getCharacters()== ARCEUID)
+            if (piece->getCharacter()== ARCEUID)
                 piece->canEvolve(current_phase_context);
-            if (piece->getCharacters() == NITOCRIS_ALTER){
+            if (piece->getCharacter() == NITOCRIS_ALTER){
                 piece->passive(current_phase_context);
                 piece->canEvolve(current_phase_context);
             }
-            if (piece->getCharacters() == GILGAMESH)
+            if (piece->getCharacter() == GILGAMESH)
                 piece->passive(current_phase_context);
             if (piece != current_phase_context->firstSelectedPiece)
-                piece->setNB_TurnWithoutMoving(piece->getNB_TurnWithoutMoving() + 1);
+                piece->incrementNB_TurnWithoutMoving();
             if (piece == current_phase_context->firstSelectedPiece)
-                piece->setNB_TurnWithoutMoving(0);
+                piece->resetNB_TurnWithoutMoving();
             if (!piece->getIsFirstMove())
-                piece->setTurnStamp(piece->getTurnStamp() + 1);
+                piece->incrementTurnStamp();
         }
         NB_WhiteDeadLastPhase = NB_WhiteDead;
         NB_BlackDeadLastPhase = NB_BlackDead;
@@ -316,20 +317,20 @@ void GameEngine::handleEndBlackPhase() {
         NB_Turn++;
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
             piece->updateEffectStatus();
-            if (piece->getCharacters()== ARCEUID)
+            if (piece->getCharacter()== ARCEUID)
                 piece->canEvolve(current_phase_context);
-            if (piece->getCharacters() == NITOCRIS_ALTER){
+            if (piece->getCharacter() == NITOCRIS_ALTER){
                 piece->passive(current_phase_context);
                 piece->canEvolve(current_phase_context);
             }
-            if (piece->getCharacters() == GILGAMESH)
+            if (piece->getCharacter() == GILGAMESH)
                 piece->passive(current_phase_context);
             if (piece != current_phase_context->firstSelectedPiece)
-                piece->setNB_TurnWithoutMoving(piece->getNB_TurnWithoutMoving() + 1);
+                piece->incrementNB_TurnWithoutMoving();
             if (piece == current_phase_context->firstSelectedPiece)
-                piece->setNB_TurnWithoutMoving(0);
+                piece->resetNB_TurnWithoutMoving();
             if (!piece->getIsFirstMove())
-                piece->setTurnStamp(piece->getTurnStamp() + 1);
+                piece->incrementTurnStamp();
         }
         NB_WhiteDeadLastPhase = NB_WhiteDead;
         NB_BlackDeadLastPhase = NB_BlackDead;
@@ -458,6 +459,7 @@ void GameEngine::handleGameClose() {
 }
 
 void GameEngine::requestSelection(const selection_request_type& to_select) {
+    deselectAllPieces();
     goToState(SELECT_ANY);
     required_selection = to_select;
     current_selection = new selection_type();
@@ -469,9 +471,8 @@ GameEngine::~GameEngine() {
 }
 
 GameEngine* GameEngine::getInstance() {
-    if (instance == nullptr) {
+    if (instance == nullptr)
         instance = new GameEngine();
-    }
     return instance;
 }
 
@@ -504,8 +505,6 @@ void GameEngine::inputRightClick(){
     receivedRightClick = true;
 }
 
-
-
 int GameEngine::getLastClickX() const {
     return lastClickX;
 }
@@ -524,7 +523,14 @@ void GameEngine::setLastPieceTouchedByEffect(Pieces* last_piece_touched_by_effec
 
 void GameEngine::addEvent(Event* event) const {
     current_phase_context->events.emplace_back(event);
-    ltr_log_debug("Event added : ", event->eventType, ", at turn : ", event->eventTurn);
+    for (auto* piece : event->getAllConcernedPieces())
+        piece->addEvent(event);
+    ltr_log_debug(
+        "Event added : ",
+        event_type_to_string[event->eventType],
+        ", at turn : ",
+        event->eventTurn
+    );
 }
 
 void GameEngine::push_phase_context() {

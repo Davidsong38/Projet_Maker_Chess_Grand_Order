@@ -38,8 +38,8 @@ public:
     };
     static Chessboard* getInstance();
     void placePiece(int coordX, int coordY, Pieces* piece);
-    bool isMovePossible(Pieces* piece,int to_coordX, int to_coordY) const; // vérifie si le movement est dans le plateau, qu'il n'est pas sur un allié et que la pièce possède ce movement
-    vector<glm::ivec2> getValidMoves(Pieces* piece) const;
+    bool isMovePossible(const Pieces* piece,int to_coordX, int to_coordY) const; // vérifie si le movement est dans le plateau, qu'il n'est pas sur un allié et que la pièce possède ce movement
+    vector<glm::ivec2> getValidMoves(const Pieces* piece) const;
     bool movePiece(Pieces* piece,int to_coordX,int to_coordY);
     bool KillCheck(Pieces* piece,Pieces* target_piece);
     bool KillInPassing(Pieces *piece, int to_coordX, int to_coordY);

@@ -14,18 +14,23 @@
 
 class Event {
 public:
+  virtual ~Event() = default;
   explicit Event(const int eventType) : eventType(eventType), eventTurn(PhaseHandler::getTurnNumber()) {}
   const int eventType;
   const int eventTurn;
+  virtual std::vector<Pieces*> getAllConcernedPieces() {
+    std::vector<Pieces*> concernedPieces;
+    return concernedPieces;
+  }
 };
 
 class EventMove : public Event {
 public:
-  explicit EventMove(const Pieces* piece) : Event(EVENT_MOVE), piece(piece) {
+  explicit EventMove(Pieces* piece) : Event(EVENT_MOVE), piece(piece) {
     this->startPos.x = this->piece->getCoordX();
     this->startPos.y = this->piece->getCoordY();
   }
-  EventMove(const Pieces* piece, const glm::ivec2 startPos) : Event(EVENT_MOVE), piece(piece) {
+  EventMove(Pieces* piece, const glm::ivec2 startPos) : Event(EVENT_MOVE), piece(piece) {
     this->startPos = startPos;
     this->endPos.x = this->piece->getCoordX();
     this->endPos.y = this->piece->getCoordY();
@@ -33,9 +38,14 @@ public:
   void setEndPos(const glm::ivec2 endPos) {
     this->endPos = endPos;
   }
-  const Pieces* piece;
+  Pieces* piece;
   [[nodiscard]] glm::ivec2 getStartPos() const {return startPos;}
   [[nodiscard]] glm::ivec2 getEndPos() const {return endPos;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(piece);
+    return concernedPieces;
+  }
 protected:
   glm::ivec2 startPos{};
   glm::ivec2 endPos{};
@@ -43,14 +53,20 @@ protected:
 
 class EventKill : public Event {
 public:
-  EventKill(const Pieces* killedPiece, const Pieces* killerPiece, const glm::ivec2 killPos, const int killType)
+  EventKill(Pieces* killedPiece, Pieces* killerPiece, const glm::ivec2 killPos, const int killType)
   : Event(EVENT_KILL), killedPiece(killedPiece), killerPiece(killerPiece), killType(killType) {
     this->killPos = killPos;
   }
-  const Pieces* killedPiece;
-  const Pieces* killerPiece;
+  Pieces* killedPiece;
+  Pieces* killerPiece;
   const int killType;
   [[nodiscard]] glm::ivec2 getKillPos() const {return killPos;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(killedPiece);
+    concernedPieces.emplace_back(killerPiece);
+    return concernedPieces;
+  }
 protected:
   glm::ivec2 killPos{};
 };
@@ -58,7 +74,7 @@ protected:
 class EventSpellUsed : public Event {
 public:
   explicit EventSpellUsed(const EffectInstance *effect_instance)
-  : Event(EVENT_SPELL_USED), casterPiece(static_cast<const Pieces*>(effect_instance->caster_piece)), spellType(effect_instance->effect) {
+  : Event(EVENT_SPELL_USED), casterPiece(static_cast<Pieces*>(effect_instance->caster_piece)), spellType(effect_instance->effect) {
     this->casterPosition.x = casterPiece->getCoordX();
     this->casterPosition.y = casterPiece->getCoordY();
     for (auto &target: effect_instance->target_pieces) {
@@ -77,13 +93,20 @@ public:
       return;
     this->success = success ? 1 : 0;
   }
-  const Pieces* casterPiece;
+  Pieces* casterPiece;
   const int spellType;
   [[nodiscard]] glm::ivec2 getCasterPosition() const {return casterPosition;}
   [[nodiscard]] std::vector<Pieces *> getTargetPieces() const {return targetPieces;}
   [[nodiscard]] std::vector<glm::ivec2> getSpellPositions() const {return spellPositions;}
   [[nodiscard]] bool getSuccess() const {
     return success == 1;
+  }
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(casterPiece);
+    for (auto &target: targetPieces)
+      concernedPieces.emplace_back(target);
+    return concernedPieces;
   }
 protected:
   glm::ivec2 casterPosition{};
@@ -96,7 +119,7 @@ protected:
 class EventEffectTriggered : public Event {
 public:
   explicit EventEffectTriggered(const EffectInstance *effect_instance)
-  : Event(EVENT_EFFECT_TRIGGERED), casterPiece(static_cast<const Pieces*>(effect_instance->caster_piece)), spellType(effect_instance->effect) {
+  : Event(EVENT_EFFECT_TRIGGERED), casterPiece(static_cast<Pieces*>(effect_instance->caster_piece)), spellType(effect_instance->effect) {
     this->casterPosition.x = casterPiece->getCoordX();
     this->casterPosition.y = casterPiece->getCoordY();
   }
@@ -108,12 +131,19 @@ public:
     this->targetCells.emplace_back(targetCell);
     this->spellPositions.emplace_back(targetCell->pos);
   }
-  const Pieces* casterPiece;
+  Pieces* casterPiece;
   const int spellType;
   [[nodiscard]] glm::ivec2 getCasterPosition() const {return casterPosition;}
   [[nodiscard]] std::vector<Pieces *> getTargetPieces() const {return targetPieces;}
   [[nodiscard]] std::vector<chessboard_cell *> getTargetCells() const {return targetCells;}
   [[nodiscard]] std::vector<glm::ivec2> getSpellPositions() const {return spellPositions;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(casterPiece);
+    for (auto &target: targetPieces)
+      concernedPieces.emplace_back(target);
+    return concernedPieces;
+  }
 protected:
   glm::ivec2 casterPosition{};
   std::vector<Pieces*> targetPieces;
@@ -124,7 +154,7 @@ protected:
 class EventEffectApply : public Event {
 public:
   explicit EventEffectApply(const EffectInstance *effect_instance)
-  : Event(EVENT_EFFECT_APPLY), casterPiece(static_cast<const Pieces*>(effect_instance->caster_piece)), spellType(effect_instance->effect), duration(effect_instance->effect_duration), amount(effect_instance->effect_amount) {
+  : Event(EVENT_EFFECT_APPLY), casterPiece(static_cast<Pieces*>(effect_instance->caster_piece)), spellType(effect_instance->effect), duration(effect_instance->effect_duration), amount(effect_instance->effect_amount) {
     this->casterPosition.x = casterPiece->getCoordX();
     this->casterPosition.y = casterPiece->getCoordY();
   }
@@ -136,7 +166,7 @@ public:
     this->targetCells.emplace_back(targetCell);
     this->spellPositions.emplace_back(targetCell->pos);
   }
-  const Pieces* casterPiece;
+  Pieces* casterPiece;
   const int spellType;
   const int duration;
   const int amount;
@@ -144,6 +174,13 @@ public:
   [[nodiscard]] std::vector<Pieces *> getTargetPieces() const {return targetPieces;}
   [[nodiscard]] std::vector<chessboard_cell *> getTargetCells() const {return targetCells;}
   [[nodiscard]] std::vector<glm::ivec2> getSpellPositions() const {return spellPositions;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(casterPiece);
+    for (auto &target: targetPieces)
+      concernedPieces.emplace_back(target);
+    return concernedPieces;
+  }
 protected:
   glm::ivec2 casterPosition{};
   std::vector<Pieces*> targetPieces;
@@ -161,64 +198,90 @@ class EventEffectEnd {
 
 class EventEvolved : public Event {
 public:
-  explicit EventEvolved(const Pieces* evolvedPiece)
+  explicit EventEvolved(Pieces* evolvedPiece)
   : Event(EVENT_EVOLVED), evolvedPiece(evolvedPiece), modifier(0) {
     this->evolvedPosition.x = evolvedPiece->getCoordX();
     this->evolvedPosition.y = evolvedPiece->getCoordY();
   }
-  EventEvolved(const Pieces* evolvedPiece, const int modifier)
+  EventEvolved(Pieces* evolvedPiece, const int modifier)
   : Event(EVENT_EVOLVED), evolvedPiece(evolvedPiece), modifier(modifier) {
     this->evolvedPosition.x = evolvedPiece->getCoordX();
     this->evolvedPosition.y = evolvedPiece->getCoordY();
   }
-  const Pieces* evolvedPiece;
+  Pieces* evolvedPiece;
   const int modifier;
   [[nodiscard]] glm::ivec2 getEvolvedPosition() const {return evolvedPosition;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(evolvedPiece);
+    return concernedPieces;
+  }
 protected:
   glm::ivec2 evolvedPosition{};
 };
 
 class EventEvolvedKillList : public EventEvolved {
 public:
-  explicit EventEvolvedKillList(const Pieces* evolvedPiece)
+  explicit EventEvolvedKillList(Pieces* evolvedPiece)
   : EventEvolved(evolvedPiece) {}
-  EventEvolvedKillList(const Pieces* evolvedPiece, const int modifier)
+  EventEvolvedKillList(Pieces* evolvedPiece, const int modifier)
   : EventEvolved(evolvedPiece, modifier) {}
   void addKilledPiece(Pieces* killedPiece) { this->killList.emplace_back(killedPiece); }
   [[nodiscard]] std::vector<Pieces *> getKillList() const {return killList;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(evolvedPiece);
+    for (auto &killedPiece: killList)
+      concernedPieces.emplace_back(killedPiece);
+    return concernedPieces;
+  }
 protected:
   std::vector<Pieces*> killList;
 };
 
 class EventEvolvedFacingDeath : public EventEvolved {
 public:
-  explicit EventEvolvedFacingDeath(const Pieces* evolvedPiece)
+  explicit EventEvolvedFacingDeath(Pieces* evolvedPiece)
   : EventEvolved(evolvedPiece) {}
-  EventEvolvedFacingDeath(const Pieces* evolvedPiece, const int modifier)
+  EventEvolvedFacingDeath(Pieces* evolvedPiece, const int modifier)
   : EventEvolved(evolvedPiece, modifier) {}
   void addKilledPiece(Pieces* killedPiece) { this->facedKills.emplace_back(killedPiece); }
   [[nodiscard]] std::vector<Pieces *> getKillList() const {return facedKills;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(evolvedPiece);
+    for (auto &killedPiece: facedKills)
+      concernedPieces.emplace_back(killedPiece);
+    return concernedPieces;
+  }
 protected:
   std::vector<Pieces*> facedKills;
 };
 
 class EventEvolvedGavePieces : public EventEvolved {
 public:
-  explicit EventEvolvedGavePieces(const Pieces* evolvedPiece)
+  explicit EventEvolvedGavePieces(Pieces* evolvedPiece)
   : EventEvolved(evolvedPiece) {}
-  EventEvolvedGavePieces(const Pieces* evolvedPiece, const int modifier)
+  EventEvolvedGavePieces(Pieces* evolvedPiece, const int modifier)
   : EventEvolved(evolvedPiece, modifier) {}
   void addKilledPiece(Pieces* pieceGiven) { this->piecesGiven.emplace_back(pieceGiven); }
   [[nodiscard]] std::vector<Pieces *> getPiecesGiven() const {return piecesGiven;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(evolvedPiece);
+    for (auto &givenPiece: piecesGiven)
+      concernedPieces.emplace_back(givenPiece);
+    return concernedPieces;
+  }
 protected:
   std::vector<Pieces*> piecesGiven;
 };
 
 class EventEvolvedEffect : public EventEvolved {
 public:
-  explicit EventEvolvedEffect(const Pieces* evolvedPiece)
+  explicit EventEvolvedEffect(Pieces* evolvedPiece)
   : EventEvolved(evolvedPiece) {}
-  EventEvolvedEffect(const Pieces* evolvedPiece, const int modifier)
+  EventEvolvedEffect(Pieces* evolvedPiece, const int modifier)
   : EventEvolved(evolvedPiece, modifier) {}
   ///TODO plus tared
 protected:
@@ -226,29 +289,35 @@ protected:
 
 class EventEvolvedTakingDamage : public EventEvolved {
 public:
-  EventEvolvedTakingDamage(const Pieces* evolvedPiece, const Pieces* attackerPiece)
+  EventEvolvedTakingDamage(Pieces* evolvedPiece, Pieces* attackerPiece)
   : EventEvolved(evolvedPiece), attackerPiece(attackerPiece) {
     this->attackerPosition.x = attackerPiece->getCoordX();
     this->attackerPosition.y = attackerPiece->getCoordY();
   }
-  EventEvolvedTakingDamage(const Pieces* evolvedPiece, const int modifier, const Pieces* attackerPiece)
+  EventEvolvedTakingDamage(Pieces* evolvedPiece, const int modifier, Pieces* attackerPiece)
   : EventEvolved(evolvedPiece, modifier), attackerPiece(attackerPiece) {
     this->attackerPosition.x = attackerPiece->getCoordX();
     this->attackerPosition.y = attackerPiece->getCoordY();
   }
-  const Pieces* attackerPiece;
+  Pieces* attackerPiece;
   [[nodiscard]] glm::ivec2 getAttackerPosition() const {return attackerPosition;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(evolvedPiece);
+    concernedPieces.emplace_back(attackerPiece);
+    return concernedPieces;
+  }
 protected:
   glm::ivec2 attackerPosition{};
 };
 
 class EventEvolvedAllySwap : public EventEvolved {
 public:
-  explicit EventEvolvedAllySwap(const Pieces* evolvedPiece)
+  explicit EventEvolvedAllySwap(Pieces* evolvedPiece)
   : EventEvolved(evolvedPiece), allyPiece(nullptr) {}
-  EventEvolvedAllySwap(const Pieces* evolvedPiece, const int modifier)
+  EventEvolvedAllySwap(Pieces* evolvedPiece, const int modifier)
   : EventEvolved(evolvedPiece, modifier), allyPiece(nullptr) {}
-  EventEvolvedAllySwap(const Pieces* evolvedPiece, const Pieces* allyPiece)
+  EventEvolvedAllySwap(Pieces* evolvedPiece, Pieces* allyPiece)
   : EventEvolved(evolvedPiece), allyPiece(allyPiece) {
       if (allyPiece != nullptr) {
         this->allyPosition.x = allyPiece->getCoordX();
@@ -257,7 +326,7 @@ public:
         ltr_log_warn("EventEvolvedAllySwap::EventEvolvedAllySwap: allyPiece is nullptr");
       }
   }
-  EventEvolvedAllySwap(const Pieces* evolvedPiece, const int modifier, const Pieces* allyPiece)
+  EventEvolvedAllySwap(Pieces* evolvedPiece, const int modifier, Pieces* allyPiece)
   : EventEvolved(evolvedPiece, modifier), allyPiece(allyPiece) {
     if (allyPiece != nullptr) {
       this->allyPosition.x = allyPiece->getCoordX();
@@ -266,26 +335,38 @@ public:
       ltr_log_warn("EventEvolvedAllySwap::EventEvolvedAllySwap: allyPiece is nullptr");
     }
   }
-  const Pieces* allyPiece;
+  Pieces* allyPiece;
   [[nodiscard]] glm::ivec2 getAllyPosition() const {return allyPosition;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(evolvedPiece);
+    concernedPieces.emplace_back(allyPiece);
+    return concernedPieces;
+  }
 protected:
   glm::ivec2 allyPosition{};
 };
 
 class EventEvolvedFromRelativePosition : public EventEvolved {
 public:
-  EventEvolvedFromRelativePosition(const Pieces* evolvedPiece, const Pieces* referencePiece)
+  EventEvolvedFromRelativePosition(Pieces* evolvedPiece, Pieces* referencePiece)
   : EventEvolved(evolvedPiece), referencePiece(referencePiece) {
     this->referencePosition.x = referencePiece->getCoordX();
     this->referencePosition.y = referencePiece->getCoordY();
   }
-  EventEvolvedFromRelativePosition(const Pieces* evolvedPiece, const int modifier, const Pieces* referencePiece)
+  EventEvolvedFromRelativePosition(Pieces* evolvedPiece, const int modifier, Pieces* referencePiece)
   : EventEvolved(evolvedPiece, modifier), referencePiece(referencePiece) {
     this->referencePosition.x = referencePiece->getCoordX();
     this->referencePosition.y = referencePiece->getCoordY();
   }
-  const Pieces* referencePiece;
+  Pieces* referencePiece;
   [[nodiscard]] glm::ivec2 getReferencePosition() const {return referencePosition;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(evolvedPiece);
+    concernedPieces.emplace_back(referencePiece);
+    return concernedPieces;
+  }
 protected:
   glm::ivec2 referencePosition{};
 };

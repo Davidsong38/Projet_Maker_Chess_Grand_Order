@@ -88,7 +88,6 @@ void add_piece_to_board(int x, int y, bool isWhite, Characters_List character) {
         else
             GameEngine::getInstance()->setBlackKing(piece);
     Chessboard::getInstance()->placePiece(x,y,piece);
-    piece->addToAllMovesDoneBefore(piece->getCoordX(),piece->getCoordY());
 }
 
 Pieces* get_piece(int x, int y, bool isWhite, Characters_List character) {

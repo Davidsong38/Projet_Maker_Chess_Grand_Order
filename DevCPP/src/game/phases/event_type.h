@@ -5,6 +5,8 @@
 #ifndef EVENT_TYPE_H
 #define EVENT_TYPE_H
 
+#include <string>
+
 enum event_type {
   EVENT_MOVE,
   EVENT_KILL,
@@ -13,7 +15,8 @@ enum event_type {
   EVENT_EFFECT_APPLY,
   EVENT_EFFECT_UPDATE,
   EVENT_EFFECT_END,
-  EVENT_EVOLVED
+  EVENT_EVOLVED,
+  EVENT_TYPE_COUNT
 };
 
 enum kill_types {
@@ -21,7 +24,13 @@ enum kill_types {
   KILL_EN_PASSANT,
   KILL_KILL_EFFECT,
   KILL_AOE_EFFECT,
-  KILL_SACRIFICE
+  KILL_SACRIFICE,
+  KILL_TYPE_COUNT
 };
+
+extern std::string event_type_to_string[EVENT_TYPE_COUNT];
+extern std::string kill_type_to_string[KILL_TYPE_COUNT];
+
+void init_event_type();
 
 #endif //EVENT_TYPE_H

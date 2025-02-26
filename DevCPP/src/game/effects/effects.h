@@ -52,7 +52,7 @@ struct EffectInstance {
     int effect_amount{-1};
     int NB_Target{-1};
 
-    bool requires_hitting_something{false};
+    bool requires_hitting_something{true};
 
     std::vector<void*> target_pieces;
     std::vector<void*> target_cells;
@@ -75,6 +75,7 @@ struct EffectInstance {
       this->effect_amount = effect_amount;
       this->NB_Target = NB_Target;
     }
+    EffectInstance(EffectInstance const &) = default;
 
     [[nodiscard]] bool isInfinite() const;
     [[nodiscard]] bool isExpired() const;

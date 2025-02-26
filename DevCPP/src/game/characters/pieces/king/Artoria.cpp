@@ -10,7 +10,7 @@ void Artoria::setPieceGameMode(int piece_game_mode) {
 
 vector<glm::ivec2> Artoria::getEffectRange(Effect_List effect) const {
     vector<glm::ivec2> effect_range;
-    glm::ivec2 lastPos = this->getAllMovesDoneBefore().back();
+    const glm::ivec2 lastPos = AllMovesDoneBefore.back();
     if (effect == AOE){
         if (lastPos.x == coordX - 1 && lastPos.y == coordY - 1){
             for (int i = 1; i < 8; ++i){

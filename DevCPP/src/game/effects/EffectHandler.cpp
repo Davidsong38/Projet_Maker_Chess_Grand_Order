@@ -336,10 +336,15 @@ bool EffectHandler::configureEffectHandler(EffectInstance* effect_instance) {
             );
         break;
         case SHIELD:
-        case SUPP_RANGE:
             success = addEffectBehavior(
                 effect_instance->effect,
                 getShieldEffect(effect_instance)
+            );
+        break;
+        case SUPP_RANGE:
+            success = addEffectBehavior(
+                effect_instance->effect,
+                getSuppRangeEffect(effect_instance)
             );
         break;
         case KILLING:
@@ -389,10 +394,12 @@ function<bool()> EffectHandler::getStunEffect(EffectInstance* effect_instance) {
             piece->addEffectStatus(effect_instance);
             event_effect_applied->addTargetPiece(piece);
         }
-        event_spell_used->setSuccess(NB_targetTouched > 0 || !effect_instance->requires_hitting_something);
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
         GameEngine::getInstance()->addEvent(event_spell_used);
-        GameEngine::getInstance()->addEvent(event_effect_applied);
-        return NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        if (success)
+            GameEngine::getInstance()->addEvent(event_effect_applied);
+        return success;
     };
 }
 
@@ -462,7 +469,7 @@ function<bool()> EffectHandler::getImmunityEffect(EffectInstance* effect_instanc
         int NB_targetTouched = 0;
         auto* event_spell_used = new EventSpellUsed(effect_instance);
         auto* event_effect_applied = new EventEffectApply(effect_instance);
-        for (auto &target: effect_instance->target_pieces) {
+        for (const auto &target: effect_instance->target_pieces) {
             const auto piece = static_cast<Pieces*>(target);
             if (piece->isKing())
                 continue;
@@ -482,10 +489,29 @@ function<bool()> EffectHandler::getShieldEffect(EffectInstance* effect_instance)
         int NB_targetTouched = 0;
         auto* event_spell_used = new EventSpellUsed(effect_instance);
         auto* event_effect_applied = new EventEffectApply(effect_instance);
-        for (auto &target: effect_instance->target_pieces) {
+        for (const auto &target: effect_instance->target_pieces) {
             const auto piece = static_cast<Pieces*>(target);
             NB_targetTouched++;
             piece->addEffectStatus(effect_instance);
+            event_effect_applied->addTargetPiece(piece);
+        }
+        event_spell_used->setSuccess(NB_targetTouched > 0 || !effect_instance->requires_hitting_something);
+        GameEngine::getInstance()->addEvent(event_spell_used);
+        GameEngine::getInstance()->addEvent(event_effect_applied);
+        return NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+    };
+}
+
+function<bool()> EffectHandler::getSuppRangeEffect(EffectInstance* effect_instance) {
+    return [effect_instance]() {
+        int NB_targetTouched = 0;
+        auto* event_spell_used = new EventSpellUsed(effect_instance);
+        auto* event_effect_applied = new EventEffectApply(effect_instance);
+        for (const auto &target: effect_instance->target_pieces) {
+            const auto piece = static_cast<Pieces*>(target);
+            NB_targetTouched++;
+            piece->addEffectStatus(effect_instance);
+            piece->addOverrideMove(super_pawn_moves);
             event_effect_applied->addTargetPiece(piece);
         }
         event_spell_used->setSuccess(NB_targetTouched > 0 || !effect_instance->requires_hitting_something);
@@ -500,7 +526,7 @@ function<bool()> EffectHandler::getKillEffect(EffectInstance* effect_instance) {
         int NB_targetTouched = 0;
         auto* event_spell_used = new EventSpellUsed(effect_instance);
         auto* event_effect_applied = new EventEffectTriggered(effect_instance);
-        for (auto &target: effect_instance->target_pieces) {
+        for (const auto &target: effect_instance->target_pieces) {
             const auto piece = static_cast<Pieces*>(target);
             if (piece->isKing())
                 continue;

@@ -40,6 +40,7 @@ private:
     static function<bool()> getChangeControlEffect(EffectInstance* effect_instance);
     static function<bool()> getImmunityEffect(EffectInstance* effect_instance);
     static function<bool()> getShieldEffect(EffectInstance* effect_instance);
+    static function<bool()> getSuppRangeEffect(EffectInstance* effect_instance);
     static function<bool()> getKillEffect(EffectInstance* effect_instance);
     static function<bool()> getSpawnPieceEffect(EffectInstance* effect_instance);
 };

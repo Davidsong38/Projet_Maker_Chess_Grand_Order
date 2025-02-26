@@ -56,9 +56,6 @@ bool Gilgamesh::passive(void* arg) {
         return true;
     }
     if (GameEngine::getInstance()->getLastState() == SELECT_BLACK_PHASE || GameEngine::getInstance()->getLastState() == SELECT_WHITE_PHASE) {
-        std::cout <<"MovesMode : " <<movesMode << std::endl;
-        movesMode = rand() % 4 + 1;
-        std::cout <<"MovesMode !!!! : " <<movesMode << std::endl;
         return true;
     }
     CNT_NotMove = 0;
