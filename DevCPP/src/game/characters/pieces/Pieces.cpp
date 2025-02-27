@@ -92,7 +92,6 @@ void Pieces::goToPosition(const int x, const int y) {
         y,
         ")."
     );
-    AllMovesDoneBefore.emplace_back(coordX, coordY);
     Chessboard::getInstance()->placePiece(x, y, this);
     Chessboard::getInstance()->deletePiece(this);
     auto* moveEvent = new EventMove(this);
@@ -100,13 +99,32 @@ void Pieces::goToPosition(const int x, const int y) {
     coordY = y;
     isFirstMove = false;
     moveEvent->setEndPos(glm::ivec2(x, y));
-    GameEngine::getInstance()->addEvent(moveEvent);
+    GameEngine::getInstance()->registerEvent(moveEvent);
 }
 
-void Pieces::goToPosition(const int x, const int y, const bool increaseCountMove) {
-    goToPosition(x, y);
-    if (increaseCountMove && !isOnAMove)
-        CNTMove++;
+void Pieces::goToPosition(const int x, const int y, const int moveType) {
+    ltr_log_info(
+        CONSOLE_COLOR_YELLOW,
+        isWhite? "White " : "Black ",
+        name,
+        " moved from (",
+        coordX,
+        ", ",
+        coordY,
+        ") to (",
+        x,
+        ", ",
+        y,
+        ")."
+    );
+    Chessboard::getInstance()->placePiece(x, y, this);
+    Chessboard::getInstance()->deletePiece(this);
+    auto* moveEvent = new EventMove(this, moveType);
+    coordX = x;
+    coordY = y;
+    isFirstMove = false;
+    moveEvent->setEndPos(glm::ivec2(x, y));
+    GameEngine::getInstance()->registerEvent(moveEvent);
 }
 
 void Pieces::gotUnalivedBy(Pieces* killer, const int killType) {
@@ -117,11 +135,9 @@ void Pieces::gotUnalivedBy(Pieces* killer, const int killType) {
         killType
     );
     isAlive = false;
-    GameEngine::getInstance()->addEvent(killEvent);
+    GameEngine::getInstance()->registerEvent(killEvent);
     this->events.emplace_back(killEvent);
     Chessboard::getInstance()->addToDeadList(this);
-    if (killer != nullptr)
-        killer->setHasJustKilled(true);
     if (isWhite)
         GameEngine::getInstance()->NB_WhiteDead++;
     else
@@ -211,10 +227,127 @@ void Pieces::addEvent(void* event) {
     this->events.emplace_back(event);
     const auto* real_event = static_cast<Event*>(event);
     ltr_log_debug(
-        CONSOLE_COLOR_LIGHT_BLUE,
+        CONSOLE_COLOR_DARK_GREEN,
         "Event added : ", event_type_to_string[real_event->eventType],
         " to piece : ", isWhite ? "White " : "Black ", name,
         ", at turn : ",
         real_event->eventTurn
     );
 }
+
+std::vector<void*> Pieces::getAllMoveEvents() {
+    std::vector<void*> selected_events;
+    for (auto* event_ptr : events) {
+        auto event = static_cast<Event*>(event_ptr);
+        if (event == nullptr) ltr_log_error("Pieces::getAllMoveEvents: Event nullptr");
+        if (event->eventType == EVENT_MOVE) selected_events.emplace_back(event);
+    }
+    return selected_events;
+}
+
+void* Pieces::getLastNormalMoveEvent() {
+    for (int i = static_cast<int>(getAllMoveEvents().size()) - 1; i > -1; i--)
+        if (const int moveType = static_cast<EventMove*>(getAllMoveEvents()[i])->moveType; moveType == MOVE_NORMAL || moveType == MOVE_ROQUED || moveType == MOVE_EN_PASSANT)
+            return getAllMoveEvents()[i];
+    return nullptr;
+}
+
+int Pieces::getLastNormalMovePhase() {
+    const auto last_normal_move = static_cast<EventMove*>(getLastNormalMoveEvent());
+    if (last_normal_move == nullptr)
+        return -69420;
+    return last_normal_move->eventPhase;
+}
+
+int Pieces::getLastNormalMoveEventType() {
+    const auto last_normal_move = static_cast<EventMove*>(getLastNormalMoveEvent());
+    if (last_normal_move == nullptr)
+        return -69420;
+    return last_normal_move->moveType;
+}
+
+void* Pieces::getFirstNormalMoveEvent() {
+    for (auto* event_ptr : getAllMoveEvents())
+        if (const int moveType = static_cast<EventMove*>(event_ptr)->moveType; moveType == MOVE_NORMAL || moveType == MOVE_ROQUED || moveType == MOVE_EN_PASSANT)
+            return event_ptr;
+    return nullptr;
+}
+
+int Pieces::getFirstNormalMovePhase() {
+    const auto first_normal_move = static_cast<EventMove*>(getFirstNormalMoveEvent());
+    if (first_normal_move == nullptr)
+        return -69420;
+    return first_normal_move->eventPhase;
+}
+
+std::vector<void*> Pieces::getAllKillEvents() {
+    std::vector<void*> selected_events;
+    for (auto* event_ptr : events) {
+        auto event = static_cast<Event*>(event_ptr);
+        if (event == nullptr) ltr_log_error("Pieces::getAllKillEvents: Event nullptr");
+        if (event->eventType == EVENT_KILL) selected_events.emplace_back(event);
+    }
+    return selected_events;
+}
+
+void* Pieces::getLastKillKillEvent() {
+    for (int i = static_cast<int>(getAllKillEvents().size()) - 1; i > -1; i--) {
+        if (static_cast<EventKill*>(getAllKillEvents()[i])->killerPiece == this)
+            return getAllKillEvents()[i];
+    }
+    return nullptr;
+}
+
+int Pieces::getLastKillTurn() {
+    const auto last_kill = static_cast<EventKill*>(getLastKillKillEvent());
+    if (last_kill == nullptr)
+        return -69420;
+    return last_kill->eventTurn;
+}
+
+void* Pieces::getLastDeathKillEvent() {
+    for (int i = static_cast<int>(getAllKillEvents().size()) - 1; i > -1; i--) {
+        if (static_cast<EventKill*>(getAllKillEvents()[i])->killedPiece == this)
+            return getAllKillEvents()[i];
+    }
+    return nullptr;
+}
+
+void* Pieces::getLastKillKillEvent(const int killType) {
+    for (int i = static_cast<int>(getAllKillEvents().size()) - 1; i > -1; i--) {
+        if (
+            static_cast<EventKill*>(getAllKillEvents()[i])->killerPiece == this
+            && killType == static_cast<EventKill*>(getAllKillEvents()[i])->killType
+        ) return getAllKillEvents()[i];
+    }
+    return nullptr;
+}
+
+void* Pieces::getLastDeathKillEvent(const int killType) {
+    for (int i = static_cast<int>(getAllKillEvents().size()) - 1; i > -1; i--) {
+        if (
+            static_cast<EventKill*>(getAllKillEvents()[i])->killedPiece == this
+            && killType == static_cast<EventKill*>(getAllKillEvents()[i])->killType
+        ) return getAllKillEvents()[i];
+    }
+    return nullptr;
+}
+
+std::vector<void*> Pieces::getAllSpellUsedEvents() {
+    std::vector<void*> selected_events;
+    for (auto* event_ptr : events) {
+        auto event = static_cast<Event*>(event_ptr);
+        if (event == nullptr) ltr_log_error("Pieces::getAllSpellUsedEvents: Event nullptr");
+        if (event->eventType == EVENT_SPELL_USED) selected_events.emplace_back(event);
+    }
+    return selected_events;
+}
+
+void* Pieces::getLastSpellUsedByMeEvent() {
+    for (int i = static_cast<int>(getAllSpellUsedEvents().size()) - 1; i > -1; i--) {
+        if (static_cast<EventSpellUsed*>(getAllSpellUsedEvents()[i])->casterPiece == this)
+            return getAllSpellUsedEvents()[i];
+    }
+    return nullptr;
+}
+

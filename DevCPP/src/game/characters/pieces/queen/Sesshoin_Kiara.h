@@ -26,7 +26,7 @@ class Sesshoin_Kiara final : public Queen{
             );
         }
 
-        [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) const override;
+        [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
         bool passive(void* arg) override;
         bool canEvolve(void* arg) override;
         bool evolvedForm(void* arg) override;

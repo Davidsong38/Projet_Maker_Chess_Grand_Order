@@ -9,6 +9,7 @@
 
 #include "game_cfg.h"
 #include "RenderEngine.h"
+#include "GameEngine.h"
 
 Chessboard* Chessboard::instance = nullptr;
 
@@ -22,7 +23,7 @@ void Chessboard::placePiece(const int coordX, const int coordY, Pieces* piece) {
     if (coordX >= 0 && coordX < grid.size() && coordY >= 0 && coordY < grid.size()) {
         grid[coordX][coordY].piece = piece;
     } else {
-        ltr_log_error("Invalid piece coordinate : ", coordX, " ", coordY);
+        ltr_log_error("Chessboard::placePiece: Invalid piece coordinate : ", coordX, " ", coordY);
     }
 }
 
@@ -30,7 +31,7 @@ Pieces* Chessboard::getPieceAt(const int coordX, const int coordY) const {
     if (coordX >= 0 && coordX < grid.size() && coordY >= 0 && coordY < grid.size()) {
         return grid[coordX][coordY].piece;
     }
-    ltr_log_error("Invalid piece coordinate : ", coordX, " ", coordY);
+    ltr_log_error("Chessboard::getPieceAt: Invalid piece coordinate : ", coordX, " ", coordY);
     return nullptr;
 }
 
@@ -38,7 +39,7 @@ chessboard_cell* Chessboard::getCellAt(const int coordX, const int coordY) {
     if (coordX >= 0 && coordX < grid.size() && coordY >= 0 && coordY < grid.size()) {
         return &grid[coordX][coordY];
     }
-    ltr_log_fatal("Invalid cell coordinates : ", coordX, " ", coordY);
+    ltr_log_fatal("Chessboard::getCellAt: Invalid cell coordinates : ", coordX, " ", coordY);
     return &grid[0][0];
 }
 
@@ -62,7 +63,7 @@ void Chessboard::deletePiece (const Pieces* piece) {
     if (to_coordX >= 0 && to_coordX < grid.size() && to_coordY >= 0 && to_coordY < grid.size()) {
         grid[piece->getCoordX()][piece->getCoordY()].piece = nullptr;
     } else {
-        ltr_log_error("Chessboard::deletePiece::Invalid piece coordinate : ", to_coordX, " ", to_coordY);
+        ltr_log_error("Chessboard::deletePiece: Invalid piece coordinate : ", to_coordX, " ", to_coordY);
     }
 }
 
@@ -178,13 +179,9 @@ bool Chessboard::isEndangeredByBlack(const glm::ivec2 cell) {
 }
 
 bool Chessboard::hasJustFirstMove(Pieces* piece) {
-    if (piece->getTurnStamp() == 1)
+    if (GameEngine::getInstance()->getPhaseNumber() - piece->getFirstNormalMovePhase() < 3)
         return true;
-
-    else {
-        //piece->setFirstMoveLastTurn(false);
-        return false;
-    }
+    return false;
 }
 
 bool Chessboard::notBrokenMove(Pieces* piece, const Pieces* target_piece){
@@ -248,11 +245,10 @@ bool Chessboard::movePiece(Pieces* piece, const int to_coordX, const int to_coor
     if (KillInPassing(piece,to_coordX,to_coordY))
         return true;
     Pieces* target_piece = getPieceAt(to_coordX, to_coordY);
-    if (target_piece == nullptr) {
-        piece->goToPosition(to_coordX, to_coordY, true);
-    } else {
+    if (target_piece == nullptr)
+        piece->goToPosition(to_coordX, to_coordY);
+    else
         KillCheck(piece, target_piece);
-    }
     PawnReachingEndOfBoard(piece);
     piece->activateEffect(MOVE_CHANGING);
     return true;
@@ -303,10 +299,10 @@ bool Chessboard::KillInPassing(Pieces *piece, const int to_coordX, const int to_
         && !isAlly(piece,realTargetPiece)
         && realTargetPiece->isPawn()
         && coordX1 == en_passant_pos && coordX2 == en_passant_pos
-        && realTargetPiece->getTurnStamp() == 1
+        && GameEngine::getInstance()->getPhaseNumber() - realTargetPiece->getFirstNormalMovePhase() < 3
     ) {
         deletePiece(realTargetPiece);
-        piece->goToPosition(to_coordX, to_coordY, true);
+        piece->goToPosition(to_coordX, to_coordY, MOVE_EN_PASSANT);
         realTargetPiece->gotUnalivedBy(piece, KILL_EN_PASSANT);
         return true;
     }
@@ -317,6 +313,7 @@ bool Chessboard::PawnReachingEndOfBoard(Pieces *piece) {
     const int coordX = piece->getCoordX();
     if (!piece->isPawn())
         return false;
+    ltr_log_info(CONSOLE_COLOR_RED, "Pawn reached end of board !!!");
     if (piece->getIsWhite()) {
         if (coordX == 0){
             piece->setPiecesOrigin(QUEEN);
@@ -474,19 +471,15 @@ bool Chessboard::canBigRoque(Pieces* piece) {
 bool Chessboard::bigRoque(Pieces* piece, const int to_coordX, const int to_coordY) {
     if (canBigRoque(piece) && !pawnMenacingBigRoque(piece)) {
         if (piece->getIsWhite() == true && to_coordX == 7 && to_coordY == 2) {
-            piece->goToPosition(7, 2, true);
-            piece->setHasRoqued(true);
+            piece->goToPosition(7, 2, MOVE_ROQUED);
             Pieces* ally_piece = getPieceAt(7, 0);
-            ally_piece->goToPosition(7, 3, true);
-            ally_piece->setHasRoqued(true);
+            ally_piece->goToPosition(7, 3, MOVE_ROQUED);
             return true;
         }
         if (piece->getIsWhite() == false && to_coordX == 0 && to_coordY == 2) {
-            piece->goToPosition(0, 2, true);
-            piece->setHasRoqued(true);
+            piece->goToPosition(0, 2, MOVE_ROQUED);
             Pieces* ally_piece = getPieceAt(0, 0);
-            ally_piece->goToPosition(0, 3, true);
-            ally_piece->setHasRoqued(true);
+            ally_piece->goToPosition(0, 3, MOVE_ROQUED);
             return true;
         }
     }
@@ -496,19 +489,15 @@ bool Chessboard::bigRoque(Pieces* piece, const int to_coordX, const int to_coord
 bool Chessboard::littleRoque(Pieces* piece, int to_coordX, int to_coordY) {
     if (canLittleRoque(piece) && !pawnMenacingLittleRoque(piece)) {
         if (piece->getIsWhite() == true && to_coordX == 7 && to_coordY == 6) {
-            piece->goToPosition(7, 6, true);
-            piece->setHasRoqued(true);
+            piece->goToPosition(7, 6, MOVE_ROQUED);
             Pieces* ally_piece = getPieceAt(7, 7);
-            ally_piece->goToPosition(7, 5, true);
-            ally_piece->setHasRoqued(true);
+            ally_piece->goToPosition(7, 5, MOVE_ROQUED);
             return true;
         }
         if (piece->getIsWhite() == false && to_coordX == 0 && to_coordY == 6) {
-            piece->goToPosition(0, 6, true);
-            piece->setHasRoqued(true);
+            piece->goToPosition(0, 6, MOVE_ROQUED);
             Pieces* ally_piece = getPieceAt(0, 7);
-            ally_piece->goToPosition(0, 5, true);
-            ally_piece->setHasRoqued(true);
+            ally_piece->goToPosition(0, 5, MOVE_ROQUED);
             return true;
         }
     }

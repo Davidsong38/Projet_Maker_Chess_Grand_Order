@@ -15,40 +15,13 @@ void Merlin::setPieceGameMode(int piece_game_mode) {
     }
 }
 
-vector<glm::ivec2> Merlin::getEffectRange(Effect_List effect) const {
-
+vector<glm::ivec2> Merlin::getEffectRange(const Effect_List effect) {
     vector<glm::ivec2> effect_range;
-
-    if (effect == IMMUNITY_EFFECT && !chooseSpell) {
-        if (coordX + 1 < 8) effect_range.emplace_back(coordX + 1, coordY);
-        if (coordX - 1 >= 0) effect_range.emplace_back(coordX - 1, coordY);
-        if (coordY - 1 >= 0) effect_range.emplace_back(coordX, coordY - 1);
-        if (coordY + 1 < 8) effect_range.emplace_back(coordX, coordY + 1);
-    }
-
-    if (effect == IMMUNITY_AOE && !chooseSpell) {
-        if (coordX + 1 < 8) effect_range.emplace_back(coordX + 1, coordY);
-        if (coordX - 1 >= 0) effect_range.emplace_back(coordX - 1, coordY);
-        if (coordY - 1 >= 0) effect_range.emplace_back(coordX, coordY - 1);
-        if (coordY + 1 < 8) effect_range.emplace_back(coordX, coordY + 1);
-    }
-
-    if (chooseSpell){
-        if (effect == IMMUNITY_EFFECT) {
-            for (int i = 0; i < 8; ++i){
-                for (int j = 0; j < 8; ++j){
-                    effect_range.emplace_back(i, j);
-                }
-            }
-        }
-        if (effect == IMMUNITY_AOE) {
-            for (int i = 0; i < 8; ++i){
-                for (int j = 0; j < 8; ++j){
-                    effect_range.emplace_back(i, j);
-                }
-            }
-        }
-    }
+    if (chooseSpell)
+        if (effect == IMMUNITY_EFFECT || effect == IMMUNITY_AOE)
+            return square_pattern->get_positions(glm::ivec2(coordX, coordY));
+    if (effect == IMMUNITY_EFFECT || effect == IMMUNITY_AOE)
+        return cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
     return effect_range;
 }
 
@@ -116,13 +89,28 @@ bool Merlin::canEvolve(void *arg) {
 }
 
 bool Merlin::evolvedForm(void *arg) {
-    auto *  effect_instance_1 = new EffectInstance(
-        IMMUNITY_EFFECT,
-        this,
-        -1,
-        1,
-        1
-    );
+    static EffectInstance * effect_instance_1 = nullptr;
+    if (effect_instance_1 == nullptr) {
+        effect_instance_1 = new EffectInstance(
+            IMMUNITY_EFFECT,
+            this,
+            -1,
+            1,
+            1
+        );
+        effect_instance_1->check_condition = [](const void* cell) {
+            const auto* piece = static_cast<const chessboard_cell*>(cell)->piece;
+            if (piece == nullptr)
+                return false;
+            return !piece->isKing();
+        };
+    }
+    selection_request_type selection_request;
+    selection_request.whites = isWhite ? 8 : 0;
+    selection_request.blacks = isWhite ? 0 : 8;
+    selection_request.instantValidation = false;
+    if (!EffectHandler::selectManualTargetCells(effect_instance_1, selection_request))
+        return false;
     auto *  effect_instance_2 = new EffectInstance(
         IMMUNITY_AOE,
         this,

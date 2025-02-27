@@ -3,8 +3,8 @@
 //
 
 #include "Pieces_List.h"
-
 #include "Pieces.h"
+
 string Pieces_List_to_string[PIECE_COUNT];
 void loadPiecesList() {
     Pieces_List_to_string[PAWN] = "PAWN";
@@ -17,18 +17,18 @@ void loadPiecesList() {
 }
 
 
-//bool segregation_W(Pieces_List piece) {
-//    if (piece < PIECE_COUNT) {
-//        return true;
-//    }
-//    return false;
-//}
+// bool segregation_W(Pieces_List piece) {
+//     if (piece < PIECE_COUNT) {
+//         return true;
+//     }
+//     return false;
+// }
 //
-//bool segregation_B(Pieces_List piece) {
-//    if (piece < PIECE_COUNT && piece > EMPTY ) {
-//        return true;
-//    }
-//    return false;
-//}
+// bool segregation_B(Pieces_List piece) {
+//     if (piece < PIECE_COUNT && piece > EMPTY ) {
+//         return true;
+//     }
+//     return false;
+// }
 
 

@@ -4,9 +4,11 @@
 
 #include "piece_moves.h"
 
+#include <board_pattern.h>
 #include <Chessboard.h>
 #include <game_cfg.h>
 #include <log.h>
+#include <GameEngine.h>
 
 
 piece_move* knight_default_moves = new piece_move();
@@ -31,69 +33,43 @@ void init_moves() {
     knight_default_moves->ignoresObstacles = true;
     knight_default_moves->get_positions = [](const glm::ivec2 pos) {
         std::vector<glm::ivec2> moves;
-        if (pos.x + 1 < BOARD_SIZE && pos.y + 2 < BOARD_SIZE)   moves.emplace_back(pos.x + 1, pos.y + 2);
-        if (pos.x - 1 >= 0 && pos.y + 2 < BOARD_SIZE)           moves.emplace_back(pos.x - 1, pos.y + 2);
-        if (pos.x + 1 < BOARD_SIZE && pos.y- 2 >= 0)            moves.emplace_back(pos.x + 1, pos.y - 2);
-        if (pos.x - 1 >= 0 && pos.y - 2 >= 0)                   moves.emplace_back(pos.x - 1, pos.y - 2);
-        if (pos.x + 2 < BOARD_SIZE && pos.y + 1 < BOARD_SIZE)   moves.emplace_back(pos.x + 2, pos.y + 1);
-        if (pos.x - 2 >= 0 && pos.y + 1 < BOARD_SIZE)           moves.emplace_back(pos.x - 2, pos.y + 1);
-        if (pos.x + 2 < BOARD_SIZE && pos.y- 1 >= 0)            moves.emplace_back(pos.x + 2, pos.y - 1);
-        if (pos.x - 2 >= 0 && pos.y - 1 >= 0)                   moves.emplace_back(pos.x - 2, pos.y - 1);
+        if (pos.x + 1 < BOARD_SIZE && pos.y + 2 < BOARD_SIZE)
+            moves.emplace_back(pos.x + 1, pos.y + 2);
+        if (pos.x - 1 >= 0 && pos.y + 2 < BOARD_SIZE)
+            moves.emplace_back(pos.x - 1, pos.y + 2);
+        if (pos.x + 1 < BOARD_SIZE && pos.y- 2 >= 0)
+            moves.emplace_back(pos.x + 1, pos.y - 2);
+        if (pos.x - 1 >= 0 && pos.y - 2 >= 0)
+            moves.emplace_back(pos.x - 1, pos.y - 2);
+        if (pos.x + 2 < BOARD_SIZE && pos.y + 1 < BOARD_SIZE)
+            moves.emplace_back(pos.x + 2, pos.y + 1);
+        if (pos.x - 2 >= 0 && pos.y + 1 < BOARD_SIZE)
+            moves.emplace_back(pos.x - 2, pos.y + 1);
+        if (pos.x + 2 < BOARD_SIZE && pos.y- 1 >= 0)
+            moves.emplace_back(pos.x + 2, pos.y - 1);
+        if (pos.x - 2 >= 0 && pos.y - 1 >= 0)
+            moves.emplace_back(pos.x - 2, pos.y - 1);
         return moves;
     };
 
     rook_default_moves->name = "rook_default_moves";
     rook_default_moves->get_positions = [](const glm::ivec2 pos) {
-        std::vector<glm::ivec2> moves;
-        for (int i = 1; i < BOARD_SIZE; ++i) {
-            if (pos.x + i < BOARD_SIZE) moves.emplace_back(pos.x + i, pos.y);
-            if (pos.x - i >= 0)         moves.emplace_back(pos.x - i, pos.y);
-            if (pos.y- i >= 0)          moves.emplace_back(pos.x, pos.y - i);
-            if (pos.y + i < BOARD_SIZE) moves.emplace_back(pos.x, pos.y + i);
-        }
-        return moves;
+        return cross_pattern->get_positions(pos);
     };
 
     bishop_default_moves->name = "bishop_default_moves";
     bishop_default_moves->get_positions = [](const glm::ivec2 pos) {
-        std::vector<glm::ivec2> moves;
-        for (int i = 1; i < BOARD_SIZE; ++i) {
-            if (pos.x + i < BOARD_SIZE && pos.y + i < BOARD_SIZE)   moves.emplace_back(pos.x + i, pos.y + i);
-            if (pos.x - i >= 0 && pos.y + i < BOARD_SIZE)           moves.emplace_back(pos.x - i, pos.y + i);
-            if (pos.x + i < BOARD_SIZE && pos.y- i >= 0)            moves.emplace_back(pos.x + i, pos.y - i);
-            if (pos.x - i >= 0 && pos.y - i >= 0)                   moves.emplace_back(pos.x - i, pos.y - i);
-        }
-        return moves;
+        return x_cross_pattern->get_positions(pos);
     };
 
     queen_default_moves->name = "queen_default_moves";
     queen_default_moves->get_positions = [](const glm::ivec2 pos) {
-        std::vector<glm::ivec2> moves;
-        for (int i = 1; i < BOARD_SIZE; ++i) {
-            if (pos.x + i < BOARD_SIZE && pos.y + i < BOARD_SIZE)   moves.emplace_back(pos.x + i, pos.y + i);
-            if (pos.x - i >= 0 && pos.y + i < BOARD_SIZE)           moves.emplace_back(pos.x - i, pos.y + i);
-            if (pos.x + i < BOARD_SIZE && pos.y- i >= 0)            moves.emplace_back(pos.x + i, pos.y - i);
-            if (pos.x - i >= 0 && pos.y - i >= 0)                   moves.emplace_back(pos.x - i, pos.y - i);
-            if (pos.x + i < BOARD_SIZE) moves.emplace_back(pos.x + i, pos.y);
-            if (pos.x - i >= 0)         moves.emplace_back(pos.x - i, pos.y);
-            if (pos.y- i >= 0)          moves.emplace_back(pos.x, pos.y - i);
-            if (pos.y + i < BOARD_SIZE) moves.emplace_back(pos.x, pos.y + i);
-        }
-        return moves;
+        return star_pattern->get_positions(pos);
     };
 
     king_default_moves->name = "king_default_moves";
     king_default_moves->get_positions = [](const glm::ivec2 pos) {
-        std::vector<glm::ivec2> moves;
-        if (pos.x + 1 < BOARD_SIZE && pos.y + 1 < BOARD_SIZE)   moves.emplace_back(pos.x + 1, pos.y + 1);
-        if (pos.x - 1 >= 0 && pos.y + 1 < BOARD_SIZE)           moves.emplace_back(pos.x - 1, pos.y + 1);
-        if (pos.x + 1 < BOARD_SIZE && pos.y- 1 >= 0)            moves.emplace_back(pos.x + 1, pos.y - 1);
-        if (pos.x - 1 >= 0 && pos.y - 1 >= 0)                   moves.emplace_back(pos.x - 1, pos.y - 1);
-        if (pos.x + 1 < BOARD_SIZE) moves.emplace_back(pos.x + 1, pos.y);
-        if (pos.x - 1 >= 0)         moves.emplace_back(pos.x - 1, pos.y);
-        if (pos.y- 1 >= 0)          moves.emplace_back(pos.x, pos.y - 1);
-        if (pos.y + 1 < BOARD_SIZE) moves.emplace_back(pos.x, pos.y + 1);
-        return moves;
+        return square_1_pattern->get_positions(pos);
     };
 
     pawn_default_moves->name = "pawn_default_moves";
@@ -126,7 +102,7 @@ void init_moves() {
             && Chessboard::getInstance()->getPieceAt(pos.x, pos.y - 1) != nullptr
             && Chessboard::getInstance()->getPieceAt(pos.x, pos.y - 1)->isPawn()
             && !Chessboard::getInstance()->getPieceAt(pos.x, pos.y - 1)->getIsWhite()
-            && Chessboard::getInstance()->getPieceAt(pos.x, pos.y - 1)->getTurnStamp() == 1
+            && GameEngine::getInstance()->getPhaseNumber() - Chessboard::getInstance()->getPieceAt(pos.x, pos.y - 1)->getFirstNormalMovePhase() < 3
             ) moves.emplace_back(pos.x + pawnDirection, pos.y - 1);
         if (
             pos.x == en_passant_pos
@@ -134,7 +110,7 @@ void init_moves() {
             && Chessboard::getInstance()->getPieceAt(pos.x, pos.y + 1) != nullptr
             && Chessboard::getInstance()->getPieceAt(pos.x, pos.y + 1)->isPawn()
             && !Chessboard::getInstance()->getPieceAt(pos.x, pos.y + 1)->getIsWhite()
-            && Chessboard::getInstance()->getPieceAt(pos.x, pos.y + 1)->getTurnStamp() == 1
+            && GameEngine::getInstance()->getPhaseNumber() - Chessboard::getInstance()->getPieceAt(pos.x, pos.y + 1)->getFirstNormalMovePhase() < 3
         ) moves.emplace_back(pos.x + pawnDirection, pos.y + 1);
         for (
             const vector<glm::ivec2> diagonalAttack = {{pawnDirection, -1}, {pawnDirection, 1}};
@@ -162,87 +138,37 @@ void init_moves() {
             ltr_log_error("Request super_pawn_moves from nullptr piece position : ", pos.x, pos.y);
             return moves;
         }
-        for (int i = 1; i < 3; ++i) {
-            if (piece->getIsWhite()){
-                if (pos.x - i >= 0 && pos.y + i < BOARD_SIZE)           moves.emplace_back(pos.x - i, pos.y + i);
-                if (pos.x - i >= 0 && pos.y - i >= 0)                   moves.emplace_back(pos.x - i, pos.y - i);
-                if (pos.x - i >= 0)                                     moves.emplace_back(pos.x - i, pos.y);
-            } else {
-                if (pos.x + i < BOARD_SIZE && pos.y + i < BOARD_SIZE)   moves.emplace_back(pos.x + i, pos.y + i);
-                if (pos.x + i < BOARD_SIZE && pos.y- i >= 0)            moves.emplace_back(pos.x + i, pos.y - i);
-                if (pos.x + i < BOARD_SIZE)                             moves.emplace_back(pos.x + i, pos.y);
-            }
+        if (piece->getIsWhite()){
+            return scatter_N_generic_pattern(pos, 2);
         }
-        return moves;
+        return scatter_S_generic_pattern(pos, 2);
     };
     
     ushiwakamaru_moves->name = "ushiwakamaru_moves";
+    ushiwakamaru_moves->ignoresObstacles = true;
     ushiwakamaru_moves->get_positions = [](const glm::ivec2 pos) {
-        std::vector<glm::ivec2> moves;
-        if (pos.x + 1 < BOARD_SIZE && pos.y + 2 < BOARD_SIZE)   moves.emplace_back(pos.x + 1, pos.y + 2);
-        if (pos.x - 1 >= 0 && pos.y + 2 < BOARD_SIZE)           moves.emplace_back(pos.x - 1, pos.y + 2);
-        if (pos.x + 1 < BOARD_SIZE && pos.y- 2 >= 0)            moves.emplace_back(pos.x + 1, pos.y - 2);
-        if (pos.x - 1 >= 0 && pos.y - 2 >= 0)                   moves.emplace_back(pos.x - 1, pos.y - 2);
-        if (pos.x + 2 < BOARD_SIZE && pos.y + 1 < BOARD_SIZE)   moves.emplace_back(pos.x + 2, pos.y + 1);
-        if (pos.x - 2 >= 0 && pos.y + 1 < BOARD_SIZE)           moves.emplace_back(pos.x - 2, pos.y + 1);
-        if (pos.x + 2 < BOARD_SIZE && pos.y- 1 >= 0)            moves.emplace_back(pos.x + 2, pos.y - 1);
-        if (pos.x - 2 >= 0 && pos.y - 1 >= 0)                   moves.emplace_back(pos.x - 2, pos.y - 1);
-        if (pos.x + 1 < BOARD_SIZE)             moves.emplace_back(pos.x + 1, pos.y);
-        if (pos.x - 1 >= 0)                     moves.emplace_back(pos.x - 1, pos.y);
-        if (pos.y- 1 >= 0)                      moves.emplace_back(pos.x, pos.y - 1);
-        if (pos.y + 1 < BOARD_SIZE)             moves.emplace_back(pos.x, pos.y + 1);
-        return moves;
+        return inverse_checker_2_pattern->get_positions(pos);
     };
 
     arceuid_buff_move->name = "arceuid_buff_move";
     arceuid_buff_move->get_positions = [](const glm::ivec2 pos) {
-        std::vector<glm::ivec2> moves;
-        for (int i = 1; i < BOARD_SIZE; ++i) {
-            if (pos.x + i < BOARD_SIZE) moves.emplace_back(pos.x + i, pos.y);
-            if (pos.x - i >= 0)         moves.emplace_back(pos.x - i, pos.y);
-            if (pos.y- i >= 0)          moves.emplace_back(pos.x, pos.y - i);
-            if (pos.y + i < BOARD_SIZE) moves.emplace_back(pos.x, pos.y + i);
-        }
-        for (int i = 1; i < 3; ++i){
-            if (pos.x + i < BOARD_SIZE && pos.y + i < BOARD_SIZE)   moves.emplace_back(pos.x + i, pos.y + i);
-            if (pos.x - i >= 0 && pos.y + i < BOARD_SIZE)           moves.emplace_back(pos.x - i, pos.y + i);
-            if (pos.x + i < BOARD_SIZE && pos.y- i >= 0)            moves.emplace_back(pos.x + i, pos.y - i);
-            if (pos.x - i >= 0 && pos.y - i >= 0)                   moves.emplace_back(pos.x - i, pos.y - i);
-        }
-        return moves;
+        return arceuid_buff_move->get_positions(pos);
     };
 
     small_cross_moves->name = "small_cross_moves";
     small_cross_moves->get_positions = [](const glm::ivec2 pos) {
-        std::vector<glm::ivec2> moves;
-        if (pos.x + 1 < BOARD_SIZE) moves.emplace_back(pos.x + 1, pos.y);
-        if (pos.x - 1 >= 0)         moves.emplace_back(pos.x - 1, pos.y);
-        if (pos.y- 1 >= 0)          moves.emplace_back(pos.x, pos.y - 1);
-        if (pos.y + 1 < BOARD_SIZE) moves.emplace_back(pos.x, pos.y + 1);
-        return moves;
+        return cross_1_pattern->get_positions(pos);
     };
     
     small_cross_3_range_moves->name = "small_cross_3_range_moves";
     small_cross_3_range_moves->get_positions = [](const glm::ivec2 pos) {
-        std::vector<glm::ivec2> moves;
-        for (int i = 1; i < 4; ++i) {
-            if (pos.x + i < BOARD_SIZE) moves.emplace_back(pos.x + i, pos.y);
-            if (pos.x - i >= 0)         moves.emplace_back(pos.x - i, pos.y);
-            if (pos.y- i >= 0)          moves.emplace_back(pos.x, pos.y - i);
-            if (pos.y + i < BOARD_SIZE) moves.emplace_back(pos.x, pos.y + i);
-        }
-        return moves;
+        return cross_3_pattern->get_positions(pos);
     };
 
     inverted_shinji_moves->name = "inverted_shinji_moves";
     inverted_shinji_moves->ignoresObstacles = true;
     inverted_shinji_moves->get_positions = [](const glm::ivec2 pos) {
-        std::vector<glm::ivec2> moves;
-        for (int x = 0; x < Chessboard::getInstance()->getSize(); ++x)
-            for (int y = 0; y < Chessboard::getInstance()->getSize(); ++y)
-                if (pos.x != x || pos.y != y)
-                    moves.emplace_back(x, y);
-        return moves;
+        return square_pattern->get_positions(pos);
     };
 
     shinji_moves->name = "shinji_moves";

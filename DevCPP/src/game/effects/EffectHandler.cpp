@@ -151,19 +151,19 @@ bool EffectHandler::validTargetForEffect(const Pieces* target_piece, const Effec
             target_piece != nullptr
             && !Chessboard::isAlly(static_cast<const Pieces*>(effect_instance->caster_piece), target_piece)
             && !effect_instance->isBuff()
-            && effect_instance->check_condition(target_piece)
+            && effect_instance->check_condition(Chessboard::getInstance()->getCellAt(target_piece->getCoordX(), target_piece->getCoordY()))
         ) || (
             target_piece != nullptr
             && Chessboard::isAlly(static_cast<const Pieces*>(effect_instance->caster_piece), target_piece)
             && effect_instance->isBuff())
-            && effect_instance->check_condition(target_piece)
+            && effect_instance->check_condition(Chessboard::getInstance()->getCellAt(target_piece->getCoordX(), target_piece->getCoordY()))
     ) return true;
     return false;
 }
 
 int EffectHandler::selectRandomTargetPieces(EffectInstance* effect_instance) {
     vector<glm::ivec2> effect_range =
-        static_cast<const Pieces*>(effect_instance->caster_piece)
+        static_cast<Pieces*>(effect_instance->caster_piece)
         ->getEffectRange(effect_instance->effect);
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
     shuffle(effect_range.begin(), effect_range.end(), default_random_engine(rd_key));
@@ -173,7 +173,7 @@ int EffectHandler::selectRandomTargetPieces(EffectInstance* effect_instance) {
             effect_instance->NB_Target != -1
             && NB_targetSelected == effect_instance->NB_Target
         ) break;
-        Pieces* target_piece =  Chessboard::getInstance()->getPieceAt(target.x, target.y);
+        Pieces* target_piece = Chessboard::getInstance()->getPieceAt(target.x, target.y);
         if (!validTargetForEffect(target_piece,effect_instance))
             continue;
         NB_targetSelected++;
@@ -202,7 +202,7 @@ int EffectHandler::selectRandomTargetDeadPieces(EffectInstance* effect_instance)
 
 int EffectHandler::selectRandomTargetCells(EffectInstance* effect_instance) {
     vector<glm::ivec2> effect_range =
-        static_cast<const Pieces*>(effect_instance->caster_piece)
+        static_cast<Pieces*>(effect_instance->caster_piece)
         ->getEffectRange(effect_instance->effect);
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
     shuffle(effect_range.begin(), effect_range.end(), default_random_engine(rd_key));
@@ -223,7 +223,7 @@ int EffectHandler::selectRandomTargetCells(EffectInstance* effect_instance) {
 
 int EffectHandler::selectRandomTargetEmptyCells(EffectInstance* effect_instance) {
     vector<glm::ivec2> effect_range =
-        static_cast<const Pieces*>(effect_instance->caster_piece)
+        static_cast<Pieces*>(effect_instance->caster_piece)
         ->getEffectRange(effect_instance->effect);
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
     shuffle(effect_range.begin(), effect_range.end(), default_random_engine(rd_key));
@@ -244,7 +244,7 @@ int EffectHandler::selectRandomTargetEmptyCells(EffectInstance* effect_instance)
 
 int EffectHandler::selectRandomTargetNonEmptyCells(EffectInstance* effect_instance) {
     vector<glm::ivec2> effect_range =
-        static_cast<const Pieces*>(effect_instance->caster_piece)
+        static_cast<Pieces*>(effect_instance->caster_piece)
         ->getEffectRange(effect_instance->effect);
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
     shuffle(effect_range.begin(), effect_range.end(), default_random_engine(rd_key));
@@ -396,9 +396,9 @@ function<bool()> EffectHandler::getStunEffect(EffectInstance* effect_instance) {
         }
         const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
         event_spell_used->setSuccess(success);
-        GameEngine::getInstance()->addEvent(event_spell_used);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
         if (success)
-            GameEngine::getInstance()->addEvent(event_effect_applied);
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
         return success;
     };
 }
@@ -426,10 +426,12 @@ function<bool()> EffectHandler::getAoeEffect(EffectInstance* effect_instance) {
             event_effect_applied->addTargetPiece(piece);
             piece->gotUnalivedBy(static_cast<Pieces*>(effect_instance->caster_piece), KILL_AOE_EFFECT);
         }
-        event_spell_used->setSuccess(NB_targetTouched > 0 || !effect_instance->requires_hitting_something);
-        GameEngine::getInstance()->addEvent(event_spell_used);
-        GameEngine::getInstance()->addEvent(event_effect_applied);
-        return NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
+        if (success)
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
+        return success;
     };
 }
 
@@ -438,7 +440,7 @@ function<bool()> EffectHandler::getChangeControlEffect(EffectInstance* effect_in
         int NB_targetTouched = 0;
         auto* event_spell_used = new EventSpellUsed(effect_instance);
         auto* event_effect_applied = new EventEffectApply(effect_instance);
-        for (auto &target: effect_instance->target_pieces) {
+        for (const auto &target: effect_instance->target_pieces) {
             const auto piece = static_cast<Pieces*>(target);
             if (piece->isKing())
                 continue;
@@ -457,10 +459,12 @@ function<bool()> EffectHandler::getChangeControlEffect(EffectInstance* effect_in
             event_effect_applied->addTargetPiece(piece);
             piece->setIsWhite(!piece->getIsWhite());
         }
-        event_spell_used->setSuccess(NB_targetTouched > 0 || !effect_instance->requires_hitting_something);
-        GameEngine::getInstance()->addEvent(event_spell_used);
-        GameEngine::getInstance()->addEvent(event_effect_applied);
-        return NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
+        if (success)
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
+        return success;
     };
 }
 
@@ -477,10 +481,12 @@ function<bool()> EffectHandler::getImmunityEffect(EffectInstance* effect_instanc
             piece->addEffectStatus(effect_instance);
             event_effect_applied->addTargetPiece(piece);
         }
-        event_spell_used->setSuccess(NB_targetTouched > 0 || !effect_instance->requires_hitting_something);
-        GameEngine::getInstance()->addEvent(event_spell_used);
-        GameEngine::getInstance()->addEvent(event_effect_applied);
-        return NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
+        if (success)
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
+        return success;
     };
 }
 
@@ -495,10 +501,12 @@ function<bool()> EffectHandler::getShieldEffect(EffectInstance* effect_instance)
             piece->addEffectStatus(effect_instance);
             event_effect_applied->addTargetPiece(piece);
         }
-        event_spell_used->setSuccess(NB_targetTouched > 0 || !effect_instance->requires_hitting_something);
-        GameEngine::getInstance()->addEvent(event_spell_used);
-        GameEngine::getInstance()->addEvent(event_effect_applied);
-        return NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
+        if (success)
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
+        return success;
     };
 }
 
@@ -514,10 +522,12 @@ function<bool()> EffectHandler::getSuppRangeEffect(EffectInstance* effect_instan
             piece->addOverrideMove(super_pawn_moves);
             event_effect_applied->addTargetPiece(piece);
         }
-        event_spell_used->setSuccess(NB_targetTouched > 0 || !effect_instance->requires_hitting_something);
-        GameEngine::getInstance()->addEvent(event_spell_used);
-        GameEngine::getInstance()->addEvent(event_effect_applied);
-        return NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
+        if (success)
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
+        return success;
     };
 }
 
@@ -544,10 +554,12 @@ function<bool()> EffectHandler::getKillEffect(EffectInstance* effect_instance) {
             event_effect_applied->addTargetPiece(piece);
             piece->gotUnalivedBy(static_cast<Pieces*>(effect_instance->caster_piece), KILL_KILL_EFFECT);
         }
-        event_spell_used->setSuccess(NB_targetTouched > 0 || !effect_instance->requires_hitting_something);
-        GameEngine::getInstance()->addEvent(event_spell_used);
-        GameEngine::getInstance()->addEvent(event_effect_applied);
-        return NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
+        if (success)
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
+        return success;
     };
 }
 
@@ -574,10 +586,12 @@ function<bool()> EffectHandler::getSpawnPieceEffect(EffectInstance* effect_insta
             event_effect_applied->addTargetPiece(piece);
             piece->gotResurrectedAt(static_cast<Pieces*>(effect_instance->caster_piece), cell->pos);
         }
-        event_spell_used->setSuccess(NB_targetTouched > 0 || !effect_instance->requires_hitting_something);
-        GameEngine::getInstance()->addEvent(event_spell_used);
-        GameEngine::getInstance()->addEvent(event_effect_applied);
-        return NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
+        if (success)
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
+        return success;
     };
 }
 

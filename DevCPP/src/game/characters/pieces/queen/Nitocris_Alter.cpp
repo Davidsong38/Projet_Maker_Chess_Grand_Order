@@ -7,37 +7,20 @@
 #include <EffectHandler.h>
 #include <GameEngine.h>
 
-void Nitocris_Alter::setPieceGameMode(int piece_game_mode) {
-
-}
-
-vector<glm::ivec2> Nitocris_Alter::getEffectRange(Effect_List effect) const {
+vector<glm::ivec2> Nitocris_Alter::getEffectRange(const Effect_List effect) {
     vector<glm::ivec2> effect_range;
-    if (effect == SPAWN_PIECES){
-        for (int i = 1; i < 3; ++i) {
-            if (coordX + i < 8) effect_range.emplace_back(coordX + i, coordY);
-            if (coordX - i >= 0) effect_range.emplace_back(coordX - i, coordY);
-            if (coordY- i >= 0) effect_range.emplace_back(coordX, coordY - i);
-            if (coordY + i < 8) effect_range.emplace_back(coordX, coordY + i);
-        }
-        if (coordX + 1 < 8 && coordY + 1 < 8) effect_range.emplace_back(coordX + 1, coordY + 1);
-        if (coordX - 1 >= 0 && coordY + 1 < 8) effect_range.emplace_back(coordX - 1, coordY + 1);
-        if (coordX + 1 < 8 && coordY - 1 >= 0) effect_range.emplace_back(coordX + 1, coordY - 1);
-        if (coordX - 1 >= 0 && coordY - 1 >= 0) effect_range.emplace_back(coordX - 1, coordY - 1);
-    }
-    if (effect == KILLING) {
-        for (int i = 0; i < 8; ++i){
-            for (int j = 0; j < 8; ++j){
-                effect_range.emplace_back(i, j);
-            }
-        }
-
-    }
+    if (effect == SPAWN_PIECES)
+        return merge_patterns(
+            cross_2_pattern->get_positions(glm::ivec2(coordX, coordY)),
+            x_cross_1_pattern->get_positions(glm::ivec2(coordX, coordY))
+        );
+    if (effect == KILLING)
+        return square_pattern->get_positions(glm::ivec2(coordX, coordY));
     return effect_range;
 }
 
 bool Nitocris_Alter::SpellActivationCheck(void *arg) {
-    if (evolved && hasJustKilled) {
+    if (evolved && getLastKillTurn() == GameEngine::getInstance()->getTurnNumber()) {
         evolvedForm(arg);
     }
     return true;
@@ -96,9 +79,16 @@ bool Nitocris_Alter::evolvedForm(void *arg) {
         1,
         1
     );
+    effect_instance_2->check_condition = [](const void* cell) {
+        const auto* piece = static_cast<const chessboard_cell*>(cell)->piece;
+        if (piece == nullptr)
+            return false;
+        return piece->isPawn();
+    };
     EffectHandler::selectRandomTargetDeadPieces(effect_instance_1);
     EffectHandler::selectRandomTargetEmptyCells(effect_instance_1);
     EffectHandler::applyToTargets(effect_instance_1);
+
     EffectHandler::selectRandomTargetPieces(effect_instance_2);
     EffectHandler::applyToTargets(effect_instance_2);
     return true;

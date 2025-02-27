@@ -49,7 +49,6 @@ public:
     [[nodiscard]] GameState getCurrentState() const;
     void clickBoardAtPos(int x, int y);
     void inputRightClick();
-    int NB_Turn = 1;
     int NB_WhiteDead = 0;
     int NB_BlackDead = 0;
     int NB_WhiteDeadLastPhase = 0;
@@ -71,17 +70,20 @@ public:
     Pieces* lastPieceTouchedByEffect{nullptr};
 
     [[nodiscard]] int getTurnNumber() const {return NB_Turn;}
+    [[nodiscard]] int getPhaseNumber() const {return NB_Phase;}
 
     void requestSelection(const selection_request_type& to_select);
     void validateSelection();
     void deselectAllPieces();
     [[nodiscard]] selection_type* getSelection();
 
-    void addEvent(Event* event) const;
+    void registerEvent(Event* event) const;
 private:
     GameState current_state{};
     GameState last_state{};
     GameState last_main_state{};
+    
+    int NB_Turn{1}, NB_Phase{1};
 
     Pieces* black_king{nullptr};
     Pieces* white_king{nullptr};

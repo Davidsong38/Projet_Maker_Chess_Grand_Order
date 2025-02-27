@@ -18,8 +18,7 @@
 #include <set>
 #include <uiElements.h>
 #include <piece_moves.h>
-
-#include "Gilgamesh.h"
+#include <board_pattern.h>
 
 std::string game_state_to_string[GAME_STATE_COUNT];
 
@@ -63,6 +62,7 @@ GameEngine::GameEngine() : current_state(INITIALISATION), last_state(INITIALISAT
     state_handlers[GAME_CLOSE]              = [this]() { handleGameClose(); };
 
     game_state_names_Init();
+    init_board_patterns();
     init_moves();
     init_event_type();
 
@@ -97,7 +97,7 @@ void GameEngine::handleInitialisation() {
 }
 
 void GameEngine::handleStartWhitePhase() {
-    selection_type* selection = getSelection();
+    const selection_type* selection = getSelection();
     if (selection == nullptr) {
         selection_request_type request;
         request.whites = 1;
@@ -107,13 +107,6 @@ void GameEngine::handleStartWhitePhase() {
     }
     Pieces* selectedPiece = selection->white_pieces[0]->piece;
     current_phase_context->firstSelectedPiece = selectedPiece;
-    /// TODO change
-    // selectedPiece->selected = true;
-    // if (context->piece != nullptr) {
-    //     context->piece->selected = false;
-    // }
-    // context->piece = selectedPiece;
-    /// TODO change
     goToState(SELECT_WHITE_PHASE);
 }
 
@@ -176,7 +169,6 @@ void GameEngine::handleCheckingWhitePhase() {
         receivedRightClick = false;
         return;
     }
-    current_phase_context->firstSelectedPiece->setHasJustKilled(false);
     if (current_phase_context->firstSelectedPiece->getIsEvolved())
         ltr_log_info(
             current_phase_context->firstSelectedPiece->getIsWhite()? "White " : "Black ",
@@ -192,6 +184,7 @@ void GameEngine::handleEndWhitePhase() {
         std::cout << "White has win!" << std::endl;
         goToState(END_GAME);
     } else {
+        NB_Phase++;
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
             piece->updateEffectStatus();
             if (piece->getCharacter()== ARCEUID)
@@ -202,12 +195,6 @@ void GameEngine::handleEndWhitePhase() {
             }
             if (piece->getCharacter() == GILGAMESH)
                 piece->passive(current_phase_context);
-            if (piece != current_phase_context->firstSelectedPiece)
-                piece->incrementNB_TurnWithoutMoving();
-            if (piece == current_phase_context->firstSelectedPiece)
-                piece->resetNB_TurnWithoutMoving();
-            if (!piece->getIsFirstMove())
-                piece->incrementTurnStamp();
         }
         NB_WhiteDeadLastPhase = NB_WhiteDead;
         NB_BlackDeadLastPhase = NB_BlackDead;
@@ -228,13 +215,6 @@ void GameEngine::handleStartBlackPhase() {
     }
     Pieces* selectedPiece = selection->black_pieces[0]->piece;
     current_phase_context->firstSelectedPiece = selectedPiece;
-    /// TODO change
-    // selectedPiece->selected = true;
-    // if (context->piece != nullptr) {
-    //     context->piece->selected = false;
-    // }
-    // context->piece = selectedPiece;
-    /// TODO change
     goToState(SELECT_BLACK_PHASE);
 }
 
@@ -297,7 +277,6 @@ void GameEngine::handleCheckingBlackPhase() {
         receivedRightClick = false;
         return;
     }
-    current_phase_context->firstSelectedPiece->setHasJustKilled(false);
     if (current_phase_context->firstSelectedPiece->getIsEvolved())
         ltr_log_info(
             current_phase_context->firstSelectedPiece->getIsWhite()? "White " : "Black ",
@@ -315,6 +294,7 @@ void GameEngine::handleEndBlackPhase() {
         goToState(END_GAME);
     } else {
         NB_Turn++;
+        NB_Phase++;
         for (const auto& piece : Chessboard::getInstance()->getAllPieces()) {
             piece->updateEffectStatus();
             if (piece->getCharacter()== ARCEUID)
@@ -325,12 +305,6 @@ void GameEngine::handleEndBlackPhase() {
             }
             if (piece->getCharacter() == GILGAMESH)
                 piece->passive(current_phase_context);
-            if (piece != current_phase_context->firstSelectedPiece)
-                piece->incrementNB_TurnWithoutMoving();
-            if (piece == current_phase_context->firstSelectedPiece)
-                piece->resetNB_TurnWithoutMoving();
-            if (!piece->getIsFirstMove())
-                piece->incrementTurnStamp();
         }
         NB_WhiteDeadLastPhase = NB_WhiteDead;
         NB_BlackDeadLastPhase = NB_BlackDead;
@@ -521,7 +495,7 @@ void GameEngine::setLastPieceTouchedByEffect(Pieces* last_piece_touched_by_effec
     lastPieceTouchedByEffect = last_piece_touched_by_effect;
 }
 
-void GameEngine::addEvent(Event* event) const {
+void GameEngine::registerEvent(Event* event) const {
     current_phase_context->events.emplace_back(event);
     for (auto* piece : event->getAllConcernedPieces())
         piece->addEvent(event);

@@ -5,7 +5,6 @@
 #ifndef XU_FU_H
 #define XU_FU_H
 
-
 #include <Pieces.h>
 #include <textures.h>
 #include <uiElements.h>
@@ -29,7 +28,7 @@ public:
     }
 
 
-    [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) const override;
+    [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
     bool passive(void* arg) override;
     bool canEvolve(void* arg) override;
     bool evolvedForm(void* arg) override;

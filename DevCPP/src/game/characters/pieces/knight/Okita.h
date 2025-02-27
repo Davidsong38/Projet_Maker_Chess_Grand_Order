@@ -5,8 +5,6 @@
 #ifndef OKITA_H
 #define OKITA_H
 
-
-
 #include <textures.h>
 #include <uiElements.h>
 #include "RenderEngine.h"
@@ -28,12 +26,10 @@ public:
         );
     }
 
-    [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) const override;
     bool passive(void* arg) override;
     bool canEvolve(void* arg) override;
     bool evolvedForm(void* arg) override;
     bool SpellActivationCheck(void *arg) override;
-    void setPieceGameMode(int piece_game_mode) override;
 
 
 

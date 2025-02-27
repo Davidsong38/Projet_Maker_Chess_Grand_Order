@@ -9,3 +9,7 @@
 int PhaseHandler::getTurnNumber() {
     return GameEngine::getInstance()->getTurnNumber();
 }
+
+int PhaseHandler::getPhaseNumber() {
+    return GameEngine::getInstance()->getPhaseNumber();
+}

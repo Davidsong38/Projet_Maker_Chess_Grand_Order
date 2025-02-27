@@ -10,6 +10,7 @@
 class PhaseHandler {
 public:
     static int getTurnNumber();
+    static int getPhaseNumber();
 };
 
 

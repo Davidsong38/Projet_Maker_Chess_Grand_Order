@@ -12,28 +12,14 @@ void Xu_Fu::setPieceGameMode(int piece_game_mode) {
     pieceGameMode = piece_game_mode;
 }
 
-vector<glm::ivec2> Xu_Fu::getEffectRange(Effect_List effect) const {
+vector<glm::ivec2> Xu_Fu::getEffectRange(const Effect_List effect) {
     vector<glm::ivec2> effect_range;
-    if (effect == IMMORTALITY){
-        for (int i = 0; i < 8; ++i){
-            for (int j = 0; j < 8; ++j){
-                effect_range.emplace_back(i, j);
-            }
-        }
-    }
-    if (effect == SHIELD) {
-        if (coordX + 1 < 8) effect_range.emplace_back(coordX + 1, coordY);
-        if (coordX - 1 >= 0) effect_range.emplace_back(coordX - 1, coordY);
-        if (coordY - 1 >= 0) effect_range.emplace_back(coordX, coordY - 1);
-        if (coordY + 1 < 8) effect_range.emplace_back(coordX, coordY + 1);
-    }
-    if (effect == SUPP_RANGE){
-        for (int i = 0; i < 8; ++i){
-            for (int j = 0; j < 8; ++j){
-                effect_range.emplace_back(i, j);
-            }
-        }
-    }
+    if (effect == IMMORTALITY)
+        return square_pattern->get_positions(glm::ivec2(coordX, coordY));
+    if (effect == SHIELD)
+        return cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
+    if (effect == SUPP_RANGE)
+        return square_pattern->get_positions(glm::ivec2(coordX, coordY));
     return effect_range;
 }
 
@@ -69,6 +55,12 @@ bool Xu_Fu::passive(void* arg) {
             1,
             1
         );
+        effect_instance->check_condition = [](const void* cell) {
+            const auto* piece = static_cast<const chessboard_cell*>(cell)->piece;
+            if (piece == nullptr)
+                return false;
+            return piece->isPawn();
+        };
         EffectHandler::selectRandomTargetPieces(effect_instance);
         if (EffectHandler::applyToTargets(effect_instance))
             CNT_Shield++;
@@ -96,7 +88,6 @@ bool Xu_Fu::evolvedForm(void *arg) {
         return true;
     }
     static EffectInstance * effect_instance_1 = nullptr;
-    static EffectInstance * effect_instance_2 = nullptr;
     if (effect_instance_1 == nullptr) {
         effect_instance_1 = new EffectInstance(
             IMMORTALITY,
@@ -107,30 +98,28 @@ bool Xu_Fu::evolvedForm(void *arg) {
         );
         effect_instance_1->check_condition = [](const void* cell) {
             const auto* piece = static_cast<const chessboard_cell*>(cell)->piece;
-            if (piece == nullptr) {
+            if (piece == nullptr)
                 return false;
-            }
             return piece->isPawn();
         };
-        effect_instance_2 = new EffectInstance(
-            SUPP_RANGE,
-            this,
-            -1,
-            1,
-            1
-        );
     }
     selection_request_type selection_request;
-    selection_request.whites = isWhite ? 8 : 0;
-    selection_request.blacks = isWhite ? 0 : 8;
+    selection_request.whites = isWhite ? 1 : 0;
+    selection_request.blacks = isWhite ? 0 : 1;;
     selection_request.instantValidation = false;
     if (!EffectHandler::selectManualTargetCells(effect_instance_1, selection_request))
         return false;
+    auto * effect_instance_2 = new EffectInstance(
+        SUPP_RANGE,
+        this,
+        -1,
+        1,
+        1
+    );
     effect_instance_2->copyTargets(effect_instance_1);
     if (EffectHandler::applyToTargets(effect_instance_1)) {
         EffectHandler::applyToTargets(effect_instance_2);
         effect_instance_1 = nullptr;
-        effect_instance_2 = nullptr;
         return true;
     }
     return false;

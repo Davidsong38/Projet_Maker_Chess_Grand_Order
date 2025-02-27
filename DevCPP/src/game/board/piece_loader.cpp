@@ -36,7 +36,7 @@ Characters_List choose_pawn(bool isWhite) {
 }
 
 Characters_List choose_knight(bool isWhite, bool isRight) {
-    int id_character = OKITA;
+    int id_character = USHIWAKAMARU;
     if constexpr (NOT_QUICK_TEST) {
         cout << " Choose" << (isWhite ? " White" : " Black") << " knight"<< (isRight ? "Right" : "Left")<<" character: " << endl;
         cin >> id_character;
@@ -45,7 +45,7 @@ Characters_List choose_knight(bool isWhite, bool isRight) {
 }
 
 Characters_List choose_bishop(bool isWhite, bool isRight) {
-    int id_character = MEDUSA_SABER;
+    int id_character = MERLIN;
     if constexpr (NOT_QUICK_TEST) {
         cout << "Choose" << (isWhite ? " White" : " Black") << " bishop"<< (isRight ? "Right" : "Left")<<" character: " << endl;
         cin >> id_character;
@@ -179,13 +179,11 @@ void init_pieces() {
 
 void init_pawns() {
     Characters_List character = choose_pawn(false);
-    for (int y = 0; y < BOARD_SIZE; y++) {
+    for (int y = 0; y < BOARD_SIZE; y++)
         add_piece_to_board(1,y,false,character);
-    }
     character = choose_pawn(true);
-    for (int y = 0; y < BOARD_SIZE; y++) {
+    for (int y = 0; y < BOARD_SIZE; y++)
         add_piece_to_board(BOARD_SIZE-2,y,true,character);
-    }
 }
 
 void init_knights() {

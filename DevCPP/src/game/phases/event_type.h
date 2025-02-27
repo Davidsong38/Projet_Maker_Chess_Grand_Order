@@ -19,6 +19,16 @@ enum event_type {
   EVENT_TYPE_COUNT
 };
 
+enum move_type {
+  MOVE_NORMAL,
+  MOVE_ROQUED,
+  MOVE_EN_PASSANT,
+  MOVE_SUPPLEMENTARY,
+  MOVE_TELEPORTED,
+  MOVE_KNOCK_BACK,
+  MOVE_TYPE_COUNT
+};
+
 enum kill_types {
   KILL_NORMAL,
   KILL_EN_PASSANT,
@@ -29,6 +39,7 @@ enum kill_types {
 };
 
 extern std::string event_type_to_string[EVENT_TYPE_COUNT];
+extern std::string move_type_to_string[MOVE_TYPE_COUNT];
 extern std::string kill_type_to_string[KILL_TYPE_COUNT];
 
 void init_event_type();

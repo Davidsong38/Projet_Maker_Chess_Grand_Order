@@ -5,6 +5,8 @@
 #ifndef PIECES_H
 #define PIECES_H
 
+#include <board_pattern.h>
+#include <log.h>
 #include <piece_moves.h>
 #include <RenderEngine.h>
 #include <string>
@@ -23,13 +25,10 @@ using namespace std;
 class Pieces : public SpriteTarget{
 protected:
     int coordX, coordY;
-    int NB_TurnWithoutMoving{0}, CNTMove{0}, TurnStamp{0};
     bool isFirstMove{true}, isOnAMove{false}, hasRoqued{false};
 
     bool isWhite, evolved{false}, isAlive{true};
     int pieceGameMode{0};
-    bool canActivateEffects{false}, hasJustKilled{false};
-    vector<glm::ivec2> AllMovesDoneBefore; ///TODO delete
 
     Characters_List character;
     Pieces_List pieces_origin;
@@ -51,8 +50,7 @@ public:
     [[nodiscard]] piece_move* getCurrentPieceMove() const;
     void addOverrideMove(piece_move* new_piece_move) {override_piece_move = new_piece_move;}
     void goToPosition(int x, int y);
-    void goToPosition(int x, int y, bool increaseCountMove);
-    [[nodiscard]] int getCNTMove() const {return CNTMove;}
+    void goToPosition(int x, int y, int moveType);
     [[nodiscard]] int getCoordX() const {return coordX;}
     [[nodiscard]] int getCoordY() const {return coordY;}
 
@@ -67,37 +65,28 @@ public:
     [[nodiscard]] bool isKing() const {return pieces_origin == KING;}
 
     void setPiecesOrigin(Pieces_List pieces_origin);
-    [[nodiscard]] Pieces_List getPiecesOrigin() const {return pieces_origin;}
+    [[nodiscard]] int getPiecesOrigin() const {return pieces_origin;}
     [[nodiscard]] Characters_List getCharacter() const {return character;}
     [[nodiscard]] bool getIsWhite() const {return isWhite;}
     [[nodiscard]] string getName() const {return name;}
 
-    [[nodiscard]] bool getHasJustKilled() const {return hasJustKilled;} ///TODO delete
     [[nodiscard]] bool getIsFirstMove() const {return isFirstMove;}
-    [[nodiscard]] int getTurnStamp() const {return TurnStamp;}
     [[nodiscard]] bool getIsEvolved() const {return evolved;}
     [[nodiscard]] bool getIsOnAMove() const {return isOnAMove;}
-    [[nodiscard]] int getNB_TurnWithoutMoving() const {return NB_TurnWithoutMoving;}
-    [[nodiscard]] bool getHasRoqued() const {return hasRoqued;}
 
-    void setHasRoqued(const bool hasRoqued) {if (!this->hasRoqued) this->hasRoqued = hasRoqued;}
-    void incrementNB_TurnWithoutMoving() {NB_TurnWithoutMoving++;}
-    void incrementTurnStamp() {TurnStamp++;}
-    void resetNB_TurnWithoutMoving() {NB_TurnWithoutMoving = 0;}
     void setIsOnAMove(const bool isOnAMove) {this->isOnAMove = isOnAMove;}
     void setIsWhite(const bool isWhite) {this->isWhite = isWhite;}
-    void setHasJustKilled(const bool hasJustKilled) {this->hasJustKilled = hasJustKilled;}
 
     // Effects
     [[nodiscard]] int getPieceGameMode() const {return pieceGameMode;}
     virtual void setPieceGameMode(const int pieceGameMode) {this->pieceGameMode = pieceGameMode;}
     void displayEffects() const;
-    [[nodiscard]] virtual vector<glm::ivec2> getEffectRange(Effect_List effect) const = 0;
+    [[nodiscard]] virtual vector<glm::ivec2> getEffectRange(Effect_List effect) {return square_pattern->get_positions(glm::ivec2(coordX,coordY));}
     [[nodiscard]] bool hasThisEffect(Effect_List chosenEffect) const;
     [[nodiscard]] vector<EffectInstance*> getActive_effects() const {return activeEffects;}
-    virtual bool passive(void* context) {return true;}
-    virtual bool canEvolve(void* context) {return true;}
-    virtual bool evolvedForm(void* context) {return true;}
+    virtual bool passive(void* context) {return false;}
+    virtual bool canEvolve(void* context) {return false;}
+    virtual bool evolvedForm(void* context) {return false;}
     virtual bool SpellActivationCheck(void* context) {return true;}
 
     void addEffectStatus(const EffectInstance* effect_instance) {activeEffects.emplace_back(new EffectInstance(*effect_instance));}
@@ -107,11 +96,28 @@ public:
 
     // Event
     void addEvent(void* event);
+    [[nodiscard]] std::vector<void*> getAllEvents() const {return events;}
+    [[nodiscard]] std::vector<void*> getAllMoveEvents();
+    [[nodiscard]] void* getLastMoveEvent() {return getAllMoveEvents().back();}
+    [[nodiscard]] void* getLastNormalMoveEvent();
+    [[nodiscard]] int getLastNormalMovePhase();
+    [[nodiscard]] int getLastNormalMoveEventType();
+    [[nodiscard]] void* getFirstNormalMoveEvent();
+    [[nodiscard]] int getFirstNormalMovePhase();
+    [[nodiscard]] std::vector<void*> getAllKillEvents();
+    [[nodiscard]] void* getLastKillKillEvent();
+    [[nodiscard]] int getLastKillTurn();
+    [[nodiscard]] void* getLastDeathKillEvent();
+    [[nodiscard]] void* getLastKillKillEvent(int killType);
+    [[nodiscard]] void* getLastDeathKillEvent(int killType);
+    [[nodiscard]] std::vector<void*> getAllSpellUsedEvents();
+    [[nodiscard]] void* getLastSpellUsedEvent() {return getAllSpellUsedEvents().back();}
+    [[nodiscard]] void* getLastSpellUsedByMeEvent();
 
     // SpriteTarget
     float getSpriteX() override {return (-0.875f + 0.25f * static_cast<float>(coordY)) * RenderEngine::getWindowInverseAspectRatio();}
     float getSpriteY() override {return 0.875f - 0.25f * static_cast<float>(coordX);}
-    float getSpriteRotation() override {return (isWhite) ? 0.0f : 180.0f;}
+    float getSpriteRotation() override {return isWhite ? 0.0f : 180.0f;}
     glm::vec3 getFilterColor() override;
     glm::vec4 getDefaultColor() override;
     bool isHidden() override {return !isAlive;}

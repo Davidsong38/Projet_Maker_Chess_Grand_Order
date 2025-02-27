@@ -26,6 +26,7 @@ target_sources(Chess_Grand_Order PRIVATE
         src/game/GameEngine.cpp
         src/game/board/Chessboard.cpp
         src/game/board/piece_loader.cpp
+        src/game/board/board_pattern.cpp
         src/game/characters/characters_List.cpp
         src/game/characters/pieces/Pieces.cpp
         src/game/characters/pieces/pieces_List.cpp

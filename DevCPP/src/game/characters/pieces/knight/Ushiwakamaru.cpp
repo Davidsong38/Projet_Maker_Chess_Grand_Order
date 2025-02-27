@@ -3,37 +3,9 @@
 //
 
 #include "Ushiwakamaru.h"
+
 #include "phase_context.h"
-
-void Ushiwakamaru::setPieceGameMode(int piece_game_mode) {
-
-}
-
-vector<glm::ivec2> Ushiwakamaru::getEffectRange(Effect_List effect) const {
-    vector<glm::ivec2> effect_range;
-    if (effect == STUN) {
-        if (coordX + 1 < 8 && coordY + 1 < 8) effect_range.emplace_back(coordX + 1, coordY + 1);
-        if (coordX - 1 >= 0 && coordY + 1 < 8) effect_range.emplace_back(coordX - 1, coordY + 1);
-        if (coordX + 1 < 8 && coordY - 1 >= 0) effect_range.emplace_back(coordX + 1, coordY - 1);
-        if (coordX - 1 >= 0 && coordY - 1 >= 0) effect_range.emplace_back(coordX - 1, coordY - 1);
-    }
-    if (evolved==true) {
-        if (effect == STUN) {
-            if (coordX + 1 < 8) effect_range.emplace_back(coordX + 1, coordY);
-            if (coordX - 1 >= 0) effect_range.emplace_back(coordX - 1, coordY);
-            if (coordY - 1 >= 0) effect_range.emplace_back(coordX, coordY - 1);
-            if (coordY + 1 < 8) effect_range.emplace_back(coordX, coordY + 1);
-
-        }
-        if (effect == AOE) {
-            if (coordX + 1 < 8 && coordY + 1 < 8) effect_range.emplace_back(coordX + 1, coordY + 1);
-            if (coordX - 1 >= 0 && coordY + 1 < 8) effect_range.emplace_back(coordX - 1, coordY + 1);
-            if (coordX + 1 < 8 && coordY - 1 >= 0) effect_range.emplace_back(coordX + 1, coordY - 1);
-            if (coordX - 1 >= 0 && coordY - 1 >= 0) effect_range.emplace_back(coordX - 1, coordY - 1);
-        }
-    }
-    return effect_range;
-}
+#include <GameEngine.h>
 
 bool Ushiwakamaru::SpellActivationCheck(void *arg) {
     if (canEvolve(arg))
@@ -49,7 +21,7 @@ bool Ushiwakamaru::SpellActivationCheck(void *arg) {
 }
 
 bool Ushiwakamaru::passive(void* arg) {
-    if (evolved && hasJustKilled && !isOnAMove){
+    if (evolved && getLastKillTurn() == GameEngine::getInstance()->getTurnNumber() && !isOnAMove){
         if (!hasCharged){
             hasCharged = true;
             return true;
@@ -61,7 +33,7 @@ bool Ushiwakamaru::passive(void* arg) {
 
 bool Ushiwakamaru::canEvolve(void *arg) {
     auto * context = static_cast<phase_context_type *>(arg);
-    if (hasJustKilled && !context->mainTargetPiece->isPawn() && !context->mainTargetPiece->isRook() && !evolved) {
+    if (getLastKillTurn() == GameEngine::getInstance()->getTurnNumber() && !context->mainTargetPiece->isPawn() && !context->mainTargetPiece->isRook() && !evolved) {
         return true;
     }
     return false;

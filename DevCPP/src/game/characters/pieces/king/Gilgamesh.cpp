@@ -11,19 +11,15 @@ void Gilgamesh::setPieceGameMode(int piece_game_mode) {
         pieceGameMode = piece_game_mode;
 }
 
-vector<glm::ivec2> Gilgamesh::getEffectRange(Effect_List effect) const {
+vector<glm::ivec2> Gilgamesh::getEffectRange(const Effect_List effect) {
     vector<glm::ivec2> effect_range;
-    if (effect == MOVE_CHANGING){
-        for (int i = 0; i < 8; ++i){
-            for (int j = 0; j < 8; ++j){
-                effect_range.emplace_back(i, j);
-            }
-        }
-    }
+    if (effect == MOVE_CHANGING)
+        return square_pattern->get_positions(glm::ivec2(coordX, coordY));
     return effect_range;
 }
 
 bool Gilgamesh::SpellActivationCheck(void *arg) {
+    return true;
     auto * context = static_cast<phase_context_type *>(arg);
     if (this->getPieceGameMode() != 0 && !evolved){
         passive(arg);

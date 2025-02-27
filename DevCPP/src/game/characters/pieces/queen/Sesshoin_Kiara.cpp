@@ -3,6 +3,7 @@
 //
 
 #include "Sesshoin_Kiara.h"
+
 #include <GameEngine.h>
 #include "EffectHandler.h"
 
@@ -10,24 +11,12 @@ void Sesshoin_Kiara::setPieceGameMode(int piece_game_mode) {
     pieceGameMode = piece_game_mode;
 }
 
-vector<glm::ivec2> Sesshoin_Kiara::getEffectRange(Effect_List effect) const {
+vector<glm::ivec2> Sesshoin_Kiara::getEffectRange(const Effect_List effect) {
     vector<glm::ivec2> effect_range;
-    if (effect == CHANGE_CONTROL_ADVANCE){
-        for (int i = 0; i < 8; ++i){
-            for (int j = 0; j < 8; ++j){
-                effect_range.emplace_back(i, j);
-            }
-        }
-    }
-
-    if (effect == CHANGE_CONTROL) {
-        for (int i = 1; i < 3; ++i) {
-            if (coordX + i < 8) effect_range.emplace_back(coordX + i, coordY);
-            if (coordX - i >= 0) effect_range.emplace_back(coordX - i, coordY);
-            if (coordY - i >= 0) effect_range.emplace_back(coordX, coordY - i);
-            if (coordY + i < 8) effect_range.emplace_back(coordX, coordY + i);
-        }
-    }
+    if (effect == CHANGE_CONTROL_ADVANCE)
+        return square_pattern->get_positions(glm::ivec2(coordX, coordY));
+    if (effect == CHANGE_CONTROL)
+        return cross_2_pattern->get_positions(glm::ivec2(coordX, coordY));
     return effect_range;
 }
 
