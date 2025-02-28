@@ -32,12 +32,11 @@
   <component name="ChangeListManager">
     <list default="true" id="5ba82fa2-512b-4253-af3b-1ba77aac3bc6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/GameEngine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/GameEngine.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/GameEngine.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/GameEngine.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/board/piece_loader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/piece_loader.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/moves/piece_moves.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/moves/piece_moves.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/board/board_pattern.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/board_pattern.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Medusa_Saber.cpp" afterDir="false" />
@@ -52,9 +51,6 @@
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Okita.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Okita.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/knight/Ushiwakamaru.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/pawn/Nemo_Marine.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/pieces_List.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/pieces_List.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Nitocris_Alter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Nitocris_Alter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Nitocris_Alter.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Nitocris_Alter.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.cpp" afterDir="false" />
@@ -64,11 +60,11 @@
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/effects/EffectHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/EffectHandler.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/effects/effects.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/effects.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/phases/Event.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/phases/Event.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/phases/PhaseHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/phases/PhaseHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/phases/PhaseHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/phases/PhaseHandler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/phases/event_type.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/phases/event_type.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/phases/event_type.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/phases/event_type.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,11 +171,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="copy_assets" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Chess_Grand_Order" TARGET_NAME="copy_assets" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -249,7 +240,8 @@
       <workItem from="1740385428953" duration="24016000" />
       <workItem from="1740481710359" duration="5239000" />
       <workItem from="1740509611185" duration="5934000" />
-      <workItem from="1740571027587" duration="17592000" />
+      <workItem from="1740571027587" duration="17814000" />
+      <workItem from="1740661864218" duration="12510000" />
     </task>
     <servers />
   </component>

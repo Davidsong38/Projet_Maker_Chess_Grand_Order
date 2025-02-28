@@ -16,7 +16,7 @@
 class Xu_Fu final : public Rook{
     protected :
     int CNT_Shield = 0;
-    int ShieldChance = 100;
+    int shieldChance = 90;
 public:
     Xu_Fu(const int startX, const int startY, const bool white, const Characters_List hero)
             : Rook(startX, startY, white, hero)  {
@@ -29,11 +29,11 @@ public:
 
 
     [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
-    bool passive(void* arg) override;
-    bool canEvolve(void* arg) override;
-    bool evolvedForm(void* arg) override;
-    bool SpellActivationCheck(void *arg) override;
-    void setPieceGameMode(int piece_game_mode) override;
+    bool passive() override;
+    bool canEvolve() override {return evolved == false && CNT_Shield == 2;}
+    bool evolvedForm() override;
+    bool SpellActivationCheck() override;
+    bool togglePieceGameMode() override;
 
 };
 

@@ -37,15 +37,15 @@ vector<glm::ivec2> Artoria::getEffectRange(const Effect_List effect) {
     return effect_range;
 }
 
-bool Artoria::SpellActivationCheck(void *arg) {
-    evolvedForm(arg);
-    if (canEvolve(arg)) {
+bool Artoria::SpellActivationCheck() {
+    evolvedForm();
+    if (canEvolve()) {
         CNT_GodMove = 3;
         evolved = true;
         default_piece_move = queen_default_moves;
     }
     if (getLastKillTurn() == GameEngine::getInstance()->getTurnNumber())
-        passive(arg);
+        passive();
     if (CNT_GodMove == 0) {
         evolved = false;
         default_piece_move = king_default_moves;
@@ -53,7 +53,7 @@ bool Artoria::SpellActivationCheck(void *arg) {
     return true;
 }
 
-bool Artoria::passive(void* arg) {
+bool Artoria::passive() {
     auto *  effect_instance = new EffectInstance(
         AOE,
         this,
@@ -66,7 +66,7 @@ bool Artoria::passive(void* arg) {
     return true;
 }
 
-bool Artoria::canEvolve(void *arg) {
+bool Artoria::canEvolve() {
     if (!evolved && getLastKillTurn() == GameEngine::getInstance()->getTurnNumber()) {
         return true;
     }
@@ -74,7 +74,7 @@ bool Artoria::canEvolve(void *arg) {
 
 }
 
-bool Artoria::evolvedForm(void *arg) {
+bool Artoria::evolvedForm() {
     if (evolved)
         CNT_GodMove--;
     return true;

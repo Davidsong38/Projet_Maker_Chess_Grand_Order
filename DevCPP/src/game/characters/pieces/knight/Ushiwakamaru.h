@@ -14,23 +14,23 @@
 
 
 class Ushiwakamaru final : public Knight {
-    protected :
-        bool hasCharged = false;
-    public:
+protected:
+    const int cooldown{3};
+    int remaining_cooldown{0};
+public:
     Ushiwakamaru(const int startX, const int startY, const bool white, const Characters_List hero)
-        : Knight(startX, startY, white, hero)  {
-            this->default_piece_move = ushiwakamaru_moves;
-            addAdditionalUIElement(
-                ushiwakamaruTexture,
-                glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
-                this
-            );
-        }
+    : Knight(startX, startY, white, hero)  {
+        this->default_piece_move = ushiwakamaru_moves;
+        addAdditionalUIElement(
+            ushiwakamaruTexture,
+            glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
+            this
+        );
+    }
 
-        bool passive(void* arg) override;
-        bool canEvolve(void* arg) override;
-        bool evolvedForm(void* arg) override;
-        bool SpellActivationCheck(void *arg) override;
+    bool canEvolve() override;
+    bool evolvedForm() override;
+    bool SpellActivationCheck() override;
 };
 
 

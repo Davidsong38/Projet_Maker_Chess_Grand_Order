@@ -14,25 +14,24 @@
 
 
 class Sesshoin_Kiara final : public Queen{
-    protected :
+protected :
     int CNT_Charm = 0;
-    public:
+public:
     Sesshoin_Kiara(const int startX, const int startY, const bool white, const Characters_List hero)
-        : Queen(startX, startY, white, hero)  {
-            addAdditionalUIElement(
-                kiaraTexture,
-                glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
-                this
-            );
-        }
+    : Queen(startX, startY, white, hero)  {
+        addAdditionalUIElement(
+            kiaraTexture,
+            glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
+            this
+        );
+    }
 
-        [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
-        bool passive(void* arg) override;
-        bool canEvolve(void* arg) override;
-        bool evolvedForm(void* arg) override;
-        bool SpellActivationCheck(void *arg) override;
-        void setPieceGameMode(int piece_game_mode) override;
-
+    [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
+    bool passive() override;
+    bool canEvolve() override;
+    bool evolvedForm() override;
+    bool SpellActivationCheck() override;
+    bool togglePieceGameMode() override;
 };
 
 

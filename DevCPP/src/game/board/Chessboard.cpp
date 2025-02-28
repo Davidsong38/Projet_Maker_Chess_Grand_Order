@@ -244,13 +244,11 @@ bool Chessboard::movePiece(Pieces* piece, const int to_coordX, const int to_coor
         return false;
     if (KillInPassing(piece,to_coordX,to_coordY))
         return true;
-    Pieces* target_piece = getPieceAt(to_coordX, to_coordY);
-    if (target_piece == nullptr)
-        piece->goToPosition(to_coordX, to_coordY);
+    if (Pieces* target_piece = getPieceAt(to_coordX, to_coordY); target_piece == nullptr)
+        piece->goToPosition(to_coordX, to_coordY, piece->getIsOnAMove() ? MOVE_SUPPLEMENTARY : MOVE_NORMAL);
     else
         KillCheck(piece, target_piece);
     PawnReachingEndOfBoard(piece);
-    piece->activateEffect(MOVE_CHANGING);
     return true;
 }
 
@@ -277,7 +275,7 @@ bool Chessboard::KillCheck(Pieces *piece, Pieces *target_piece) {
         target_piece->activateEffect(CHANGE_CONTROL);
         return true;
     }
-    piece->goToPosition(coordX2, coordY2);
+    piece->goToPosition(coordX2, coordY2, piece->getIsOnAMove() ? MOVE_SUPPLEMENTARY : MOVE_NORMAL);
     target_piece->gotUnalivedBy(piece, KILL_NORMAL);
     return true;
 }
@@ -302,7 +300,7 @@ bool Chessboard::KillInPassing(Pieces *piece, const int to_coordX, const int to_
         && GameEngine::getInstance()->getPhaseNumber() - realTargetPiece->getFirstNormalMovePhase() < 3
     ) {
         deletePiece(realTargetPiece);
-        piece->goToPosition(to_coordX, to_coordY, MOVE_EN_PASSANT);
+        piece->goToPosition(to_coordX, to_coordY, piece->getIsOnAMove() ? MOVE_SUPPLEMENTARY_EN_PASSANT : MOVE_EN_PASSANT);
         realTargetPiece->gotUnalivedBy(piece, KILL_EN_PASSANT);
         return true;
     }

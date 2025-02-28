@@ -46,91 +46,81 @@ public:
     ~GameEngine() override;
     static GameEngine* getInstance();
     void update(double deltaTime_ms) override;
-    [[nodiscard]] GameState getCurrentState() const;
-    void clickBoardAtPos(int x, int y);
-    void inputRightClick();
-    int NB_WhiteDead = 0;
-    int NB_BlackDead = 0;
-    int NB_WhiteDeadLastPhase = 0;
-    int NB_BlackDeadLastPhase = 0;
-    void setBlackKing(Pieces* piece) {black_king = piece;}
-    void setWhiteKing(Pieces* piece) {white_king = piece;}
-    [[nodiscard]] int getLastClickX() const;
-    [[nodiscard]] int getLastClickY() const;
-    [[nodiscard]] GameState getLastState() const;
-    [[nodiscard]] Pieces* getLastPieceTouchedByEffect() const;
 
-    void setLastPieceTouchedByEffect(Pieces* last_piece_touched_by_effect);
-    void setState(GameState state);
-    void setLastState(GameState state);
-    int lastClickX{-1}, lastClickY{-1};
-    bool receivedClick = false;
-    bool ghostClick = false;
-    bool receivedRightClick = false;
-    Pieces* lastPieceTouchedByEffect{nullptr};
+    [[nodiscard]] GameState getCurrentState() const {return current_state;}
+    [[nodiscard]] GameState getLastState() const {return last_state;}
 
     [[nodiscard]] int getTurnNumber() const {return NB_Turn;}
     [[nodiscard]] int getPhaseNumber() const {return NB_Phase;}
+    void setBlackKing(Pieces* piece) {black_king = piece;}
+    void setWhiteKing(Pieces* piece) {white_king = piece;}
 
+    [[nodiscard]] phase_context_type* getCurrentPhaseContext() const {return current_phase_context;}
+
+    // Selection
     void requestSelection(const selection_request_type& to_select);
     void validateSelection();
-    void deselectAllPieces();
+    static void deselectAllPieces();
     [[nodiscard]] selection_type* getSelection();
 
+    // Mouse inputs
+    void clickBoardAtPos(int x, int y);
+    void inputRightClick() {receivedRightClick = true;}
+    int lastClickX{-1}, lastClickY{-1};
+    bool ghostClick = false;
+
+    // Events
     void registerEvent(Event* event) const;
+    [[nodiscard]] std::vector<Event*> getAllKillEvents() const;
+    [[nodiscard]] int getKillAmount() const;
+    [[nodiscard]] int getWhiteKillAmount() const;
+    [[nodiscard]] int getBlackKillAmount() const;
+    [[nodiscard]] std::vector<Event*> getAllKillEventsThisPhase() const;
+    [[nodiscard]] int getKillAmountThisPhase() const;
+    [[nodiscard]] int getWhiteKillAmountThisPhase() const;
+    [[nodiscard]] int getBlackKillAmountThisPhase() const;
+    [[nodiscard]] std::vector<Event*> getAllKillEventsLastPhase() const;
+    [[nodiscard]] int getKillAmountLastPhase() const;
+    [[nodiscard]] int getWhiteKillAmountLastPhase() const;
+    [[nodiscard]] int getBlackKillAmountLastPhase() const;
 private:
+    inline static GameEngine* instance = nullptr;
+    unordered_map<GameState, function<void()>> state_handlers;
+
     GameState current_state{};
     GameState last_state{};
     GameState last_main_state{};
+
+    void goToState(GameState state);
+    void loadLastState();
+    void push_phase_context();
     
     int NB_Turn{1}, NB_Phase{1};
-
-    Pieces* black_king{nullptr};
-    Pieces* white_king{nullptr};
-
-    selection_type* current_selection{nullptr};
-    selection_request_type required_selection{};
-    bool selectionGotValidated{false};
+    Pieces* black_king{nullptr},* white_king{nullptr};
 
     phase_context_type* current_phase_context = new phase_context_type();
     std::vector<phase_context_type*> phase_contexts;
 
-    inline static GameEngine* instance = nullptr;
-    unordered_map<GameState, function<void()>> state_handlers;
+    // Mouse inputs
+    bool receivedClick = false;
+    bool receivedRightClick = false;
 
-    void goToState(const GameState state) {
-        ltr_log_debug(CONSOLE_COLOR_GRAY, "Going from : ", game_state_to_string[current_state], ", to ", game_state_to_string[state], ", btw ", game_state_to_string[last_main_state]);
-        last_state = current_state;
-        if (current_state != SELECT_ANY)
-            last_main_state = current_state;
-        current_state = state;
-    }
-    void loadLastState() {
-        ltr_log_debug(CONSOLE_COLOR_GRAY, "Loading last state : ", game_state_to_string[current_state], " to ", game_state_to_string[last_state]);
-        const auto tmp = current_state;
-        current_state = last_state;
-        last_state = tmp;
-    }
-    void push_phase_context();
+    // Selection
+    selection_type* current_selection{nullptr};
+    selection_request_type required_selection{};
+    bool selectionGotValidated{false};
 
     // States
-
-    void handleStartWhitePhase();
-    void handleSelectWhitePhase();
-    void handleMovingWhitePhase();
-    void handleCheckingWhitePhase();
-    void handleEndWhitePhase();
-
-    void handleStartBlackPhase();
-    void handleSelectBlackPhase();
-    void handleMovingBlackPhase();
-    void handleCheckingBlackPhase();
-    void handleEndBlackPhase();
-
     void handleInitialisation();
     void handleSelectAny();
     void handleEndGame();
-    void handleGameClose();
+    static void handleGameClose();
+
+    void handleAnyStartPhase(bool isWhitePhase);
+    void handleAnySelectPhase(bool isWhitePhase);
+    void handleAnyMovingPhase(bool isWhitePhase);
+    void handleAnyCheckingPhase(bool isWhitePhase);
+    void handleAnyEndPhase(bool isWhitePhase);
 };
 
 

@@ -25,7 +25,7 @@ using namespace std;
 class Pieces : public SpriteTarget{
 protected:
     int coordX, coordY;
-    bool isFirstMove{true}, isOnAMove{false}, hasRoqued{false};
+    bool isFirstMove{true}, isOnAMove{false};
 
     bool isWhite, evolved{false}, isAlive{true};
     int pieceGameMode{0};
@@ -79,17 +79,17 @@ public:
 
     // Effects
     [[nodiscard]] int getPieceGameMode() const {return pieceGameMode;}
-    virtual void setPieceGameMode(const int pieceGameMode) {this->pieceGameMode = pieceGameMode;}
+    virtual bool togglePieceGameMode() {return false;}
     void displayEffects() const;
     [[nodiscard]] virtual vector<glm::ivec2> getEffectRange(Effect_List effect) {return square_pattern->get_positions(glm::ivec2(coordX,coordY));}
     [[nodiscard]] bool hasThisEffect(Effect_List chosenEffect) const;
     [[nodiscard]] vector<EffectInstance*> getActive_effects() const {return activeEffects;}
-    virtual bool passive(void* context) {return false;}
-    virtual bool canEvolve(void* context) {return false;}
-    virtual bool evolvedForm(void* context) {return false;}
-    virtual bool SpellActivationCheck(void* context) {return true;}
+    virtual bool passive() {return false;}
+    virtual bool canEvolve() {return false;}
+    virtual bool evolvedForm() {return false;}
+    virtual bool SpellActivationCheck() {return true;}
 
-    void addEffectStatus(const EffectInstance* effect_instance) {activeEffects.emplace_back(new EffectInstance(*effect_instance));}
+    void addEffectStatus(const EffectInstance* effect_instance) {deleteEffect(effect_instance->effect); activeEffects.emplace_back(new EffectInstance(*effect_instance));}
     void updateEffectStatus();
     void deleteEffect(Effect_List effect);
     void activateEffect(Effect_List);
@@ -107,12 +107,15 @@ public:
     [[nodiscard]] std::vector<void*> getAllKillEvents();
     [[nodiscard]] void* getLastKillKillEvent();
     [[nodiscard]] int getLastKillTurn();
+    [[nodiscard]] bool gotKillAtTurn(int turn);
     [[nodiscard]] void* getLastDeathKillEvent();
     [[nodiscard]] void* getLastKillKillEvent(int killType);
     [[nodiscard]] void* getLastDeathKillEvent(int killType);
     [[nodiscard]] std::vector<void*> getAllSpellUsedEvents();
     [[nodiscard]] void* getLastSpellUsedEvent() {return getAllSpellUsedEvents().back();}
     [[nodiscard]] void* getLastSpellUsedByMeEvent();
+    [[nodiscard]] std::vector<void*> getAllEffectUpdateEvents();
+    [[nodiscard]] std::vector<void*> getAllEffectUpdateCastedByMeEvent();
 
     // SpriteTarget
     float getSpriteX() override {return (-0.875f + 0.25f * static_cast<float>(coordY)) * RenderEngine::getWindowInverseAspectRatio();}

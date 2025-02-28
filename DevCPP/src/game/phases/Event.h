@@ -117,7 +117,8 @@ public:
     std::vector<Pieces*> concernedPieces;
     concernedPieces.emplace_back(casterPiece);
     for (auto &target: targetPieces)
-      concernedPieces.emplace_back(target);
+      if (target != casterPiece)
+        concernedPieces.emplace_back(target);
     return concernedPieces;
   }
 protected:
@@ -153,7 +154,8 @@ public:
     std::vector<Pieces*> concernedPieces;
     concernedPieces.emplace_back(casterPiece);
     for (auto &target: targetPieces)
-      concernedPieces.emplace_back(target);
+      if (target != casterPiece)
+        concernedPieces.emplace_back(target);
     return concernedPieces;
   }
 protected:
@@ -190,7 +192,8 @@ public:
     std::vector<Pieces*> concernedPieces;
     concernedPieces.emplace_back(casterPiece);
     for (auto &target: targetPieces)
-      concernedPieces.emplace_back(target);
+      if (target != casterPiece)
+        concernedPieces.emplace_back(target);
     return concernedPieces;
   }
 protected:
@@ -200,12 +203,80 @@ protected:
   std::vector<glm::ivec2> spellPositions;
 };
 
-class EventEffectUpdate {
-  ///TODO
+class EventEffectUpdate final : public Event {
+public:
+  explicit EventEffectUpdate(const EffectInstance *effect_instance)
+  : Event(EVENT_EFFECT_UPDATE), casterPiece(static_cast<Pieces*>(effect_instance->caster_piece)), spellType(effect_instance->effect), amount(effect_instance->effect_amount) {
+    this->casterPosition.x = casterPiece->getCoordX();
+    this->casterPosition.y = casterPiece->getCoordY();
+  }
+  void addTargetPiece(Pieces* targetPiece) {
+    this->targetPieces.emplace_back(targetPiece);
+    this->spellPositions.emplace_back(targetPiece->getCoordX(), targetPiece->getCoordY());
+  }
+  void addTargetCells(chessboard_cell* targetCell) {
+    this->targetCells.emplace_back(targetCell);
+    this->spellPositions.emplace_back(targetCell->pos);
+  }
+  Pieces* casterPiece;
+  const int spellType;
+  const int amount;
+  [[nodiscard]] glm::ivec2 getCasterPosition() const {return casterPosition;}
+  [[nodiscard]] std::vector<Pieces *> getTargetPieces() const {return targetPieces;}
+  [[nodiscard]] std::vector<chessboard_cell *> getTargetCells() const {return targetCells;}
+  [[nodiscard]] std::vector<glm::ivec2> getSpellPositions() const {return spellPositions;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(casterPiece);
+    for (auto &target: targetPieces)
+      if (target != casterPiece)
+        concernedPieces.emplace_back(target);
+    return concernedPieces;
+  }
+protected:
+  glm::ivec2 casterPosition{};
+  std::vector<Pieces*> targetPieces;
+  std::vector<chessboard_cell*> targetCells{};
+  std::vector<glm::ivec2> spellPositions;
 };
 
-class EventEffectEnd {
-  ///TODO
+class EventEffectEnd final : public Event  {
+public:
+  explicit EventEffectEnd(const EffectInstance *effect_instance)
+  : Event(EVENT_EFFECT_END), casterPiece(static_cast<Pieces*>(effect_instance->caster_piece)), spellType(effect_instance->effect), duration(effect_instance->effect_duration), amount(effect_instance->effect_amount) {
+    this->casterPosition.x = casterPiece->getCoordX();
+    this->casterPosition.y = casterPiece->getCoordY();
+  }
+  void addTargetPiece(Pieces* targetPiece) {
+    this->targetPieces.emplace_back(targetPiece);
+    this->spellPositions.emplace_back(targetPiece->getCoordX(), targetPiece->getCoordY());
+  }
+  void addTargetCells(chessboard_cell* targetCell) {
+    this->targetCells.emplace_back(targetCell);
+    this->spellPositions.emplace_back(targetCell->pos);
+  }
+  Pieces* casterPiece;
+  const int spellType;
+  const int duration;
+  const int amount;
+  [[nodiscard]] glm::ivec2 getCasterPosition() const {return casterPosition;}
+  [[nodiscard]] std::vector<Pieces *> getTargetPieces() const {return targetPieces;}
+  [[nodiscard]] std::vector<chessboard_cell *> getTargetCells() const {return targetCells;}
+  [[nodiscard]] std::vector<glm::ivec2> getSpellPositions() const {return spellPositions;}
+  [[nodiscard]] bool gotDeleted() const {return duration > 0 && amount > 0;}
+  std::vector<Pieces*> getAllConcernedPieces() override {
+    std::vector<Pieces*> concernedPieces;
+    concernedPieces.emplace_back(casterPiece);
+    for (auto &target: targetPieces)
+      if (target != casterPiece)
+        concernedPieces.emplace_back(target);
+    return concernedPieces;
+  }
+protected:
+  glm::ivec2 casterPosition{};
+  std::vector<Pieces*> targetPieces;
+  std::vector<chessboard_cell*> targetCells{};
+  std::vector<glm::ivec2> spellPositions;
 };
 
 class EventEvolved : public Event {

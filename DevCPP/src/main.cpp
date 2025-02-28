@@ -39,9 +39,10 @@ void waitForNextUpdate() {
 
 int main(int argc, char** argv) {
     init();
-    while (GameEngine::getInstance()->getCurrentState()!= GAME_CLOSE && get_key(KEY_ESCAPE)->isKeyUp()) {
+    while (GameEngine::getInstance()->getCurrentState() != GAME_CLOSE && get_key(KEY_ESCAPE)->isKeyUp()) {
         update();
         waitForNextUpdate();
     }
     return EXIT_SUCCESS;
 }
+

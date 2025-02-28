@@ -7,14 +7,6 @@
 #include <EffectHandler.h>
 #include <GameEngine.h>
 
-void Merlin::setPieceGameMode(int piece_game_mode) {
-    if (evolved && MerlinPowerON){
-        pieceGameMode = piece_game_mode;
-    } else{
-        pieceGameMode = 0;
-    }
-}
-
 vector<glm::ivec2> Merlin::getEffectRange(const Effect_List effect) {
     vector<glm::ivec2> effect_range;
     if (chooseSpell)
@@ -25,48 +17,34 @@ vector<glm::ivec2> Merlin::getEffectRange(const Effect_List effect) {
     return effect_range;
 }
 
-bool Merlin::SpellActivationCheck(void *arg) {
-    if (evolved && MerlinPowerON){
-        if (GameEngine::getInstance()->receivedRightClick){
-            if (this->getIsWhite()){
-                GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
-                GameEngine::getInstance()->setState(SELECT_WHITE_PHASE);
-            }
-            else{
-                GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
-                GameEngine::getInstance()->setState(SELECT_BLACK_PHASE);
-            }
-            return true;
-        }
-        if (this->getPieceGameMode() != 0){
-            if (GameEngine::getInstance()->receivedClick){
-                chooseSpell = true;
-                if (evolvedForm(arg)){
-                    chooseSpell = false;
-                    MerlinPowerON = false;
-                    return true;
-                }
-                chooseSpell = false;
-            }
-            return false;
-        }
-    }
-    if (evolved && !MerlinPowerON && !isOnAMove)
+bool Merlin::SpellActivationCheck() {
+    if (canEvolve()) {
         MerlinPowerON = true;
-    passive(arg);
-    setIsOnAMove(false);
+        evolved = true;
+    }
+    chooseSpell = false;
+    if (!passiveUsed)
+        passive();
+    if (evolved && MerlinPowerON) {
+        chooseSpell = true;
+        if (!evolvedForm())
+            return true;
+    }
+    if (evolved)
+        MerlinPowerON = !MerlinPowerON;
+    passiveUsed = false;
     return true;
 }
 
-bool Merlin::passive(void* arg) {
-    auto *  effect_instance_1 = new EffectInstance(
+bool Merlin::passive() {
+    auto* effect_instance_1 = new EffectInstance(
         IMMUNITY_EFFECT,
         this,
         -1,
         1,
         1
     );
-    auto *  effect_instance_2 = new EffectInstance(
+    auto* effect_instance_2 = new EffectInstance(
         IMMUNITY_AOE,
         this,
         -1,
@@ -77,18 +55,17 @@ bool Merlin::passive(void* arg) {
     effect_instance_2->copyTargets(effect_instance_1);
     EffectHandler::applyToTargets(effect_instance_1);
     EffectHandler::applyToTargets(effect_instance_2);
+    passiveUsed = true;
     return true;
 }
 
-bool Merlin::canEvolve(void *arg) {
-    if (evolved == false ) {
+bool Merlin::canEvolve() {
+    if (!evolved && !getAllEffectUpdateCastedByMeEvent().empty())
         return true;
-    }
     return false;
-
 }
 
-bool Merlin::evolvedForm(void *arg) {
+bool Merlin::evolvedForm() {
     static EffectInstance * effect_instance_1 = nullptr;
     if (effect_instance_1 == nullptr) {
         effect_instance_1 = new EffectInstance(
@@ -106,8 +83,8 @@ bool Merlin::evolvedForm(void *arg) {
         };
     }
     selection_request_type selection_request;
-    selection_request.whites = isWhite ? 8 : 0;
-    selection_request.blacks = isWhite ? 0 : 8;
+    selection_request.whites = isWhite ? 1 : 0;
+    selection_request.blacks = isWhite ? 0 : 1;
     selection_request.instantValidation = false;
     if (!EffectHandler::selectManualTargetCells(effect_instance_1, selection_request))
         return false;
@@ -120,8 +97,9 @@ bool Merlin::evolvedForm(void *arg) {
     );
     EffectHandler::selectRandomTargetPieces(effect_instance_1);
     effect_instance_2->copyTargets(effect_instance_1);
-    if (EffectHandler::applyToTargets(effect_instance_1) && EffectHandler::applyToTargets(effect_instance_2))
+    if (EffectHandler::applyToTargets(effect_instance_1) && EffectHandler::applyToTargets(effect_instance_2)) {
+        effect_instance_1 = nullptr;
         return true;
-    ///TODO ONE MORE MOVE
+    }
     return false;
 }

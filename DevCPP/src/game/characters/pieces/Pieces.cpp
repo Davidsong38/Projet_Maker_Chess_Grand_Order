@@ -33,37 +33,46 @@ bool Pieces::hasThisEffect(const Effect_List chosenEffect) const {
 }
 
 void Pieces::updateEffectStatus() {
-    for (EffectInstance* effect : activeEffects) {
+    for (auto effect : activeEffects) {
         if (effect->effect == CHANGE_CONTROL && (effect->effect_duration == 1 || effect->effect_amount == 0))
             this->setIsWhite(not this->getIsWhite());
         if ((effect->effect == MOVE_CHANGING || effect->effect == SUPP_RANGE) && effect->effect_amount == 0)
             override_piece_move = nullptr;
         effect->decrement_duration();
-        if (effect->isExpired())
+        if (effect->isExpired()) {
+            auto* event_effect_delete = new EventEffectEnd(effect);
+            event_effect_delete->addTargetPiece(this);
+            GameEngine::getInstance()->registerEvent(event_effect_delete);
             std::erase(activeEffects, effect);
+        }
     }
 }
 
 void Pieces::deleteEffect(const Effect_List effect) {
-    for (auto& e : activeEffects){
-        if (e->effect == effect && !e->isExpired()){
+    for (auto e : activeEffects){
+        if (e->effect == effect && !e->isExpired()) {
+            auto* event_effect_delete = new EventEffectEnd(e);
+            event_effect_delete->addTargetPiece(this);
+            GameEngine::getInstance()->registerEvent(event_effect_delete);
             e->effect_amount = 0;
+            std::erase(activeEffects, e);
         }
     }
 }
 
 void Pieces::activateEffect(const Effect_List effect) {
     for (const auto& e : activeEffects) {
-        if (e->caster_piece != nullptr && (e->effect == IMMUNITY_AOE || e->effect == IMMUNITY_EFFECT)){
-            static_cast<Pieces*>(e->caster_piece)->evolved = true;
-        }
         if (e->effect == effect && !e->isExpired()) {
             e->activation();
+            auto* event_effect_update = new EventEffectUpdate(e);
+            event_effect_update->addTargetPiece(this);
+            GameEngine::getInstance()->registerEvent(event_effect_update);
         }
     }
 }
 
 void Pieces::displayEffects() const {
+    ltr_log_info(CONSOLE_COLOR_RED, "Displaying effects");
     for (const auto& e : activeEffects) {
         ltr_log_info(
             CONSOLE_COLOR_MAGENTA,
@@ -123,6 +132,10 @@ void Pieces::goToPosition(const int x, const int y, const int moveType) {
     coordX = x;
     coordY = y;
     isFirstMove = false;
+    if (isOnAMove) {
+        isOnAMove = false;
+        activateEffect(ONE_MORE_MOVE);
+    }
     moveEvent->setEndPos(glm::ivec2(x, y));
     GameEngine::getInstance()->registerEvent(moveEvent);
 }
@@ -138,10 +151,6 @@ void Pieces::gotUnalivedBy(Pieces* killer, const int killType) {
     GameEngine::getInstance()->registerEvent(killEvent);
     this->events.emplace_back(killEvent);
     Chessboard::getInstance()->addToDeadList(this);
-    if (isWhite)
-        GameEngine::getInstance()->NB_WhiteDead++;
-    else
-        GameEngine::getInstance()->NB_BlackDead++;
     if (Chessboard::getInstance()->getPieceAt(coordX, coordY) == this)
         Chessboard::getInstance()->deletePiece(this);
     if (killer != nullptr)
@@ -305,6 +314,13 @@ int Pieces::getLastKillTurn() {
     return last_kill->eventTurn;
 }
 
+bool Pieces::gotKillAtTurn(const int turn) {
+    for (const auto event_ptr : getAllKillEvents())
+        if (const auto event = static_cast<const EventKill*>(event_ptr); event->eventTurn == turn)
+            return true;
+    return false;
+}
+
 void* Pieces::getLastDeathKillEvent() {
     for (int i = static_cast<int>(getAllKillEvents().size()) - 1; i > -1; i--) {
         if (static_cast<EventKill*>(getAllKillEvents()[i])->killedPiece == this)
@@ -350,4 +366,26 @@ void* Pieces::getLastSpellUsedByMeEvent() {
     }
     return nullptr;
 }
+
+std::vector<void*> Pieces::getAllEffectUpdateEvents() {
+    std::vector<void*> selected_events;
+    for (auto* event_ptr : events) {
+        auto event = static_cast<Event*>(event_ptr);
+        if (event == nullptr) ltr_log_error("Pieces::getAllEffectUpdateEvents: Event nullptr");
+        if (event->eventType == EVENT_EFFECT_UPDATE) selected_events.emplace_back(event);
+    }
+    return selected_events;
+}
+
+std::vector<void*> Pieces::getAllEffectUpdateCastedByMeEvent() {
+    std::vector<void*> selected_events;
+    for (auto* event_ptr : getAllEffectUpdateEvents()) {
+        if (
+            auto event = static_cast<EventEffectUpdate*>(event_ptr);
+            event->casterPiece == this
+        ) selected_events.emplace_back(event);
+    }
+    return selected_events;
+}
+
 

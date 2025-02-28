@@ -28,11 +28,9 @@ public:
     }
 
     [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
-    bool passive(void* arg) override;
-    bool canEvolve(void* arg) override;
-    bool evolvedForm(void* arg) override;
-    bool SpellActivationCheck(void *arg) override;
-    void setPieceGameMode(int piece_game_mode) override;
+    bool canEvolve() override;
+    bool evolvedForm() override;
+    bool SpellActivationCheck() override;
 };
 
 #endif //GILGAMESH_H

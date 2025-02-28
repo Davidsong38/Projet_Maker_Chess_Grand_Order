@@ -7,10 +7,6 @@
 #include <GameEngine.h>
 #include "EffectHandler.h"
 
-void Sesshoin_Kiara::setPieceGameMode(int piece_game_mode) {
-    pieceGameMode = piece_game_mode;
-}
-
 vector<glm::ivec2> Sesshoin_Kiara::getEffectRange(const Effect_List effect) {
     vector<glm::ivec2> effect_range;
     if (effect == CHANGE_CONTROL_ADVANCE)
@@ -20,34 +16,12 @@ vector<glm::ivec2> Sesshoin_Kiara::getEffectRange(const Effect_List effect) {
     return effect_range;
 }
 
-bool Sesshoin_Kiara::SpellActivationCheck(void *arg) {
-    if (GameEngine::getInstance()->receivedRightClick){
-        if (this->getIsWhite()){
-            GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
-            GameEngine::getInstance()->setState(SELECT_WHITE_PHASE);
-        }
-        else{
-            GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
-            GameEngine::getInstance()->setState(SELECT_BLACK_PHASE);
-        }
-        return true;
-    }
-    if (this->getPieceGameMode() != 0){
-        if (GameEngine::getInstance()->receivedClick){
-            if (canEvolve(arg)){
-                if (evolvedForm(arg))
-                    return true;
-                return false;
-            }
-            if (passive(arg))
-                return true;
-        }
-        return false;
-    }
+bool Sesshoin_Kiara::SpellActivationCheck() {
+
     return true;
 }
 
-bool Sesshoin_Kiara::passive(void* arg) {
+bool Sesshoin_Kiara::passive() {
     auto *  effect_instance = new EffectInstance(
         CHANGE_CONTROL,
         this,
@@ -63,14 +37,14 @@ bool Sesshoin_Kiara::passive(void* arg) {
     return false;
 }
 
-bool Sesshoin_Kiara::canEvolve(void *arg) {
+bool Sesshoin_Kiara::canEvolve() {
     if (evolved == false && CNT_Charm > 2) {
         return true;
     }
     return false;
 }
 
-bool Sesshoin_Kiara::evolvedForm(void *arg) {
+bool Sesshoin_Kiara::evolvedForm() {
     auto *  effect_instance = new EffectInstance(
         CHANGE_CONTROL_ADVANCE,
         this,
@@ -84,4 +58,9 @@ bool Sesshoin_Kiara::evolvedForm(void *arg) {
         return true;
     }
     return false;
+}
+
+bool Sesshoin_Kiara::togglePieceGameMode() {
+    pieceGameMode = !pieceGameMode;
+    return true;
 }

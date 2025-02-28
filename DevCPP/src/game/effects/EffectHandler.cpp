@@ -141,10 +141,10 @@ bool EffectHandler::validTargetForEffect(const Pieces* target_piece, const Effec
     if (
         target_piece != nullptr
         && target_piece->isKing()
-        && !effect_instance->isBuff()
+        && (!effect_instance->isBuff()
         || effect_instance->effect == IMMUNITY_AOE
         || effect_instance->effect == IMMUNITY_EFFECT
-        || effect_instance->effect == IMMORTALITY
+        || effect_instance->effect == IMMORTALITY)
     ) return false;
     if (
         (
@@ -357,6 +357,12 @@ bool EffectHandler::configureEffectHandler(EffectInstance* effect_instance) {
             success = addEffectBehavior(
                 effect_instance->effect,
                 getSpawnPieceEffect(effect_instance)
+            );
+        break;
+        case ONE_MORE_MOVE:
+            success = addEffectBehavior(
+                effect_instance->effect,
+                getOneMoreMoveEffect(effect_instance)
             );
         break;
         default:
@@ -595,5 +601,26 @@ function<bool()> EffectHandler::getSpawnPieceEffect(EffectInstance* effect_insta
     };
 }
 
-
+function<bool()> EffectHandler::getOneMoreMoveEffect(EffectInstance* effect_instance) {
+    return [effect_instance]() {
+        int NB_targetTouched = 0;
+        auto* event_spell_used = new EventSpellUsed(effect_instance);
+        auto* event_effect_applied = new EventEffectApply(effect_instance);
+        for (const auto &target: effect_instance->target_pieces) {
+            const auto piece = static_cast<Pieces*>(target);
+            if (piece->isKing())
+                continue;
+            NB_targetTouched++;
+            piece->addEffectStatus(effect_instance);
+            piece->setIsOnAMove(true);
+            event_effect_applied->addTargetPiece(piece);
+        }
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
+        if (success)
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
+        return success;
+    };
+}
 

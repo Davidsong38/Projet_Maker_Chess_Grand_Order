@@ -19,20 +19,19 @@ vector<glm::ivec2> Nitocris_Alter::getEffectRange(const Effect_List effect) {
     return effect_range;
 }
 
-bool Nitocris_Alter::SpellActivationCheck(void *arg) {
+bool Nitocris_Alter::SpellActivationCheck() {
     if (evolved && getLastKillTurn() == GameEngine::getInstance()->getTurnNumber()) {
-        evolvedForm(arg);
+        evolvedForm();
     }
     return true;
 }
 
 
-bool Nitocris_Alter::passive(void* arg) {
-    if (isWhite){
-        CNT_4Turn += GameEngine::getInstance()->NB_WhiteDead - GameEngine::getInstance()->NB_WhiteDeadLastPhase;
-    } else {
-        CNT_4Turn += GameEngine::getInstance()->NB_BlackDead - GameEngine::getInstance()->NB_BlackDeadLastPhase;
-    }
+bool Nitocris_Alter::passive() {
+    if (isWhite)
+        CNT_4Turn += GameEngine::getInstance()->getWhiteKillAmountLastPhase();
+    else
+        CNT_4Turn += GameEngine::getInstance()->getBlackKillAmountLastPhase();
     if (CNT_4Turn >= 4){
         Revive_Charge++;
         CNT_4Turn -= 4 ;
@@ -55,7 +54,7 @@ bool Nitocris_Alter::passive(void* arg) {
     return true;
 }
 
-bool Nitocris_Alter::canEvolve(void *arg) {
+bool Nitocris_Alter::canEvolve() {
     if (evolved == false && CNT_Revive>1) {
         evolved = true;
         return true;
@@ -64,7 +63,7 @@ bool Nitocris_Alter::canEvolve(void *arg) {
 
 }
 
-bool Nitocris_Alter::evolvedForm(void *arg) {
+bool Nitocris_Alter::evolvedForm() {
     auto *  effect_instance_1 = new EffectInstance(
         SPAWN_PIECES,
         this,

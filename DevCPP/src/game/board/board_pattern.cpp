@@ -281,7 +281,7 @@ std::vector<glm::ivec2> square_generic_pattern(const glm::ivec2 pos, const int p
     for (int x = -pattern_size; x <= pattern_size; ++x)
         for (int y = -pattern_size; y <= pattern_size; ++y)
             if (const auto sel_pos = glm::ivec2(pos.x + x, pos.y + y);
-                (pos.x != x || pos.y != y)
+                (pos.x != sel_pos.x || pos.y != sel_pos.y)
                 && sel_pos.x < Chessboard::getInstance()->getSize()
                 && sel_pos.y < Chessboard::getInstance()->getSize()
                 && sel_pos.x >= 0
@@ -296,7 +296,7 @@ std::vector<glm::ivec2> checker_generic_pattern(const glm::ivec2 pos, const int 
     for (int x = -pattern_size; x <= pattern_size; ++x)
         for (int y = -pattern_size; y <= pattern_size; ++y)
             if (const auto sel_pos = glm::ivec2(pos.x + x, pos.y + y);
-                (pos.x != x || pos.y != y)
+                (pos.x != sel_pos.x || pos.y != sel_pos.y)
                 && sel_pos.x < Chessboard::getInstance()->getSize()
                 && sel_pos.y < Chessboard::getInstance()->getSize()
                 && sel_pos.x >= 0
@@ -311,7 +311,7 @@ std::vector<glm::ivec2> inverse_checker_generic_pattern(const glm::ivec2 pos, co
     for (int x = -pattern_size; x <= pattern_size; ++x)
         for (int y = -pattern_size; y <= pattern_size; ++y)
             if (const auto sel_pos = glm::ivec2(pos.x + x, pos.y + y);
-                (pos.x != x || pos.y != y)
+                (pos.x != sel_pos.x || pos.y != sel_pos.y)
                 && sel_pos.x < Chessboard::getInstance()->getSize()
                 && sel_pos.y < Chessboard::getInstance()->getSize()
                 && sel_pos.x >= 0

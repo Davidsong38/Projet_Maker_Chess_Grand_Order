@@ -27,10 +27,10 @@ class Medusa_Saber final : public Bishop{
         }
 
         [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
-        bool passive(void* arg) override;
-        bool canEvolve(void* arg) override;
-        bool evolvedForm(void* arg) override;
-        bool SpellActivationCheck(void *arg) override;
+        bool passive() override;
+        bool canEvolve() override;
+        bool evolvedForm() override;
+        bool SpellActivationCheck() override;
 };
 
 

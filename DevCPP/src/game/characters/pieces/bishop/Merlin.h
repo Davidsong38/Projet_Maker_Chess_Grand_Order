@@ -12,10 +12,10 @@
 #include <uiElements.h>
 
 
-class Merlin final : public Bishop{
+class Merlin final : public Bishop {
     protected :
-        bool chooseSpell = false;
-        bool MerlinPowerON = false;
+        bool chooseSpell{false}, passiveUsed{false};
+        bool MerlinPowerON{false};
 public:
     Merlin(const int startX, const int startY, const bool white, const Characters_List hero)
             : Bishop(startX, startY, white, hero) {
@@ -27,11 +27,10 @@ public:
     }
 
     [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
-    bool passive(void* arg) override;
-    bool canEvolve(void* arg) override;
-    bool evolvedForm(void* arg) override;
-    bool SpellActivationCheck(void *arg) override;
-    void setPieceGameMode(int piece_game_mode) override;
+    bool passive() override;
+    bool canEvolve() override;
+    bool evolvedForm() override;
+    bool SpellActivationCheck() override;
 };
 
 

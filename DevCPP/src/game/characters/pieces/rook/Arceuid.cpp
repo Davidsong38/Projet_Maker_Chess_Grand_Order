@@ -21,22 +21,22 @@ vector<glm::ivec2> Arceuid::getEffectRange(Effect_List effect) {
     return effect_range;
 }
 
-bool Arceuid::SpellActivationCheck(void *arg) {
-    if (canEvolve(arg)){
+bool Arceuid::SpellActivationCheck() {
+    if (canEvolve()){
         evolved = true;
         CNTGainEffect = GameEngine::getInstance()->getPhaseNumber() - getLastNormalMovePhase();
         if (CNTGainEffect >= 8)
             this->default_piece_move = arceuid_buff_move;
     }
-    evolvedForm(arg);
+    evolvedForm();
     return true;
 }
 
-bool Arceuid::passive(void* arg) {
+bool Arceuid::passive() {
     return true;
 }
 
-bool Arceuid::canEvolve(void *arg) {
+bool Arceuid::canEvolve() {
     if (!evolved && getLastNormalMoveEventType() == MOVE_ROQUED) {
         evolved = true;
         CNTGainEffect = GameEngine::getInstance()->getPhaseNumber();
@@ -45,7 +45,7 @@ bool Arceuid::canEvolve(void *arg) {
     return false;
 }
 
-bool Arceuid::evolvedForm(void *arg) {
+bool Arceuid::evolvedForm() {
     ltr_log_info("Evolved  Arceuid : ", CNTGainEffect);
     if (evolved && (CNTGainEffect >= 30 || getLastKillTurn() == GameEngine::getInstance()->getTurnNumber() && CNTGainEffect >= 8)) {
         auto *  effect_instance = new EffectInstance(

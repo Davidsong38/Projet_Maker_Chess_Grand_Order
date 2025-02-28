@@ -43,6 +43,7 @@ private:
     static function<bool()> getSuppRangeEffect(EffectInstance* effect_instance);
     static function<bool()> getKillEffect(EffectInstance* effect_instance);
     static function<bool()> getSpawnPieceEffect(EffectInstance* effect_instance);
+    static function<bool()> getOneMoreMoveEffect(EffectInstance* effect_instance);
 };
 
 

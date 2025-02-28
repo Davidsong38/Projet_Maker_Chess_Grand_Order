@@ -78,8 +78,6 @@ void loadEffectList() {
     isTriggerEffect_List[ENEMY_TELEPORT] = true;
     isTriggerEffect_List[EVOLVE] = true;
     isTriggerEffect_List[SUPP_LUCK] = false;
-
-
 }
 
 bool EffectInstance::isInfinite() const {
@@ -102,7 +100,7 @@ void EffectInstance::activation()  {
 }
 
 void EffectInstance::decrement_duration() {
-    if (effect_amount <= 0)
+    if (effect_duration <= 0)
         return;
     effect_duration--;
 }

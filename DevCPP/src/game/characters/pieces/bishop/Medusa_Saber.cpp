@@ -22,16 +22,16 @@ vector<glm::ivec2> Medusa_Saber::getEffectRange(const Effect_List effect) {
     return effect_range;
 }
 
-bool Medusa_Saber::SpellActivationCheck(void *arg) {
+bool Medusa_Saber::SpellActivationCheck() {
     if (getLastKillTurn() != GameEngine::getInstance()->getTurnNumber())
         return true;
-    if (canEvolve(arg) || evolved)
-        evolvedForm(arg);
-    passive(arg);
+    if (canEvolve() || evolved)
+        evolvedForm();
+    passive();
     return true;
 }
 
-bool Medusa_Saber::passive(void* arg) {
+bool Medusa_Saber::passive() {
     auto * effect_instance = new EffectInstance(
         STUN,
         this,
@@ -45,7 +45,7 @@ bool Medusa_Saber::passive(void* arg) {
     return true;
 }
 
-bool Medusa_Saber::canEvolve(void *arg) {
+bool Medusa_Saber::canEvolve() {
     if (evolved == false && CNT_StunEffect>1) {
         return true;
     }
@@ -53,7 +53,7 @@ bool Medusa_Saber::canEvolve(void *arg) {
 
 }
 
-bool Medusa_Saber::evolvedForm(void *arg) {
+bool Medusa_Saber::evolvedForm() {
     evolved = true;
     auto *  effect_instance = new EffectInstance(
         AOE,
