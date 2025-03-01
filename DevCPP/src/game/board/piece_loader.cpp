@@ -72,7 +72,7 @@ Characters_List choose_king(bool isWhite) {
 }
 
 Characters_List choose_queen(bool isWhite) {
-    int id_character = NITOCRIS_ALTER;
+    int id_character = SESSHOIN_KIARA;
     if constexpr (NOT_QUICK_TEST) {
         cout << "Choose" << (isWhite ? " White" : " Black") << " queen character: " << endl;
         cin >> id_character;

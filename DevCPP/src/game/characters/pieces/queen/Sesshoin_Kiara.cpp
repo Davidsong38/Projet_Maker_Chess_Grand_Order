@@ -17,7 +17,20 @@ vector<glm::ivec2> Sesshoin_Kiara::getEffectRange(const Effect_List effect) {
 }
 
 bool Sesshoin_Kiara::SpellActivationCheck() {
-
+    if (this->getPieceGameMode() == 0)
+        return true;
+    pieceGameMode = 0;
+    std::cout << "hein333" << endl;
+    if (canEvolve())
+        evolved = true;
+    if (!canCharmAdvance && !passive()){
+        return false;
+    }
+    if (!evolved)
+        return true;
+    if (!evolvedForm())
+        return false;
+    canCharmAdvance = false;
     return true;
 }
 
@@ -29,8 +42,23 @@ bool Sesshoin_Kiara::passive() {
         1,
         1
     );
-    EffectHandler::selectRandomTargetPieces(effect_instance);
-    if (EffectHandler::applyToTargets(effect_instance)) {
+    effect_instance->check_condition = [](const void* cell) {
+        const auto* piece = static_cast<const chessboard_cell*>(cell)->piece;
+        if (piece == nullptr)
+            return false;
+        return !piece->isKing();
+    };
+    selection_request_type selection_request;
+    selection_request.whites = isWhite ? 0 : 1;
+    selection_request.blacks = isWhite ? 1 : 0;
+    selection_request.instantValidation = false;
+    if (!EffectHandler::selectManualTargetCells(effect_instance, selection_request)){
+        std::cout << "hein" << endl;
+        pieceGameMode = 1;
+        return false;
+    }
+    if (EffectHandler::applyToTargets(effect_instance)){
+        std::cout << "hein2" << endl;
         CNT_Charm++;
         return true;
     }
@@ -52,15 +80,26 @@ bool Sesshoin_Kiara::evolvedForm() {
         1,
         1
     );
-    EffectHandler::selectRandomTargetPieces(effect_instance);
-    if (EffectHandler::applyToTargets(effect_instance)) {
-        evolved = true;
-        return true;
+    effect_instance->check_condition = [](const void* cell) {
+        const auto* piece = static_cast<const chessboard_cell*>(cell)->piece;
+        if (piece == nullptr)
+            return false;
+        return !piece->isKing();
+    };
+    selection_request_type selection_request;
+    selection_request.whites = isWhite ? 0 : 1;
+    selection_request.blacks = isWhite ? 1 : 0;
+    selection_request.instantValidation = false;
+    if (!EffectHandler::selectManualTargetCells(effect_instance, selection_request)){
+        pieceGameMode = 1;
+        return false;
     }
+    if (EffectHandler::applyToTargets(effect_instance))
+        return true;
     return false;
 }
 
 bool Sesshoin_Kiara::togglePieceGameMode() {
     pieceGameMode = !pieceGameMode;
-    return true;
+    return pieceGameMode != 0;
 }

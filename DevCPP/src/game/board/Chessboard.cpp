@@ -311,9 +311,9 @@ bool Chessboard::PawnReachingEndOfBoard(Pieces *piece) {
     const int coordX = piece->getCoordX();
     if (!piece->isPawn())
         return false;
-    ltr_log_info(CONSOLE_COLOR_RED, "Pawn reached end of board !!!");
     if (piece->getIsWhite()) {
         if (coordX == 0){
+            ltr_log_info(CONSOLE_COLOR_RED, "Pawn reached end of board !!!");
             piece->setPiecesOrigin(QUEEN);
             piece->activateEffect(SUPP_RANGE);
             piece->deleteEffect(IMMORTALITY);
@@ -321,6 +321,7 @@ bool Chessboard::PawnReachingEndOfBoard(Pieces *piece) {
         }
     } else {
         if (coordX == BOARD_SIZE - 1){
+            ltr_log_info(CONSOLE_COLOR_RED, "Pawn reached end of board !!!");
             piece->setPiecesOrigin(QUEEN);
             piece->activateEffect(SUPP_RANGE);
             piece->deleteEffect(IMMORTALITY);

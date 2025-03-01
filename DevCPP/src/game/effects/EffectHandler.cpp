@@ -264,10 +264,13 @@ int EffectHandler::selectRandomTargetNonEmptyCells(EffectInstance* effect_instan
 }
 
 bool EffectHandler::selectManualTargetCells(EffectInstance *effect_instance, selection_request_type request) {
+    std::cout << "whites : " << request.whites << "blacks : " << request.blacks <<"emptys : " << request.emptys
+    << "target pieces : " << effect_instance->target_pieces.size() << "target cells : " <<effect_instance->target_cells.size() << endl;
     if (
         request.whites + request.blacks == effect_instance->target_pieces.size()
         && request.emptys == effect_instance->target_cells.size()
     ) {
+        std::cout << "mais pardon en fait" << endl;
         return true;
     }
     ltr_log_info("Selecting manual target cells...");
