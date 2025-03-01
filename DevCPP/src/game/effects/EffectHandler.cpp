@@ -303,6 +303,15 @@ bool EffectHandler::addEffectBehavior(const Effect_List effect, function<bool()>
     return effectBehaviors[effect]();
 }
 
+bool EffectHandler::cellIsInRange(const chessboard_cell* cell, EffectInstance* effect_instance) {
+    vector<glm::ivec2> effect_range =
+        static_cast<Pieces*>(effect_instance->caster_piece)
+        ->getEffectRange(effect_instance->effect);
+    for (const auto &target: effect_range)
+        if (cell->pos.x == target.x && cell->pos.y == target.y)
+            return true;
+    return false;
+}
 
 
 

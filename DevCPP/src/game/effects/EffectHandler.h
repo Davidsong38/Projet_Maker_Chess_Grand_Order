@@ -24,9 +24,11 @@ public:
     static int selectRandomTargetEmptyCells(EffectInstance *effect_instance);
     static int selectRandomTargetNonEmptyCells(EffectInstance *effect_instance);
     static bool selectManualTargetCells(EffectInstance *effect_instance, selection_request_type request);
+    static bool cellIsInRange(const chessboard_cell* cell, EffectInstance *effect_instance);
 
     static bool applyToTargets(EffectInstance *effect_instance);
     static bool applyBuffToSelf(EffectInstance *effect_instance);
+
 
     explicit EffectHandler() = default;
 private:

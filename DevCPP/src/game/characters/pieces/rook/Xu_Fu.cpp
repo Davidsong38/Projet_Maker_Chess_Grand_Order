@@ -11,11 +11,11 @@
 vector<glm::ivec2> Xu_Fu::getEffectRange(const Effect_List effect) {
     vector<glm::ivec2> effect_range;
     if (effect == IMMORTALITY)
-        return square_pattern->get_positions(glm::ivec2(coordX, coordY));
+        return cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
     if (effect == SHIELD)
         return cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
     if (effect == SUPP_RANGE)
-        return square_pattern->get_positions(glm::ivec2(coordX, coordY));
+        return cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
     return effect_range;
 }
 

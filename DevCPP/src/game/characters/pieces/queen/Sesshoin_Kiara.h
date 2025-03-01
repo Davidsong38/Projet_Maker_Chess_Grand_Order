@@ -16,7 +16,6 @@
 class Sesshoin_Kiara final : public Queen{
 protected :
     int CNT_Charm = 0;
-    bool canCharmAdvance = false;
 public:
     Sesshoin_Kiara(const int startX, const int startY, const bool white, const Characters_List hero)
     : Queen(startX, startY, white, hero)  {

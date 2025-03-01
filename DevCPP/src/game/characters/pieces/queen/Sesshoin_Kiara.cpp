@@ -23,31 +23,33 @@ bool Sesshoin_Kiara::SpellActivationCheck() {
     std::cout << "hein333" << endl;
     if (canEvolve())
         evolved = true;
-    if (!canCharmAdvance && !passive()){
-        return false;
+    if (CNT_Charm != 3){
+        passive();
+        return true;
     }
     if (!evolved)
         return true;
-    if (!evolvedForm())
-        return false;
-    canCharmAdvance = false;
+    evolvedForm();
     return true;
 }
 
 bool Sesshoin_Kiara::passive() {
-    auto *  effect_instance = new EffectInstance(
-        CHANGE_CONTROL,
-        this,
-        5,
-        1,
-        1
-    );
-    effect_instance->check_condition = [](const void* cell) {
-        const auto* piece = static_cast<const chessboard_cell*>(cell)->piece;
-        if (piece == nullptr)
-            return false;
-        return !piece->isKing();
-    };
+    static EffectInstance * effect_instance = nullptr;
+    if (effect_instance == nullptr) {
+        effect_instance = new EffectInstance(
+            CHANGE_CONTROL,
+            this,
+            5,
+            1,
+            1
+        );
+        effect_instance->check_condition = [](const void* cell) {
+            const auto* piece = static_cast<const chessboard_cell*>(cell)->piece;
+            if (piece == nullptr || !EffectHandler::cellIsInRange(static_cast<const chessboard_cell*>(cell),effect_instance))
+                return false;
+            return !piece->isKing();
+        };
+    }
     selection_request_type selection_request;
     selection_request.whites = isWhite ? 0 : 1;
     selection_request.blacks = isWhite ? 1 : 0;
@@ -59,6 +61,7 @@ bool Sesshoin_Kiara::passive() {
     }
     if (EffectHandler::applyToTargets(effect_instance)){
         std::cout << "hein2" << endl;
+        effect_instance = nullptr;
         CNT_Charm++;
         return true;
     }
@@ -73,19 +76,22 @@ bool Sesshoin_Kiara::canEvolve() {
 }
 
 bool Sesshoin_Kiara::evolvedForm() {
-    auto *  effect_instance = new EffectInstance(
-        CHANGE_CONTROL_ADVANCE,
-        this,
-        -1,
-        1,
-        1
-    );
-    effect_instance->check_condition = [](const void* cell) {
-        const auto* piece = static_cast<const chessboard_cell*>(cell)->piece;
-        if (piece == nullptr)
-            return false;
-        return !piece->isKing();
-    };
+    static EffectInstance * effect_instance = nullptr;
+    if (effect_instance == nullptr) {
+        effect_instance = new EffectInstance(
+            CHANGE_CONTROL_ADVANCE,
+            this,
+            -1,
+            1,
+            1
+        );
+        effect_instance->check_condition = [](const void* cell) {
+            const auto* piece = static_cast<const chessboard_cell*>(cell)->piece;
+            if (piece == nullptr || !EffectHandler::cellIsInRange(static_cast<const chessboard_cell*>(cell),effect_instance))
+                return false;
+            return !piece->isKing();
+        };
+    }
     selection_request_type selection_request;
     selection_request.whites = isWhite ? 0 : 1;
     selection_request.blacks = isWhite ? 1 : 0;
@@ -94,8 +100,11 @@ bool Sesshoin_Kiara::evolvedForm() {
         pieceGameMode = 1;
         return false;
     }
-    if (EffectHandler::applyToTargets(effect_instance))
+    if (EffectHandler::applyToTargets(effect_instance)) {
+        effect_instance = nullptr;
+        CNT_Charm++;
         return true;
+    }
     return false;
 }
 
