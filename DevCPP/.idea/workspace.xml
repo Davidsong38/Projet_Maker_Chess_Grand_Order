@@ -31,10 +31,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ba82fa2-512b-4253-af3b-1ba77aac3bc6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/king/Gilgamesh.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/queen/Sesshoin_Kiara.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/rook/Xu_Fu.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/effects/EffectHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/EffectHandler.h" afterDir="false" />
     </list>
@@ -135,11 +139,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Chess_Grand_Order">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Unnamed" type="CMakeListConfigurationType" factoryName="CMakeListConfigurationFactory">
       <method v="2" />
     </configuration>
@@ -221,6 +220,13 @@
       <workItem from="1740661864218" duration="13110000" />
       <workItem from="1740770047785" duration="9606000" />
       <workItem from="1740840912992" duration="5496000" />
+      <workItem from="1740858979088" duration="1355000" />
+      <workItem from="1740918138401" duration="7219000" />
+      <workItem from="1740930084525" duration="268000" />
+      <workItem from="1740930371921" duration="1000" />
+      <workItem from="1740930405474" duration="1000" />
+      <workItem from="1740930529154" duration="9000" />
+      <workItem from="1740930544956" duration="6798000" />
     </task>
     <servers />
   </component>

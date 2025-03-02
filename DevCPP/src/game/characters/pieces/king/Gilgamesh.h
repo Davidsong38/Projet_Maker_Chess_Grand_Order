@@ -15,8 +15,8 @@
 
 class Gilgamesh final: public King{
     protected :
-        int CNT_NotMove = 0;
         int CNT_EvolvedForm = 0;
+        int evolvedFormMove = 0;
 public:
     Gilgamesh(const int startX, const int startY, const bool white, const Characters_List hero)
             : King(startX, startY, white, hero)  {
@@ -28,9 +28,11 @@ public:
     }
 
     [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
+    bool passive() override;
     bool canEvolve() override;
     bool evolvedForm() override;
     bool SpellActivationCheck() override;
+    bool togglePieceGameMode() override;
 };
 
 #endif //GILGAMESH_H

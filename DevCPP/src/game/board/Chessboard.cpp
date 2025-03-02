@@ -249,6 +249,7 @@ bool Chessboard::movePiece(Pieces* piece, const int to_coordX, const int to_coor
     else
         KillCheck(piece, target_piece);
     PawnReachingEndOfBoard(piece);
+    piece->activateEffect(MOVE_CHANGING);
     return true;
 }
 

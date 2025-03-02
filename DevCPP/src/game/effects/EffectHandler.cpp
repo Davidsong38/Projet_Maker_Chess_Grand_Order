@@ -14,128 +14,6 @@
 
 unordered_map<Effect_List, function<bool()>> EffectHandler::effectBehaviors;
 
-/*
-
-bool EffectHandler::configureEffectHandler(int coordX, int coordY,Pieces *piece, EffectInstance effect_instance) {
-    Effect_List current_effect = effect_instance.getEffect();
-    Chessboard* board = Chessboard::getInstance();
-    bool success = false;
-    switch (current_effect){
-        case ONE_MORE_MOVE : {
-            success = addEffectBehavior(ONE_MORE_MOVE,[piece](){
-                piece->setIsOnAMove(true);
-                if (piece->getIsWhite()){
-                    GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
-                    GameEngine::getInstance()->setState(SELECT_WHITE_PHASE);
-                } else{
-                    GameEngine::getInstance()->setLastState(GameEngine::getInstance()->getCurrentState());
-                    GameEngine::getInstance()->setState(SELECT_BLACK_PHASE);
-                }
-                return true;
-            });
-            break;
-        }
-        case MOVE_CHANGING :{
-            success = addEffectBehavior(MOVE_CHANGING,[piece,effect_instance](){
-                if (effect_instance.caster_piece != nullptr && static_cast<Pieces*>(effect_instance.caster_piece)->getCharacters() == GILGAMESH){
-                    auto* casterPiece = static_cast<Pieces*>(effect_instance.caster_piece);
-                    if (casterPiece->getMovesMode() == 0){
-                        piece->setOverrideMoves([piece]()->std::vector<glm::ivec2>{
-                            piece->setMovesMode(0);
-                            vector<glm::ivec2> moves;
-                            int coordX = piece->getCoordX();
-                            int coordY = piece->getCoordY();
-                            if (coordX + 1 < 8 && coordY + 1 < 8) moves.emplace_back(coordX + 1, coordY + 1);
-                            if (coordX - 1 >= 0 && coordY + 1 < 8) moves.emplace_back(coordX - 1, coordY + 1);
-                            if (coordX + 1 < 8 && coordY- 1 >= 0) moves.emplace_back(coordX + 1, coordY - 1);
-                            if (coordX - 1 >= 0 && coordY - 1 >= 0) moves.emplace_back(coordX - 1, coordY - 1);
-                            if (coordX + 1 < 8) moves.emplace_back(coordX + 1, coordY);
-                            if (coordX - 1 >= 0) moves.emplace_back(coordX - 1, coordY);
-                            if (coordY- 1 >= 0) moves.emplace_back(coordX, coordY - 1);
-                            if (coordY + 1 < 8) moves.emplace_back(coordX, coordY + 1);
-                            return moves;
-                        });
-                    }
-                    if (casterPiece->getMovesMode() == 1){
-                        piece->setOverrideMoves([piece]()->std::vector<glm::ivec2>{
-                            piece->setMovesMode(1);
-                            vector<glm::ivec2> moves;
-                            int coordX = piece->getCoordX();
-                            int coordY = piece->getCoordY();
-                            for (int i = 1; i < 8; ++i) {
-                                if (coordX + i < 8) moves.emplace_back(coordX + i, coordY);
-                                if (coordX - i >= 0) moves.emplace_back(coordX - i, coordY);
-                                if (coordY- i >= 0) moves.emplace_back(coordX, coordY - i);
-                                if (coordY + i < 8) moves.emplace_back(coordX, coordY + i);
-                            }
-                            return moves;
-                        });
-                    }
-                    if (casterPiece->getMovesMode() == 2){
-                        piece->setOverrideMoves([piece]()->std::vector<glm::ivec2>{
-                            piece->setMovesMode(2);
-                            vector<glm::ivec2> moves;
-                            int coordX = piece->getCoordX();
-                            int coordY = piece->getCoordY();
-                            for (int i = 1; i < 8; ++i) {
-                                if (coordX + i < 8 && coordY + i < 8) moves.emplace_back(coordX + i, coordY + i);
-                                if (coordX - i >= 0 && coordY + i < 8) moves.emplace_back(coordX - i, coordY + i);
-                                if (coordX + i < 8 && coordY- i >= 0) moves.emplace_back(coordX + i, coordY - i);
-                                if (coordX - i >= 0 && coordY - i >= 0) moves.emplace_back(coordX - i, coordY - i);
-                            }
-                            return moves;
-                        });
-                    }
-                    if (casterPiece->getMovesMode() == 3){
-                        piece->setOverrideMoves([piece]()->std::vector<glm::ivec2>{
-                            piece->setMovesMode(3);
-                            vector<glm::ivec2> moves;
-                            int coordX = piece->getCoordX();
-                            int coordY = piece->getCoordY();
-                            if (coordX + 1 < 8 && coordY + 2 < 8) moves.emplace_back(coordX + 1, coordY + 2);
-                            if (coordX - 1 >= 0 && coordY + 2 < 8) moves.emplace_back(coordX - 1, coordY + 2);
-                            if (coordX + 1 < 8 && coordY- 2 >= 0) moves.emplace_back(coordX + 1, coordY - 2);
-                            if (coordX - 1 >= 0 && coordY - 2 >= 0) moves.emplace_back(coordX - 1, coordY - 2);
-                            if (coordX + 2 < 8 && coordY + 1 < 8) moves.emplace_back(coordX + 2, coordY + 1);
-                            if (coordX - 2 >= 0 && coordY + 1 < 8) moves.emplace_back(coordX - 2, coordY + 1);
-                            if (coordX + 2 < 8 && coordY- 1 >= 0) moves.emplace_back(coordX + 2, coordY - 1);
-                            if (coordX - 2 >= 0 && coordY - 1 >= 0) moves.emplace_back(coordX - 2, coordY - 1);
-                            return moves;
-                        });
-                    }
-                    if (casterPiece->getMovesMode() == 4){
-                        piece->setOverrideMoves([piece]()->std::vector<glm::ivec2>{
-                            piece->setMovesMode(4);
-                            vector<glm::ivec2> moves;
-                            int coordX = piece->getCoordX();
-                            int coordY = piece->getCoordY();
-                            for (int i = 1; i < 8; ++i) {
-                                if (coordX + i < 8 && coordY + i < 8) moves.emplace_back(coordX + i, coordY + i);
-                                if (coordX - i >= 0 && coordY + i < 8) moves.emplace_back(coordX - i, coordY + i);
-                                if (coordX + i < 8 && coordY- i >= 0) moves.emplace_back(coordX + i, coordY - i);
-                                if (coordX - i >= 0 && coordY - i >= 0) moves.emplace_back(coordX - i, coordY - i);
-                                if (coordX + i < 8) moves.emplace_back(coordX + i, coordY);
-                                if (coordX - i >= 0) moves.emplace_back(coordX - i, coordY);
-                                if (coordY- i >= 0) moves.emplace_back(coordX, coordY - i);
-                                if (coordY + i < 8) moves.emplace_back(coordX, coordY + i);
-                            }
-                            return moves;
-                        });
-                    }
-                }
-                piece->addEffectStatus(effect_instance);
-                return true;
-            });
-            break;
-        }
-    default:
-        std::cout << "Effect handler undefined" << std::endl;
-    }
-    std::cout << "success: " << success << std::endl;
-    return success;
-}
-
-/**/
 
 bool EffectHandler::validTargetForEffect(const Pieces* target_piece, const EffectInstance *effect_instance) {
     if (
@@ -270,7 +148,6 @@ bool EffectHandler::selectManualTargetCells(EffectInstance *effect_instance, sel
         request.whites + request.blacks == effect_instance->target_pieces.size()
         && request.emptys == effect_instance->target_cells.size()
     ) {
-        std::cout << "mais pardon en fait" << endl;
         return true;
     }
     ltr_log_info("Selecting manual target cells...");
@@ -375,6 +252,12 @@ bool EffectHandler::configureEffectHandler(EffectInstance* effect_instance) {
             success = addEffectBehavior(
                 effect_instance->effect,
                 getOneMoreMoveEffect(effect_instance)
+            );
+        break;
+        case MOVE_CHANGING:
+            success = addEffectBehavior(
+                effect_instance->effect,
+                getMoveChangingEffect(effect_instance)
             );
         break;
         default:
@@ -636,3 +519,23 @@ function<bool()> EffectHandler::getOneMoreMoveEffect(EffectInstance* effect_inst
     };
 }
 
+function<bool()> EffectHandler::getMoveChangingEffect(EffectInstance* effect_instance) {
+    return [effect_instance]() {
+        int NB_targetTouched = 0;
+        auto* event_spell_used = new EventSpellUsed(effect_instance);
+        auto* event_effect_applied = new EventEffectApply(effect_instance);
+        for (const auto &target: effect_instance->target_pieces) {
+            const auto piece = static_cast<Pieces*>(target);
+            NB_targetTouched++;
+            piece->addEffectStatus(effect_instance);
+            piece->addOverrideMove(static_cast<Pieces*>(effect_instance->caster_piece)->getCurrentPieceMove());
+            event_effect_applied->addTargetPiece(piece);
+        }
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
+        if (success)
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
+        return success;
+    };
+}

@@ -102,6 +102,9 @@ public:
     [[nodiscard]] void* getLastNormalMoveEvent();
     [[nodiscard]] int getLastNormalMovePhase();
     [[nodiscard]] int getLastNormalMoveEventType();
+    [[nodiscard]] void* getSecondLastNormalMoveEvent();
+    [[nodiscard]] int getSecondLastNormalMovePhase();
+    [[nodiscard]] int getSecondLastNormalMoveEventType();
     [[nodiscard]] void* getFirstNormalMoveEvent();
     [[nodiscard]] int getFirstNormalMovePhase();
     [[nodiscard]] std::vector<void*> getAllKillEvents();

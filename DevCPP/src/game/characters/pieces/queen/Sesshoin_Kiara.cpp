@@ -20,7 +20,6 @@ bool Sesshoin_Kiara::SpellActivationCheck() {
     if (this->getPieceGameMode() == 0)
         return true;
     pieceGameMode = 0;
-    std::cout << "hein333" << endl;
     if (canEvolve())
         evolved = true;
     if (CNT_Charm != 3){
@@ -55,12 +54,10 @@ bool Sesshoin_Kiara::passive() {
     selection_request.blacks = isWhite ? 1 : 0;
     selection_request.instantValidation = false;
     if (!EffectHandler::selectManualTargetCells(effect_instance, selection_request)){
-        std::cout << "hein" << endl;
         pieceGameMode = 1;
         return false;
     }
     if (EffectHandler::applyToTargets(effect_instance)){
-        std::cout << "hein2" << endl;
         effect_instance = nullptr;
         CNT_Charm++;
         return true;

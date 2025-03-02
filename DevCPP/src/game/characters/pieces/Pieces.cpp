@@ -264,7 +264,7 @@ void* Pieces::getLastNormalMoveEvent() {
 int Pieces::getLastNormalMovePhase() {
     const auto last_normal_move = static_cast<EventMove*>(getLastNormalMoveEvent());
     if (last_normal_move == nullptr)
-        return -69420;
+        return 1;
     return last_normal_move->eventPhase;
 }
 
@@ -273,6 +273,31 @@ int Pieces::getLastNormalMoveEventType() {
     if (last_normal_move == nullptr)
         return -69420;
     return last_normal_move->moveType;
+}
+
+void* Pieces::getSecondLastNormalMoveEvent() {
+    int CNT = 0;
+    for (int i = static_cast<int>(getAllMoveEvents().size()) - 1; i > -1; i--)
+        if (const int moveType = static_cast<EventMove*>(getAllMoveEvents()[i])->moveType; moveType == MOVE_NORMAL || moveType == MOVE_ROQUED || moveType == MOVE_EN_PASSANT) {
+            CNT++;
+            if (CNT == 2)
+                return getAllMoveEvents()[i];
+        }
+    return nullptr;
+}
+
+int Pieces::getSecondLastNormalMovePhase() {
+    const auto second_last_normal_move = static_cast<EventMove*>(getSecondLastNormalMoveEvent());
+    if (second_last_normal_move == nullptr)
+        return 1;
+    return second_last_normal_move->eventPhase;
+}
+
+int Pieces::getSecondLastNormalMoveEventType() {
+    const auto second_last_normal_move = static_cast<EventMove*>(getSecondLastNormalMoveEvent());
+    if (second_last_normal_move == nullptr)
+        return -69420;
+    return second_last_normal_move->moveType;
 }
 
 void* Pieces::getFirstNormalMoveEvent() {
