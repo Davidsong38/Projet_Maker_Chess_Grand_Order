@@ -561,3 +561,4 @@ bool Chessboard::pawnMenacingBigRoque(Pieces* king) {
     }
     return false;
 }
+

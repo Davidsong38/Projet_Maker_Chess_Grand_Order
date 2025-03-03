@@ -10,12 +10,14 @@
 
 bool Kukulkan::SpellActivationCheck() {
     passive();
-    if (!evolved && getSecondLastKillKillEvent() != getLastKillKillEvent()) {
+    if (!evolved && static_cast<Event*>(events.back())->eventType == EVENT_KILL
+        && getLastKillTurn() == GameEngine::getInstance()->getTurnNumber() && enableCNT) {
         CNT_Kill++;
         if (!GameEngine::getInstance()->getCurrentPhaseContext()->mainTargetPiece->isPawn()) {
             CNT_Figure++;
         }
     }
+    enableCNT = true;
     if (canEvolve()) {
         evolved = true;
         CNT_Overcharge = 3;
@@ -24,13 +26,16 @@ bool Kukulkan::SpellActivationCheck() {
         evolvedForm();
         return true;
     }
-    if (CNT_Overcharge == 0)
+    if (CNT_Overcharge == 0 && evolved) {
         OMM_Chance = 20;
+        evolved = false;
+        enableCNT = false;
+    }
     return true;
 }
 
 bool Kukulkan::passive() {
-    if (getLastKillTurn() != GameEngine::getInstance()->getTurnNumber())
+    if (getLastKillTurn() != GameEngine::getInstance()->getTurnNumber() || static_cast<Event*>(events.back())->eventType != EVENT_KILL)
         return true;
     if (const int chance = rand() % 100; chance >= OMM_Chance)
         return true;

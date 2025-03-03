@@ -11,6 +11,7 @@
 
 class Kukulkan final : public Queen {
 protected:
+    bool enableCNT = true;
     int CNT_Figure = 0;
     int CNT_Kill = 0;
     int CNT_Overcharge = 0;

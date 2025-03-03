@@ -32,6 +32,7 @@ bool Pieces::hasThisEffect(const Effect_List chosenEffect) const {
     return false;
 }
 
+
 void Pieces::updateEffectStatus() {
     for (auto effect : activeEffects) {
         if (effect->effect == CHANGE_CONTROL && (effect->effect_duration == 1 || effect->effect_amount == 0))
@@ -254,6 +255,9 @@ std::vector<void*> Pieces::getAllMoveEvents() {
     return selected_events;
 }
 
+
+
+
 void* Pieces::getLastNormalMoveEvent() {
     for (int i = static_cast<int>(getAllMoveEvents().size()) - 1; i > -1; i--)
         if (const int moveType = static_cast<EventMove*>(getAllMoveEvents()[i])->moveType; moveType == MOVE_NORMAL || moveType == MOVE_ROQUED || moveType == MOVE_EN_PASSANT)
@@ -416,6 +420,27 @@ void* Pieces::getLastSpellUsedByMeEvent() {
     return nullptr;
 }
 
+std::vector<void*> Pieces::getAllEffectAppliedEvents() {
+    std::vector<void*> selected_events;
+    for (auto* event_ptr : events) {
+        auto event = static_cast<Event*>(event_ptr);
+        if (event == nullptr) ltr_log_error("Pieces::getAllEffectApplyEvents: Event nullptr");
+        if (event->eventType == EVENT_EFFECT_APPLY) selected_events.emplace_back(event);
+    }
+    return selected_events;
+}
+
+std::vector<void*> Pieces::getAllEffectAppliedCastedByMeEvent() {
+    std::vector<void*> selected_events;
+    for (auto* event_ptr : getAllEffectAppliedEvents()) {
+        if (
+            auto event = static_cast<EventEffectApply*>(event_ptr);
+            event->casterPiece == this
+        ) selected_events.emplace_back(event);
+    }
+    return selected_events;
+}
+
 std::vector<void*> Pieces::getAllEffectUpdateEvents() {
     std::vector<void*> selected_events;
     for (auto* event_ptr : events) {
@@ -437,4 +462,16 @@ std::vector<void*> Pieces::getAllEffectUpdateCastedByMeEvent() {
     return selected_events;
 }
 
-
+std::vector<void*> Pieces::getAllDeathWithEffectCastedByMeEvent() {
+    std::vector<void*> dead_list;
+    for (auto* event_ptr : getAllEffectAppliedCastedByMeEvent()) {
+        for (auto * dead : Chessboard::getInstance()->getDeadList()) {
+            auto event = static_cast<EventEffectApply*>(event_ptr);
+            for (auto * target : event->getTargetPieces()) {
+                if (target == dead)
+                    dead_list.emplace_back(dead);
+            }
+        }
+    }
+    return dead_list;
+}

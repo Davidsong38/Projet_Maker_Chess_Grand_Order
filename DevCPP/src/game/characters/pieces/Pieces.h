@@ -119,8 +119,15 @@ public:
     [[nodiscard]] std::vector<void*> getAllSpellUsedEvents();
     [[nodiscard]] void* getLastSpellUsedEvent() {return getAllSpellUsedEvents().back();}
     [[nodiscard]] void* getLastSpellUsedByMeEvent();
+
+    std::vector<void *> getAllEffectAppliedEvents();
+
+    std::vector<void *> getAllEffectAppliedCastedByMeEvent();
+
     [[nodiscard]] std::vector<void*> getAllEffectUpdateEvents();
     [[nodiscard]] std::vector<void*> getAllEffectUpdateCastedByMeEvent();
+
+    std::vector<void *> getAllDeathWithEffectCastedByMeEvent();
 
     // SpriteTarget
     float getSpriteX() override {return (-0.875f + 0.25f * static_cast<float>(coordY)) * RenderEngine::getWindowInverseAspectRatio();}
