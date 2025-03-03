@@ -38,7 +38,12 @@ extern board_pattern* checker_3_pattern;
 
 extern board_pattern* inverse_checker_2_pattern;
 
+extern board_pattern* knight_pattern;
+
 extern board_pattern* arcueid_buff_pattern;
+
+extern board_pattern* kintoki_rider_buff_pattern;
+
 
 extern board_pattern* scatter_N_pattern;
 extern board_pattern* scatter_S_pattern;
@@ -72,6 +77,9 @@ std::vector<glm::ivec2> line_SW_generic_pattern(glm::ivec2 pos, int pattern_size
 std::vector<glm::ivec2> square_generic_pattern(glm::ivec2 pos, int pattern_size);
 std::vector<glm::ivec2> checker_generic_pattern(glm::ivec2 pos, int pattern_size);
 std::vector<glm::ivec2> inverse_checker_generic_pattern(glm::ivec2 pos, int pattern_size);
+
+std::vector<glm::ivec2> knight_global_pattern(glm::ivec2 pos);
+
 
 std::vector<glm::ivec2> cross_generic_pattern(glm::ivec2 pos, int pattern_size);
 std::vector<glm::ivec2> x_cross_generic_pattern(glm::ivec2 pos, int pattern_size);

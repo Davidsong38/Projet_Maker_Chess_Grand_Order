@@ -29,6 +29,7 @@ extern piece_move* pawn_default_moves;
 extern piece_move* super_pawn_moves;
 extern piece_move* ushiwakamaru_moves;
 extern piece_move* arceuid_buff_move;
+extern piece_move* kintoki_rider_buff_moves;
 extern piece_move* small_cross_moves;
 extern piece_move* small_cross_3_range_moves;
 

@@ -19,7 +19,7 @@ Texture* astolfoTexture;
 Texture* bbdubaiTexture;
 Texture* gilgameshTexture;
 Texture* kiaraTexture;
-Texture* kintoshiTexture;
+Texture* kintokiTexture;
 Texture* kukulcanTexture;
 Texture* mashTexture;
 Texture* medusaTexture;
@@ -57,7 +57,7 @@ void loadTextures() {
     bbdubaiTexture = new Texture(texture_ids[TEX_BBDUBAI],"characters/bbdubai.png",GL_RGBA);
     gilgameshTexture = new Texture(texture_ids[TEX_GILGAMESH],"characters/gilgamesh.png",GL_RGBA);
     kiaraTexture = new Texture(texture_ids[TEX_KIARA],"characters/kiara.png",GL_RGBA);
-    kintoshiTexture = new Texture(texture_ids[TEX_KINTOKI],"characters/kintoshi.png",GL_RGBA);
+    kintokiTexture = new Texture(texture_ids[TEX_KINTOKI],"characters/kintoki.png",GL_RGBA);
     kukulcanTexture = new Texture(texture_ids[TEX_KUKULCAN],"characters/kukulcan.png",GL_RGBA);
     mashTexture = new Texture(texture_ids[TEX_MASH],"characters/mash.png",GL_RGBA);
     medusaTexture = new Texture(texture_ids[TEX_MEDUSA],"characters/medusa.png",GL_RGBA);

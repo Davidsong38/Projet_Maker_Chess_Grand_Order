@@ -6,6 +6,9 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(Chess_Grand_Order
         src/main.cpp
 
+
+
+
 )
 
 add_compile_options(-Wno-int-to-pointer-cast)
@@ -41,6 +44,8 @@ target_sources(Chess_Grand_Order PRIVATE
         src/game/characters/pieces/rook/Xu_Fu.cpp
         src/game/characters/pieces/queen/Nitocris_Alter.cpp
         src/game/characters/pieces/king/Gilgamesh.cpp
+        src/game/characters/pieces/knight/Kintoki_Rider.cpp
+        src/game/characters/pieces/queen/Kukulkan.cpp
         src/game/characters/moves/piece_moves.cpp
         src/game/effects/effects.cpp
         src/game/effects/EffectHandler.cpp

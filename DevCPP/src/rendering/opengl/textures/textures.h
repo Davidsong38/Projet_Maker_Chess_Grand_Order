@@ -57,7 +57,7 @@ extern Texture* astolfoTexture;
 extern Texture* bbdubaiTexture;
 extern Texture* gilgameshTexture;
 extern Texture* kiaraTexture;
-extern Texture* kintoshiTexture;
+extern Texture* kintokiTexture;
 extern Texture* kukulcanTexture;
 extern Texture* mashTexture;
 extern Texture* medusaTexture;

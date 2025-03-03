@@ -332,6 +332,18 @@ void* Pieces::getLastKillKillEvent() {
     return nullptr;
 }
 
+void* Pieces::getSecondLastKillKillEvent() {
+    int CNT = 0;
+    for (int i = static_cast<int>(getAllKillEvents().size()) - 1; i > -1; i--) {
+        if (static_cast<EventKill*>(getAllKillEvents()[i])->killerPiece == this) {
+            CNT++;
+            if (CNT == 2)
+                return getAllKillEvents()[i];
+        }
+    }
+    return nullptr;
+}
+
 int Pieces::getLastKillTurn() {
     const auto last_kill = static_cast<EventKill*>(getLastKillKillEvent());
     if (last_kill == nullptr)
@@ -350,6 +362,18 @@ void* Pieces::getLastDeathKillEvent() {
     for (int i = static_cast<int>(getAllKillEvents().size()) - 1; i > -1; i--) {
         if (static_cast<EventKill*>(getAllKillEvents()[i])->killedPiece == this)
             return getAllKillEvents()[i];
+    }
+    return nullptr;
+}
+
+void* Pieces::getSecondLastDeathKillEvent() {
+    int CNT = 0;
+    for (int i = static_cast<int>(getAllKillEvents().size()) - 1; i > -1; i--) {
+        if (static_cast<EventKill*>(getAllKillEvents()[i])->killedPiece == this) {
+            CNT++;
+            if (CNT == 2)
+                return getAllKillEvents()[i];
+        }
     }
     return nullptr;
 }

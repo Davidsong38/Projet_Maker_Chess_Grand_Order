@@ -47,6 +47,7 @@ private:
     static function<bool()> getSpawnPieceEffect(EffectInstance* effect_instance);
     static function<bool()> getOneMoreMoveEffect(EffectInstance* effect_instance);
     static function<bool()> getMoveChangingEffect(EffectInstance *effect_instance);
+    static function<bool()> getSuppMoveEffect(EffectInstance *effect_instance);
 };
 
 

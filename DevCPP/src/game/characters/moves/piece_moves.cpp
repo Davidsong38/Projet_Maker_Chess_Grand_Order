@@ -20,6 +20,7 @@ piece_move* pawn_default_moves = new piece_move();
 
 piece_move* super_pawn_moves = new piece_move();
 piece_move* ushiwakamaru_moves = new piece_move();
+piece_move* kintoki_rider_buff_moves = new piece_move();
 piece_move* arceuid_buff_move = new piece_move();
 piece_move* small_cross_moves = new piece_move();
 piece_move* small_cross_3_range_moves = new piece_move();
@@ -32,24 +33,7 @@ void init_moves() {
     knight_default_moves->name = "knight_default_moves";
     knight_default_moves->ignoresObstacles = true;
     knight_default_moves->get_positions = [](const glm::ivec2 pos) {
-        std::vector<glm::ivec2> moves;
-        if (pos.x + 1 < BOARD_SIZE && pos.y + 2 < BOARD_SIZE)
-            moves.emplace_back(pos.x + 1, pos.y + 2);
-        if (pos.x - 1 >= 0 && pos.y + 2 < BOARD_SIZE)
-            moves.emplace_back(pos.x - 1, pos.y + 2);
-        if (pos.x + 1 < BOARD_SIZE && pos.y- 2 >= 0)
-            moves.emplace_back(pos.x + 1, pos.y - 2);
-        if (pos.x - 1 >= 0 && pos.y - 2 >= 0)
-            moves.emplace_back(pos.x - 1, pos.y - 2);
-        if (pos.x + 2 < BOARD_SIZE && pos.y + 1 < BOARD_SIZE)
-            moves.emplace_back(pos.x + 2, pos.y + 1);
-        if (pos.x - 2 >= 0 && pos.y + 1 < BOARD_SIZE)
-            moves.emplace_back(pos.x - 2, pos.y + 1);
-        if (pos.x + 2 < BOARD_SIZE && pos.y- 1 >= 0)
-            moves.emplace_back(pos.x + 2, pos.y - 1);
-        if (pos.x - 2 >= 0 && pos.y - 1 >= 0)
-            moves.emplace_back(pos.x - 2, pos.y - 1);
-        return moves;
+        return knight_pattern->get_positions(pos);
     };
 
     rook_default_moves->name = "rook_default_moves";
@@ -152,7 +136,13 @@ void init_moves() {
 
     arceuid_buff_move->name = "arceuid_buff_move";
     arceuid_buff_move->get_positions = [](const glm::ivec2 pos) {
-        return arceuid_buff_move->get_positions(pos);
+        return arcueid_buff_pattern->get_positions(pos);
+    };
+
+    kintoki_rider_buff_moves->name = "kintoki_rider_buff_move";
+    kintoki_rider_buff_moves->ignoresObstacles = true;
+    kintoki_rider_buff_moves->get_positions = [](const glm::ivec2 pos) {
+        return kintoki_rider_buff_pattern->get_positions(pos);
     };
 
     small_cross_moves->name = "small_cross_moves";

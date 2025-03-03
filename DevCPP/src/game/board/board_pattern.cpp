@@ -31,7 +31,10 @@ board_pattern* checker_3_pattern = new board_pattern();
 
 board_pattern* inverse_checker_2_pattern = new board_pattern();
 
+board_pattern* knight_pattern = new board_pattern();
+
 board_pattern* arcueid_buff_pattern = new board_pattern();
+board_pattern* kintoki_rider_buff_pattern = new board_pattern();
 
 board_pattern* scatter_N_pattern = new board_pattern();
 board_pattern* scatter_S_pattern = new board_pattern();
@@ -129,11 +132,23 @@ void init_board_patterns() {
         return inverse_checker_generic_pattern(pos, 2);
     };
 
+    knight_pattern->name = "knight_pattern";
+    knight_pattern->get_positions = [](const glm::ivec2 pos) {
+        return knight_global_pattern(pos);
+    };
     arcueid_buff_pattern->name = "arcueid_buff_pattern";
     arcueid_buff_pattern->get_positions = [](const glm::ivec2 pos) {
         return merge_patterns(
             cross_generic_pattern(pos, Chessboard::getInstance()->getSize()),
             x_cross_generic_pattern(pos, 2)
+        );
+    };
+
+    kintoki_rider_buff_pattern->name = "kintoki_rider_buff_pattern";
+    kintoki_rider_buff_pattern->get_positions = [](const glm::ivec2 pos) {
+        return merge_patterns(
+            knight_global_pattern(pos),
+            x_cross_generic_pattern(pos, Chessboard::getInstance()->getSize())
         );
     };
 
@@ -321,6 +336,26 @@ std::vector<glm::ivec2> inverse_checker_generic_pattern(const glm::ivec2 pos, co
     return out_positions;
 }
 
+std::vector<glm::ivec2> knight_global_pattern(const glm::ivec2 pos) {
+    std::vector<glm::ivec2> out_positions;
+    if (pos.x + 1 < Chessboard::getInstance()->getSize() && pos.y + 2 < Chessboard::getInstance()->getSize())
+        out_positions.emplace_back(pos.x + 1, pos.y + 2);
+    if (pos.x - 1 >= 0 && pos.y + 2 < Chessboard::getInstance()->getSize())
+        out_positions.emplace_back(pos.x - 1, pos.y + 2);
+    if (pos.x + 1 < Chessboard::getInstance()->getSize() && pos.y- 2 >= 0)
+        out_positions.emplace_back(pos.x + 1, pos.y - 2);
+    if (pos.x - 1 >= 0 && pos.y - 2 >= 0)
+        out_positions.emplace_back(pos.x - 1, pos.y - 2);
+    if (pos.x + 2 < Chessboard::getInstance()->getSize() && pos.y + 1 < Chessboard::getInstance()->getSize())
+        out_positions.emplace_back(pos.x + 2, pos.y + 1);
+    if (pos.x - 2 >= 0 && pos.y + 1 < Chessboard::getInstance()->getSize())
+        out_positions.emplace_back(pos.x - 2, pos.y + 1);
+    if (pos.x + 2 < Chessboard::getInstance()->getSize() && pos.y- 1 >= 0)
+        out_positions.emplace_back(pos.x + 2, pos.y - 1);
+    if (pos.x - 2 >= 0 && pos.y - 1 >= 0)
+        out_positions.emplace_back(pos.x - 2, pos.y - 1);
+    return out_positions;
+}
 
 
 

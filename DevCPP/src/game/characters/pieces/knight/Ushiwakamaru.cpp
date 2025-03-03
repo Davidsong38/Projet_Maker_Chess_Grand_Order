@@ -12,8 +12,10 @@
 bool Ushiwakamaru::SpellActivationCheck() {
     if (!isOnAMove)
         remaining_cooldown--;
-    if (canEvolve())
+    if (canEvolve()) {
         evolved = true;
+        return true;
+    }
     if (evolved && gotKillAtTurn(GameEngine::getInstance()->getTurnNumber() - 1)) {
         if (remaining_cooldown > 0)
             return true;

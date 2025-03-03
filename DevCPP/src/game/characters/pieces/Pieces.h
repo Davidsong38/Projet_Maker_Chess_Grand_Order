@@ -109,9 +109,11 @@ public:
     [[nodiscard]] int getFirstNormalMovePhase();
     [[nodiscard]] std::vector<void*> getAllKillEvents();
     [[nodiscard]] void* getLastKillKillEvent();
+    [[nodiscard]]void* getSecondLastKillKillEvent();
     [[nodiscard]] int getLastKillTurn();
     [[nodiscard]] bool gotKillAtTurn(int turn);
     [[nodiscard]] void* getLastDeathKillEvent();
+    [[nodiscard]] void* getSecondLastDeathKillEvent();
     [[nodiscard]] void* getLastKillKillEvent(int killType);
     [[nodiscard]] void* getLastDeathKillEvent(int killType);
     [[nodiscard]] std::vector<void*> getAllSpellUsedEvents();

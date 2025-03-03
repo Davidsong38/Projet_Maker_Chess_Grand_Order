@@ -260,6 +260,12 @@ bool EffectHandler::configureEffectHandler(EffectInstance* effect_instance) {
                 getMoveChangingEffect(effect_instance)
             );
         break;
+        case SUPP_MOVE:
+            success = addEffectBehavior(
+                effect_instance->effect,
+                getSuppMoveEffect(effect_instance)
+            );
+        break;
         default:
             ltr_log_fatal("EffectHandler::configureEffectHandler: Invalid effect_instance.effect : ", effect_instance->effect);
             success = false;
@@ -503,10 +509,9 @@ function<bool()> EffectHandler::getOneMoreMoveEffect(EffectInstance* effect_inst
         auto* event_effect_applied = new EventEffectApply(effect_instance);
         for (const auto &target: effect_instance->target_pieces) {
             const auto piece = static_cast<Pieces*>(target);
-            if (piece->isKing())
-                continue;
             NB_targetTouched++;
             piece->addEffectStatus(effect_instance);
+            GameEngine::getInstance()->getCurrentPhaseContext()->firstSelectedPiece = piece;
             piece->setIsOnAMove(true);
             event_effect_applied->addTargetPiece(piece);
         }
@@ -529,6 +534,28 @@ function<bool()> EffectHandler::getMoveChangingEffect(EffectInstance* effect_ins
             NB_targetTouched++;
             piece->addEffectStatus(effect_instance);
             piece->addOverrideMove(static_cast<Pieces*>(effect_instance->caster_piece)->getCurrentPieceMove());
+            event_effect_applied->addTargetPiece(piece);
+        }
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
+        if (success)
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
+        return success;
+    };
+}
+
+function<bool()> EffectHandler::getSuppMoveEffect(EffectInstance* effect_instance) {
+    return [effect_instance]() {
+        int NB_targetTouched = 0;
+        auto* event_spell_used = new EventSpellUsed(effect_instance);
+        auto* event_effect_applied = new EventEffectApply(effect_instance);
+        for (const auto &target: effect_instance->target_pieces) {
+            const auto piece = static_cast<Pieces*>(target);
+            NB_targetTouched++;
+            piece->addEffectStatus(effect_instance);
+            piece->goToPosition(static_cast<chessboard_cell*>(effect_instance->target_cells[0])->pos.x,
+                static_cast<chessboard_cell*>(effect_instance->target_cells[0])->pos.y,MOVE_SUPPLEMENTARY);
             event_effect_applied->addTargetPiece(piece);
         }
         const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;

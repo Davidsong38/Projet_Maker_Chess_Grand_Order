@@ -566,8 +566,6 @@ void GameEngine::handleAnyEndPhase(const bool isWhitePhase) {
             piece->passive();
             piece->canEvolve();
         }
-        if (piece->getCharacter() == GILGAMESH)
-            piece->passive();
     }
     ltr_log(
         "---------------------------------------------------",

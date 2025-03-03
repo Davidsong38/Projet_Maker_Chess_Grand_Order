@@ -13,12 +13,14 @@
 #include "log.h"
 
 #include <iostream>
+#include <Kukulkan.h>
 #include <Medusa_Saber.h>
 #include <Nemo_Marine.h>
 #include <Sesshoin_Kiara.h>
 #include <Ushiwakamaru.h>
 
 #include "Gilgamesh.h"
+#include "Kintoki_Rider.h"
 #include "Merlin.h"
 #include "Nitocris_Alter.h"
 #include "Okita.h"
@@ -36,7 +38,7 @@ Characters_List choose_pawn(bool isWhite) {
 }
 
 Characters_List choose_knight(bool isWhite, bool isRight) {
-    int id_character = USHIWAKAMARU;
+    int id_character = KINTOKI_RIDER;
     if constexpr (NOT_QUICK_TEST) {
         cout << " Choose" << (isWhite ? " White" : " Black") << " knight"<< (isRight ? "Right" : "Left")<<" character: " << endl;
         cin >> id_character;
@@ -72,7 +74,7 @@ Characters_List choose_king(bool isWhite) {
 }
 
 Characters_List choose_queen(bool isWhite) {
-    int id_character = SESSHOIN_KIARA;
+    int id_character = KUKULKAN;
     if constexpr (NOT_QUICK_TEST) {
         cout << "Choose" << (isWhite ? " White" : " Black") << " queen character: " << endl;
         cin >> id_character;
@@ -111,9 +113,9 @@ Pieces* get_piece(int x, int y, bool isWhite, Characters_List character) {
         case OKITA:
         piece = new Okita(x,y,isWhite,character);
         break;
-        //case KINTOKI_RIDER:
-        //piece = new Kintoki_Rider(x,y,isWhite,character);
-        //break;
+        case KINTOKI_RIDER:
+        piece = new Kintoki_Rider(x,y,isWhite,character);
+        break;
         //case ZHOU_YU:
         //piece = new Zhou_Yu(x,y,isWhite,character);
         //break;
@@ -138,8 +140,8 @@ Pieces* get_piece(int x, int y, bool isWhite, Characters_List character) {
         //case BB_DUBAI:
         //piece = new Bb_Dubai(x,y,isWhite,character);
         //break;
-        //case KUKULKAN:
-        //piece = new Kukulkan(x,y,isWhite,character);
+        case KUKULKAN:
+        piece = new Kukulkan(x,y,isWhite,character);
         break;
         case ARTORIA:
         piece = new Artoria(x,y,isWhite,character);
