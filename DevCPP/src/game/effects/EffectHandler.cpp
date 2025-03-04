@@ -42,7 +42,7 @@ bool EffectHandler::validTargetForEffect(const Pieces* target_piece, const Effec
 int EffectHandler::selectRandomTargetPieces(EffectInstance* effect_instance) {
     board_pattern* effect_range =
         static_cast<Pieces*>(effect_instance->caster_piece)
-        ->getEffectRange(effect_instance->effect);
+        ->getDefaultEffectsRangesPattern(effect_instance->effect)();
     const auto * caster = static_cast<Pieces*>(effect_instance->caster_piece);
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
     std::vector<glm::ivec2> positions = effect_range->get_positions(glm::ivec2(caster->getCoordX(), caster->getCoordY()));
@@ -83,7 +83,7 @@ int EffectHandler::selectRandomTargetDeadPieces(EffectInstance* effect_instance)
 int EffectHandler::selectRandomTargetCells(EffectInstance* effect_instance) {
     board_pattern* effect_range =
         static_cast<Pieces*>(effect_instance->caster_piece)
-        ->getEffectRange(effect_instance->effect);
+        ->getDefaultEffectsRangesPattern(effect_instance->effect)();
     const auto * caster = static_cast<Pieces*>(effect_instance->caster_piece);
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
     std::vector<glm::ivec2> positions = effect_range->get_positions(glm::ivec2(caster->getCoordX(), caster->getCoordY()));
@@ -106,7 +106,7 @@ int EffectHandler::selectRandomTargetCells(EffectInstance* effect_instance) {
 int EffectHandler::selectRandomTargetEmptyCells(EffectInstance* effect_instance) {
     board_pattern* effect_range =
         static_cast<Pieces*>(effect_instance->caster_piece)
-        ->getEffectRange(effect_instance->effect);
+        ->getDefaultEffectsRangesPattern(effect_instance->effect)();
     const auto * caster = static_cast<Pieces*>(effect_instance->caster_piece);
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
     std::vector<glm::ivec2> positions = effect_range->get_positions(glm::ivec2(caster->getCoordX(), caster->getCoordY()));
@@ -129,7 +129,7 @@ int EffectHandler::selectRandomTargetEmptyCells(EffectInstance* effect_instance)
 int EffectHandler::selectRandomTargetNonEmptyCells(EffectInstance* effect_instance) {
     board_pattern* effect_range =
         static_cast<Pieces*>(effect_instance->caster_piece)
-        ->getEffectRange(effect_instance->effect);
+        ->getDefaultEffectsRangesPattern(effect_instance->effect)();
     const auto * caster = static_cast<Pieces*>(effect_instance->caster_piece);
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
     std::vector<glm::ivec2> positions = effect_range->get_positions(glm::ivec2(caster->getCoordX(), caster->getCoordY()));
@@ -191,7 +191,7 @@ bool EffectHandler::addEffectBehavior(const Effect_List effect, function<bool()>
 bool EffectHandler::cellIsInRange(const chessboard_cell* cell, const EffectInstance* effect_instance) {
     board_pattern* effect_range =
         static_cast<Pieces*>(effect_instance->caster_piece)
-        ->getEffectRange(effect_instance->effect);
+        ->getDefaultEffectsRangesPattern(effect_instance->effect)();
     const auto * caster = static_cast<Pieces*>(effect_instance->caster_piece);
     std::vector<glm::ivec2> positions = effect_range->get_positions(glm::ivec2(caster->getCoordX(), caster->getCoordY()));
     for (const auto &target: positions)

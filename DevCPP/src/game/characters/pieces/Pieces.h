@@ -43,7 +43,7 @@ protected:
 
     vector<EffectInstance*> activeEffects ;
     std::vector<void*> events;
-    std::function<board_pattern*()> getDefaultEffectsRanges = [this](){ return checker_1_pattern; };
+    std::function<board_pattern*()> getDefaultEffectsRanges = [this](){ return square_pattern; };
 public:
     bool selected = false;
 
@@ -73,7 +73,7 @@ public:
         defaultEffectsRanges[SUPP_LUCK]                 = getDefaultEffectsRanges;
     }
 
-    [[nodiscard]] unordered_map<Effect_List, function<board_pattern *()>> getDefaultEffectsRangesPattern() const {return defaultEffectsRanges;}
+    [[nodiscard]] function<board_pattern *()> getDefaultEffectsRangesPattern(Effect_List effect){return defaultEffectsRanges[effect];}
     void setEffectRange(Effect_List effect, std::function<board_pattern*()> newRange) {defaultEffectsRanges[effect] = std::move(newRange);}
     ~Pieces() override = default;;
 
