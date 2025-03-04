@@ -10,7 +10,7 @@ board_pattern *Tamamo_No_Mae::getEffectRange(const Effect_List effect) {
     if (effect == ALTERNATE_RANGE)
         return cross_1_pattern;
     if (effect == GIVING_AOE)
-        return cross_1_pattern;
+        return square_pattern;
     return getDefaultEffectsRanges();
 }
 
@@ -22,7 +22,7 @@ bool Tamamo_No_Mae::SpellActivationCheck() {
 
 bool Tamamo_No_Mae::passive() {
     auto *  effect_instance = new EffectInstance(
-        GIVING_AOE,
+        ALTERNATE_RANGE,
         this,
         -1,
         -1,
@@ -43,7 +43,7 @@ bool Tamamo_No_Mae::canEvolve() {
     if (!evolved && getAllDeathWithEffectCastedByMe().size()>1) {
         int CNT = 0;
         for (auto deadptr : getAllDeathWithEffectCastedByMe()) {
-            if (auto *dead = static_cast<Pieces*>(deadptr); dead->isPawn() && dead->getIsWhite() != this->getIsWhite())
+            if (auto *dead = static_cast<Pieces*>(deadptr); dead->isPawn() && dead->getIsWhite() == this->getIsWhite())
                 CNT++;
             if (CNT > 1) {
                 evolved = true;
@@ -76,5 +76,7 @@ bool Tamamo_No_Mae::evolvedForm() {
     }
     EffectHandler::selectRandomTargetPieces(effect_instance);
     EffectHandler::applyToTargets(effect_instance);
+    effect_instance->target_pieces.clear();
+    EffectHandler::applyBuffToSelf(effect_instance);
     return true;
 }

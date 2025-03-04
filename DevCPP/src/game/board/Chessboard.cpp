@@ -184,8 +184,8 @@ bool Chessboard::hasJustFirstMove(Pieces* piece) {
     return false;
 }
 
-bool Chessboard::notBrokenMove(Pieces* piece, const Pieces* target_piece){
-    if (target_piece != nullptr && piece->getIsOnAMove() && target_piece->isKing())
+bool Chessboard::notBrokenMove(const Pieces* piece, const Pieces* target_piece){
+    if (target_piece != nullptr && piece->hasThisEffect(ONE_MORE_MOVE) && target_piece->isKing())
         return false;
     if (target_piece != nullptr && piece->hasThisEffect(IMMORTALITY) && target_piece->isKing())
         return false;
@@ -218,6 +218,7 @@ vector<glm::ivec2> Chessboard::getValidMoves(const Pieces* piece) const {
             (emptySquare || (!isTargetAlly && pieceMove->canKill))
             && pathClear
             && (!isTargetKing || pieceMove->canKillKing)
+            && notBrokenMove(piece, target_piece)
         ) valid_moves.emplace_back(move);
     }
     return valid_moves;
@@ -250,6 +251,7 @@ bool Chessboard::movePiece(Pieces* piece, const int to_coordX, const int to_coor
         KillCheck(piece, target_piece);
     PawnReachingEndOfBoard(piece);
     piece->activateEffect(MOVE_CHANGING);
+    piece->CheckEffectAmount(MOVE_CHANGING);
     return true;
 }
 
@@ -260,6 +262,7 @@ bool Chessboard::isKillable(const Pieces *piece,Pieces* target_piece) {
     for (const auto& e : target_piece->getActive_effects()) {
         if (e->effect == SHIELD || e->effect == IMMORTALITY ) {
             target_piece->activateEffect(e->effect);
+            target_piece->CheckEffectAmount(e->effect);
             return false;
         }
 
@@ -274,6 +277,7 @@ bool Chessboard::KillCheck(Pieces *piece, Pieces *target_piece) {
         return false;
     if (target_piece->hasThisEffect(CHANGE_CONTROL)){
         target_piece->activateEffect(CHANGE_CONTROL);
+        target_piece->CheckEffectAmount(CHANGE_CONTROL);
         return true;
     }
     piece->goToPosition(coordX2, coordY2, piece->getIsOnAMove() ? MOVE_SUPPLEMENTARY : MOVE_NORMAL);
@@ -317,6 +321,7 @@ bool Chessboard::PawnReachingEndOfBoard(Pieces *piece) {
             ltr_log_info(CONSOLE_COLOR_RED, "Pawn reached end of board !!!");
             piece->setPiecesOrigin(QUEEN);
             piece->activateEffect(SUPP_RANGE);
+            piece->CheckEffectAmount(SUPP_RANGE);
             piece->deleteEffect(IMMORTALITY);
             return true;
         }
@@ -325,6 +330,7 @@ bool Chessboard::PawnReachingEndOfBoard(Pieces *piece) {
             ltr_log_info(CONSOLE_COLOR_RED, "Pawn reached end of board !!!");
             piece->setPiecesOrigin(QUEEN);
             piece->activateEffect(SUPP_RANGE);
+            piece->CheckEffectAmount(SUPP_RANGE);
             piece->deleteEffect(IMMORTALITY);
             return true;
         }

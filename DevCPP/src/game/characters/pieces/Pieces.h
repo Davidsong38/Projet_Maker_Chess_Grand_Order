@@ -98,6 +98,8 @@ public:
 
     void activateSpecialEffect();
 
+    void CheckEffectAmount(Effect_List effect);
+
     [[nodiscard]] int getPiecesOrigin() const {return pieces_origin;}
     [[nodiscard]] Characters_List getCharacter() const {return character;}
     [[nodiscard]] bool getIsWhite() const {return isWhite;}

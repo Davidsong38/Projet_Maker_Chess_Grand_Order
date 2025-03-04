@@ -313,6 +313,7 @@ function<bool()> EffectHandler::getStunEffect(EffectInstance* effect_instance) {
             for (const auto& e : piece->getActive_effects()) {
                 if (e->effect == IMMUNITY_EFFECT) {
                     piece->activateEffect(e->effect);
+                    piece->CheckEffectAmount(e->effect);
                     did_not_work = true;
                     break;
                 }
@@ -345,6 +346,7 @@ function<bool()> EffectHandler::getAoeEffect(EffectInstance* effect_instance) {
             for (const auto& e : piece->getActive_effects()) {
                 if (e->effect == SHIELD || e->effect == IMMORTALITY || e->effect == IMMUNITY_AOE) {
                     piece->activateEffect(e->effect);
+                    piece->CheckEffectAmount(e->effect);
                     did_not_work = true;
                     break;
                 }
@@ -377,6 +379,7 @@ function<bool()> EffectHandler::getChangeControlEffect(EffectInstance* effect_in
             for (const auto& e : piece->getActive_effects()) {
                 if (e->effect == IMMUNITY_EFFECT) {
                     piece->activateEffect(e->effect);
+                    piece->CheckEffectAmount(e->effect);
                     did_not_work = true;
                     break;
                 }
@@ -495,6 +498,7 @@ function<bool()> EffectHandler::getKillEffect(EffectInstance* effect_instance) {
             for (const auto& e : piece->getActive_effects()) {
                 if (e->effect == IMMORTALITY || e->effect == IMMUNITY_EFFECT) {
                     piece->activateEffect(e->effect);
+                    piece->CheckEffectAmount(e->effect);
                     did_not_work = true;
                     break;
                 }

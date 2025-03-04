@@ -38,12 +38,12 @@ bool Pieces::hasThisEffect(const Effect_List chosenEffect) const {
 
 void Pieces::updateEffectStatus() {
     for (auto effect : activeEffects) {
-        if (effect->effect == CHANGE_CONTROL && (effect->effect_duration == 1 || effect->effect_amount == 0))
-            this->setIsWhite(not this->getIsWhite());
-        if ((effect->effect == MOVE_CHANGING || effect->effect == SUPP_RANGE) && effect->effect_amount == 0)
-            override_piece_move = nullptr;
         effect->decrement_duration();
         if (effect->isExpired()) {
+            if (effect->effect == CHANGE_CONTROL)
+                this->setIsWhite(not this->getIsWhite());
+            if (effect->effect == ONE_MORE_MOVE)
+                this->isOnAMove = false;
             auto* event_effect_delete = new EventEffectEnd(effect);
             event_effect_delete->addTargetPiece(this);
             GameEngine::getInstance()->registerEvent(event_effect_delete);
@@ -137,8 +137,8 @@ void Pieces::goToPosition(const int x, const int y, const int moveType) {
     coordY = y;
     isFirstMove = false;
     if (isOnAMove) {
-        isOnAMove = false;
         activateEffect(ONE_MORE_MOVE);
+        isOnAMove = false;
     }
     moveEvent->setEndPos(glm::ivec2(x, y));
     GameEngine::getInstance()->registerEvent(moveEvent);
@@ -249,6 +249,25 @@ void Pieces::activateSpecialEffect() {
             );
             EffectHandler::selectRandomTargetPieces(effect_instance);
             EffectHandler::applyToTargets(effect_instance);
+            activateEffect(AOE);
+            CheckEffectAmount(AOE);
+            defaultEffectsRanges[AOE] = [this](){return square_pattern; };
+        }
+    }
+}
+
+void Pieces::CheckEffectAmount(const Effect_List effect) {
+    for (const auto & eff : activeEffects) {
+        if (eff->effect == effect && eff->isExpired()) {
+            if (eff->effect == CHANGE_CONTROL)
+                this->setIsWhite(not this->getIsWhite());
+            if ((eff->effect == MOVE_CHANGING || eff->effect == SUPP_RANGE))
+                override_piece_move = nullptr;
+            auto* event_effect_delete = new EventEffectEnd(eff);
+            event_effect_delete->addTargetPiece(this);
+            GameEngine::getInstance()->registerEvent(event_effect_delete);
+            eff->effect_amount = 0;
+            std::erase(activeEffects, eff);
         }
     }
 }

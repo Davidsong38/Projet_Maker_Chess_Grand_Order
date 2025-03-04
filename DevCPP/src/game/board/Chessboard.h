@@ -75,7 +75,7 @@ public:
     bool pawnMenacingLittleRoque(Pieces* king);
     bool pawnMenacingBigRoque(Pieces* king);
     static bool hasJustFirstMove(Pieces* piece);
-    static bool notBrokenMove(Pieces* piece, const Pieces* target_piece);
+    static bool notBrokenMove(const Pieces* piece, const Pieces* target_piece);
     vector<Pieces*> getAllPieces();
 };
 
