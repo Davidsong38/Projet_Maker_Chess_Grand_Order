@@ -519,6 +519,7 @@ void GameEngine::handleAnySelectPhase(const bool isWhitePhase) {
 }
 
 void GameEngine::handleAnyMovingPhase(const bool isWhitePhase) {
+    current_phase_context->firstSelectedPiece->activateSpecialEffect();
     goToState(isWhitePhase ? CHECKING_WHITE_PHASE : CHECKING_BLACK_PHASE);
 }
 
@@ -566,6 +567,8 @@ void GameEngine::handleAnyEndPhase(const bool isWhitePhase) {
             piece->passive();
             piece->canEvolve();
         }
+        if (piece->getCharacter() == TAMAMO_NO_MAE)
+            piece->canEvolve();
     }
     ltr_log(
         "---------------------------------------------------",

@@ -40,13 +40,15 @@ bool EffectHandler::validTargetForEffect(const Pieces* target_piece, const Effec
 }
 
 int EffectHandler::selectRandomTargetPieces(EffectInstance* effect_instance) {
-    vector<glm::ivec2> effect_range =
+    board_pattern* effect_range =
         static_cast<Pieces*>(effect_instance->caster_piece)
         ->getEffectRange(effect_instance->effect);
+    const auto * caster = static_cast<Pieces*>(effect_instance->caster_piece);
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
-    shuffle(effect_range.begin(), effect_range.end(), default_random_engine(rd_key));
+    std::vector<glm::ivec2> positions = effect_range->get_positions(glm::ivec2(caster->getCoordX(), caster->getCoordY()));
+    shuffle(positions.begin(),positions.end(), default_random_engine(rd_key));
     int NB_targetSelected = 0;
-    for (const auto &target: effect_range) {
+    for (const auto &target: positions) {
         if (
             effect_instance->NB_Target != -1
             && NB_targetSelected == effect_instance->NB_Target
@@ -79,13 +81,15 @@ int EffectHandler::selectRandomTargetDeadPieces(EffectInstance* effect_instance)
 }
 
 int EffectHandler::selectRandomTargetCells(EffectInstance* effect_instance) {
-    vector<glm::ivec2> effect_range =
+    board_pattern* effect_range =
         static_cast<Pieces*>(effect_instance->caster_piece)
         ->getEffectRange(effect_instance->effect);
+    const auto * caster = static_cast<Pieces*>(effect_instance->caster_piece);
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
-    shuffle(effect_range.begin(), effect_range.end(), default_random_engine(rd_key));
+    std::vector<glm::ivec2> positions = effect_range->get_positions(glm::ivec2(caster->getCoordX(), caster->getCoordY()));
+    shuffle(positions.begin(),positions.end(), default_random_engine(rd_key));
     int NB_targetSelected = 0;
-    for (const auto &target: effect_range) {
+    for (const auto &target: positions) {
         if (
             effect_instance->NB_Target != -1
             && NB_targetSelected == effect_instance->NB_Target
@@ -100,13 +104,15 @@ int EffectHandler::selectRandomTargetCells(EffectInstance* effect_instance) {
 }
 
 int EffectHandler::selectRandomTargetEmptyCells(EffectInstance* effect_instance) {
-    vector<glm::ivec2> effect_range =
+    board_pattern* effect_range =
         static_cast<Pieces*>(effect_instance->caster_piece)
         ->getEffectRange(effect_instance->effect);
+    const auto * caster = static_cast<Pieces*>(effect_instance->caster_piece);
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
-    shuffle(effect_range.begin(), effect_range.end(), default_random_engine(rd_key));
+    std::vector<glm::ivec2> positions = effect_range->get_positions(glm::ivec2(caster->getCoordX(), caster->getCoordY()));
+    shuffle(positions.begin(),positions.end(), default_random_engine(rd_key));
     int NB_targetSelected = 0;
-    for (const auto &target: effect_range) {
+    for (const auto &target: positions) {
         if (
             effect_instance->NB_Target != -1
             && NB_targetSelected == effect_instance->NB_Target
@@ -121,13 +127,15 @@ int EffectHandler::selectRandomTargetEmptyCells(EffectInstance* effect_instance)
 }
 
 int EffectHandler::selectRandomTargetNonEmptyCells(EffectInstance* effect_instance) {
-    vector<glm::ivec2> effect_range =
+    board_pattern* effect_range =
         static_cast<Pieces*>(effect_instance->caster_piece)
         ->getEffectRange(effect_instance->effect);
+    const auto * caster = static_cast<Pieces*>(effect_instance->caster_piece);
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
-    shuffle(effect_range.begin(), effect_range.end(), default_random_engine(rd_key));
+    std::vector<glm::ivec2> positions = effect_range->get_positions(glm::ivec2(caster->getCoordX(), caster->getCoordY()));
+    shuffle(positions.begin(),positions.end(), default_random_engine(rd_key));
     int NB_targetSelected = 0;
-    for (const auto &target: effect_range) {
+    for (const auto &target: positions) {
         if (
             effect_instance->NB_Target != -1
             && NB_targetSelected == effect_instance->NB_Target
@@ -180,11 +188,13 @@ bool EffectHandler::addEffectBehavior(const Effect_List effect, function<bool()>
     return effectBehaviors[effect]();
 }
 
-bool EffectHandler::cellIsInRange(const chessboard_cell* cell, EffectInstance* effect_instance) {
-    vector<glm::ivec2> effect_range =
+bool EffectHandler::cellIsInRange(const chessboard_cell* cell, const EffectInstance* effect_instance) {
+    board_pattern* effect_range =
         static_cast<Pieces*>(effect_instance->caster_piece)
         ->getEffectRange(effect_instance->effect);
-    for (const auto &target: effect_range)
+    const auto * caster = static_cast<Pieces*>(effect_instance->caster_piece);
+    std::vector<glm::ivec2> positions = effect_range->get_positions(glm::ivec2(caster->getCoordX(), caster->getCoordY()));
+    for (const auto &target: positions)
         if (cell->pos.x == target.x && cell->pos.y == target.y)
             return true;
     return false;
@@ -230,6 +240,12 @@ bool EffectHandler::configureEffectHandler(EffectInstance* effect_instance) {
                 getShieldEffect(effect_instance)
             );
         break;
+        case ALTERNATE_RANGE:
+            success = addEffectBehavior(
+                effect_instance->effect,
+                getAlternateRangeEffect(effect_instance)
+            );
+        break;
         case SUPP_RANGE:
             success = addEffectBehavior(
                 effect_instance->effect,
@@ -264,6 +280,12 @@ bool EffectHandler::configureEffectHandler(EffectInstance* effect_instance) {
             success = addEffectBehavior(
                 effect_instance->effect,
                 getSuppMoveEffect(effect_instance)
+            );
+        break;
+        case GIVING_AOE:
+            success = addEffectBehavior(
+                effect_instance->effect,
+                getGivingAOEEffect(effect_instance)
             );
         break;
         default:
@@ -417,6 +439,28 @@ function<bool()> EffectHandler::getShieldEffect(EffectInstance* effect_instance)
     };
 }
 
+function<bool()> EffectHandler::getAlternateRangeEffect(EffectInstance* effect_instance) {
+    return [effect_instance]() {
+        int NB_targetTouched = 0;
+        auto* event_spell_used = new EventSpellUsed(effect_instance);
+        auto* event_effect_applied = new EventEffectApply(effect_instance);
+        for (const auto &target: effect_instance->target_pieces) {
+            const auto piece = static_cast<Pieces*>(target);
+            NB_targetTouched++;
+            piece->addEffectStatus(effect_instance);
+            piece->addOverrideMove(alternate_pawn_moves);
+            event_effect_applied->addTargetPiece(piece);
+        }
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
+        if (success)
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
+        return success;
+    };
+}
+
+
 function<bool()> EffectHandler::getSuppRangeEffect(EffectInstance* effect_instance) {
     return [effect_instance]() {
         int NB_targetTouched = 0;
@@ -556,6 +600,27 @@ function<bool()> EffectHandler::getSuppMoveEffect(EffectInstance* effect_instanc
             piece->addEffectStatus(effect_instance);
             piece->goToPosition(static_cast<chessboard_cell*>(effect_instance->target_cells[0])->pos.x,
                 static_cast<chessboard_cell*>(effect_instance->target_cells[0])->pos.y,MOVE_SUPPLEMENTARY);
+            event_effect_applied->addTargetPiece(piece);
+        }
+        const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;
+        event_spell_used->setSuccess(success);
+        GameEngine::getInstance()->registerEvent(event_spell_used);
+        if (success)
+            GameEngine::getInstance()->registerEvent(event_effect_applied);
+        return success;
+    };
+}
+
+function<bool()> EffectHandler::getGivingAOEEffect(EffectInstance* effect_instance) {
+    return [effect_instance]() {
+        int NB_targetTouched = 0;
+        auto* event_spell_used = new EventSpellUsed(effect_instance);
+        auto* event_effect_applied = new EventEffectApply(effect_instance);
+        for (const auto &target: effect_instance->target_pieces) {
+            const auto piece = static_cast<Pieces*>(target);
+            NB_targetTouched++;
+            piece->addEffectStatus(effect_instance);
+            piece->setEffectRange(AOE, [piece]() { return cross_1_pattern; });
             event_effect_applied->addTargetPiece(piece);
         }
         const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;

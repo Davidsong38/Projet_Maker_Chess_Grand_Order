@@ -17,6 +17,7 @@
 #include <Medusa_Saber.h>
 #include <Nemo_Marine.h>
 #include <Sesshoin_Kiara.h>
+#include <Tamamo.h>
 #include <Ushiwakamaru.h>
 
 #include "Gilgamesh.h"
@@ -47,7 +48,7 @@ Characters_List choose_knight(bool isWhite, bool isRight) {
 }
 
 Characters_List choose_bishop(bool isWhite, bool isRight) {
-    int id_character = MERLIN;
+    int id_character = TAMAMO_NO_MAE;
     if constexpr (NOT_QUICK_TEST) {
         cout << "Choose" << (isWhite ? " White" : " Black") << " bishop"<< (isRight ? "Right" : "Left")<<" character: " << endl;
         cin >> id_character;
@@ -104,9 +105,9 @@ Pieces* get_piece(int x, int y, bool isWhite, Characters_List character) {
         //case ASTOLFO:
         //piece = new Astolfo(x,y,isWhite,character);
         //break;
-        //case TAMAMO_NO_MAE:
-        //piece = new Tanamo_No_Mae(x,y,isWhite,character);
-        //break;
+        case TAMAMO_NO_MAE:
+        piece = new Tamamo_No_Mae(x,y,isWhite,character);
+        break;
         case USHIWAKAMARU:
         piece = new Ushiwakamaru(x,y,isWhite,character);
         break;

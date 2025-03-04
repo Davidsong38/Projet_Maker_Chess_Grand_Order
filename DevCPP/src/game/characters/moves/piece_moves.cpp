@@ -6,7 +6,6 @@
 
 #include <board_pattern.h>
 #include <Chessboard.h>
-#include <game_cfg.h>
 #include <log.h>
 #include <GameEngine.h>
 
@@ -18,6 +17,7 @@ piece_move* queen_default_moves = new piece_move();
 piece_move* king_default_moves = new piece_move();
 piece_move* pawn_default_moves = new piece_move();
 
+piece_move* alternate_pawn_moves = new piece_move();
 piece_move* super_pawn_moves = new piece_move();
 piece_move* ushiwakamaru_moves = new piece_move();
 piece_move* kintoki_rider_buff_moves = new piece_move();
@@ -111,6 +111,20 @@ void init_moves() {
             }
         }
         return moves;
+    };
+
+    alternate_pawn_moves->name = "alternate_pawn_moves";
+    alternate_pawn_moves->get_positions = [](const glm::ivec2 pos) {
+        std::vector<glm::ivec2> moves;
+        const auto* piece = Chessboard::getInstance()->getPieceAt(pos.x, pos.y);
+        if (piece == nullptr) {
+            ltr_log_error("Request alternate_pawn_moves from nullptr piece position : ", pos.x, pos.y);
+            return moves;
+        }
+        if (piece->getIsWhite()){
+            return line_N_generic_pattern(pos, 2);
+        }
+        return line_S_generic_pattern(pos, 2);
     };
 
     super_pawn_moves->name = "super_pawn_moves";

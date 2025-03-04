@@ -19,6 +19,8 @@ protected :
 public:
     Sesshoin_Kiara(const int startX, const int startY, const bool white, const Characters_List hero)
     : Queen(startX, startY, white, hero)  {
+        defaultEffectsRanges[CHANGE_CONTROL] = [this](){return this->getEffectRange(CHANGE_CONTROL);};
+        defaultEffectsRanges[CHANGE_CONTROL_ADVANCE] = [this](){return this->getEffectRange(CHANGE_CONTROL_ADVANCE);};
         addAdditionalUIElement(
             kiaraTexture,
             glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
@@ -26,7 +28,7 @@ public:
         );
     }
 
-    [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
+    [[nodiscard]] board_pattern *getEffectRange(Effect_List effect) override;
     bool passive() override;
     bool canEvolve() override;
     bool evolvedForm() override;

@@ -7,13 +7,12 @@
 #include <GameEngine.h>
 #include "EffectHandler.h"
 
-vector<glm::ivec2> Sesshoin_Kiara::getEffectRange(const Effect_List effect) {
-    vector<glm::ivec2> effect_range;
+board_pattern *Sesshoin_Kiara::getEffectRange(const Effect_List effect) {
     if (effect == CHANGE_CONTROL_ADVANCE)
-        return square_pattern->get_positions(glm::ivec2(coordX, coordY));
+        return square_pattern;
     if (effect == CHANGE_CONTROL)
-        return cross_2_pattern->get_positions(glm::ivec2(coordX, coordY));
-    return effect_range;
+        return cross_2_pattern;
+    return getDefaultEffectsRanges();
 }
 
 bool Sesshoin_Kiara::SpellActivationCheck() {

@@ -13,6 +13,7 @@
 struct board_pattern {
     std::function<std::vector<glm::ivec2>(const glm::ivec2)> get_positions;
     std::string name{"Unnamed board_pattern"};
+    board_pattern* nextSizePattern = nullptr;
 };
 
 extern board_pattern* cross_pattern;
@@ -22,27 +23,39 @@ extern board_pattern* cross_3_pattern;
 
 extern board_pattern* x_cross_pattern;
 extern board_pattern* x_cross_1_pattern;
+extern board_pattern* x_cross_2_pattern;
 extern board_pattern* x_cross_3_pattern;
 
 extern board_pattern* star_pattern;
 extern board_pattern* star_1_pattern;
+extern board_pattern* star_2_pattern;
 extern board_pattern* star_3_pattern;
 
 extern board_pattern* square_pattern;
 extern board_pattern* square_1_pattern;
+extern board_pattern* square_2_pattern;
 extern board_pattern* square_3_pattern;
 
 extern board_pattern* checker_pattern;
 extern board_pattern* checker_1_pattern;
+extern board_pattern* checker_2_pattern;
 extern board_pattern* checker_3_pattern;
+extern board_pattern* checker_4_pattern;
+
 
 extern board_pattern* inverse_checker_2_pattern;
+extern board_pattern* inverse_checker_3_pattern;
+extern board_pattern* inverse_checker_4_pattern;
+
+
 
 extern board_pattern* knight_pattern;
 
 extern board_pattern* arcueid_buff_pattern;
 
 extern board_pattern* kintoki_rider_buff_pattern;
+
+extern board_pattern* nitocris_alter_spawn_pattern;
 
 
 extern board_pattern* scatter_N_pattern;

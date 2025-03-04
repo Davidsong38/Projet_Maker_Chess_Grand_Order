@@ -7,16 +7,12 @@
 #include <EffectHandler.h>
 #include <GameEngine.h>
 
-vector<glm::ivec2> Nitocris_Alter::getEffectRange(const Effect_List effect) {
-    vector<glm::ivec2> effect_range;
+board_pattern *Nitocris_Alter::getEffectRange(const Effect_List effect) {
     if (effect == SPAWN_PIECES)
-        return merge_patterns(
-            cross_2_pattern->get_positions(glm::ivec2(coordX, coordY)),
-            x_cross_1_pattern->get_positions(glm::ivec2(coordX, coordY))
-        );
+        return nitocris_alter_spawn_pattern;
     if (effect == KILLING)
-        return square_pattern->get_positions(glm::ivec2(coordX, coordY));
-    return effect_range;
+        return square_pattern;
+    return getDefaultEffectsRanges();
 }
 
 bool Nitocris_Alter::SpellActivationCheck() {

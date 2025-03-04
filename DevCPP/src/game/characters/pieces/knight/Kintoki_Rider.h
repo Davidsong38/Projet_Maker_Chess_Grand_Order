@@ -16,13 +16,14 @@ class Kintoki_Rider final : public Knight {
 public:
     Kintoki_Rider(const int startX, const int startY, const bool white, const Characters_List hero)
             : Knight(startX, startY, white, hero)  {
+        defaultEffectsRanges[SUPP_MOVE] = [this](){return this->getEffectRange(SUPP_MOVE);};
         addAdditionalUIElement(
             kintokiTexture,
             glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
             this
         );
     }
-    [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
+    [[nodiscard]] board_pattern *getEffectRange(Effect_List effect) override;
     bool passive() override;
     bool canEvolve() override;
     bool evolvedForm() override;

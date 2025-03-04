@@ -7,14 +7,13 @@
 #include <EffectHandler.h>
 #include <GameEngine.h>
 
-vector<glm::ivec2> Merlin::getEffectRange(const Effect_List effect) {
-    vector<glm::ivec2> effect_range;
+board_pattern *Merlin::getEffectRange(const Effect_List effect) {
     if (chooseSpell)
         if (effect == IMMUNITY_EFFECT || effect == IMMUNITY_AOE)
-            return square_pattern->get_positions(glm::ivec2(coordX, coordY));
+            return square_pattern;
     if (effect == IMMUNITY_EFFECT || effect == IMMUNITY_AOE)
-        return cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
-    return effect_range;
+        return cross_1_pattern;
+    return getDefaultEffectsRanges();
 }
 
 bool Merlin::SpellActivationCheck() {

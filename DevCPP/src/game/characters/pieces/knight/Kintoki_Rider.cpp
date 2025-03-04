@@ -9,11 +9,10 @@
 #include <GameEngine.h>
 
 
-vector<glm::ivec2> Kintoki_Rider::getEffectRange(const Effect_List effect) {
-    vector<glm::ivec2> effect_range;
+board_pattern *Kintoki_Rider::getEffectRange(const Effect_List effect) {
     if (effect == SUPP_MOVE)
-        return cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
-    return effect_range;
+        return cross_1_pattern;
+    return getDefaultEffectsRanges();
 }
 
 bool Kintoki_Rider::SpellActivationCheck() {

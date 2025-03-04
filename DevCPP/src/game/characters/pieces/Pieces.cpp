@@ -4,6 +4,7 @@
 
 #include "Pieces.h"
 
+#include <EffectHandler.h>
 #include <GameEngine.h>
 #include <iostream>
 #include <utility>
@@ -31,6 +32,8 @@ bool Pieces::hasThisEffect(const Effect_List chosenEffect) const {
             return true;
     return false;
 }
+
+
 
 
 void Pieces::updateEffectStatus() {
@@ -230,6 +233,23 @@ void Pieces::setPiecesOrigin(const Pieces_List pieces_origin) {
             ltr_log_error("Pieces::setPiecesOrigin: Unknown piece type : ", pieces_origin);
             this->default_piece_move = shinji_moves;
         break;
+    }
+}
+
+void Pieces::activateSpecialEffect() {
+    if (hasThisEffect(GIVING_AOE) && static_cast<Event*>(events.back())->eventType == EVENT_KILL) {
+        const int killType = static_cast<EventKill*>(events.back())->killType;
+        if (killType == KILL_NORMAL || killType == KILL_EN_PASSANT) {
+            auto *  effect_instance = new EffectInstance(
+            AOE,
+            this,
+            1,
+            1,
+            -1
+            );
+            EffectHandler::selectRandomTargetPieces(effect_instance);
+            EffectHandler::applyToTargets(effect_instance);
+        }
     }
 }
 
@@ -462,7 +482,7 @@ std::vector<void*> Pieces::getAllEffectUpdateCastedByMeEvent() {
     return selected_events;
 }
 
-std::vector<void*> Pieces::getAllDeathWithEffectCastedByMeEvent() {
+std::vector<void*> Pieces::getAllDeathWithEffectCastedByMe() {
     std::vector<void*> dead_list;
     for (auto* event_ptr : getAllEffectAppliedCastedByMeEvent()) {
         for (auto * dead : Chessboard::getInstance()->getDeadList()) {

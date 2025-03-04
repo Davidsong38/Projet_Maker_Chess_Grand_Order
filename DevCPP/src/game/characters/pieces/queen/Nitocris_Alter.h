@@ -20,6 +20,8 @@ class Nitocris_Alter final : public Queen{
 public:
     Nitocris_Alter(const int startX, const int startY, const bool white, const Characters_List hero)
             : Queen(startX, startY, white, hero)  {
+        defaultEffectsRanges[SPAWN_PIECES] = [this](){return this->getEffectRange(SPAWN_PIECES);};
+        defaultEffectsRanges[KILLING] = [this](){return this->getEffectRange(KILLING);};
         this->default_piece_move = inverted_shinji_moves;
         addAdditionalUIElement(
             nitocrisTexture,
@@ -28,7 +30,7 @@ public:
         );
     }
 
-    [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
+    [[nodiscard]] board_pattern *getEffectRange(Effect_List effect) override;
     bool passive() override;
     bool canEvolve() override;
     bool evolvedForm() override;

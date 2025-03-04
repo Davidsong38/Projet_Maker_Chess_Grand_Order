@@ -10,6 +10,7 @@
 #include <piece_moves.h>
 #include <RenderEngine.h>
 #include <string>
+#include <utility>
 #include <vector>
 #include <SpriteTarget.h>
 
@@ -37,14 +38,43 @@ protected:
     piece_move* default_piece_move = shinji_moves;
     piece_move* override_piece_move = nullptr;
 
+    unordered_map<Effect_List, function<board_pattern*()>> defaultEffectsRanges;
+
+
     vector<EffectInstance*> activeEffects ;
     std::vector<void*> events;
+    std::function<board_pattern*()> getDefaultEffectsRanges = [this](){ return checker_1_pattern; };
 public:
     bool selected = false;
 
     explicit Pieces(const int startX, const int startY, const bool white, const Characters_List hero, const Pieces_List pieces_root)
-    : coordX(startX), coordY(startY),isWhite(white) , character(hero) , pieces_origin(pieces_root), name(Characters_List_to_string[character]) {}
+    : coordX(startX), coordY(startY),isWhite(white) , character(hero) , pieces_origin(pieces_root), name(Characters_List_to_string[character]) {
+        defaultEffectsRanges[STUN]                      = getDefaultEffectsRanges;
+        defaultEffectsRanges[CHANGE_CONTROL]            = getDefaultEffectsRanges;
+        defaultEffectsRanges[CHANGE_CONTROL_ADVANCE]    = getDefaultEffectsRanges;
+        defaultEffectsRanges[AOE]                       = getDefaultEffectsRanges;
+        defaultEffectsRanges[GIVING_AOE]                = getDefaultEffectsRanges;
+        defaultEffectsRanges[SHIELD]                    = getDefaultEffectsRanges;
+        defaultEffectsRanges[IMMUNITY_EFFECT]           = getDefaultEffectsRanges;
+        defaultEffectsRanges[IMMUNITY_AOE]              = getDefaultEffectsRanges;
+        defaultEffectsRanges[SPAWN_PIECES]              = getDefaultEffectsRanges;
+        defaultEffectsRanges[ONE_MORE_MOVE]             = getDefaultEffectsRanges;
+        defaultEffectsRanges[SUPP_MOVE]                 = getDefaultEffectsRanges;
+        defaultEffectsRanges[ALTERNATE_RANGE]           = getDefaultEffectsRanges;
+        defaultEffectsRanges[SUPP_RANGE]                = getDefaultEffectsRanges;
+        defaultEffectsRanges[MOVE_CHANGING]             = getDefaultEffectsRanges;
+        defaultEffectsRanges[SWITCHING_PLACE]           = getDefaultEffectsRanges;
+        defaultEffectsRanges[IMMORTALITY]               = getDefaultEffectsRanges;
+        defaultEffectsRanges[SACRIFICE]                 = getDefaultEffectsRanges;
+        defaultEffectsRanges[KILLING]                   = getDefaultEffectsRanges;
+        defaultEffectsRanges[ALLY_TELEPORT]             = getDefaultEffectsRanges;
+        defaultEffectsRanges[ENEMY_TELEPORT]            = getDefaultEffectsRanges;
+        defaultEffectsRanges[EVOLVE]                    = getDefaultEffectsRanges;
+        defaultEffectsRanges[SUPP_LUCK]                 = getDefaultEffectsRanges;
+    }
 
+    [[nodiscard]] unordered_map<Effect_List, function<board_pattern *()>> getDefaultEffectsRangesPattern() const {return defaultEffectsRanges;}
+    void setEffectRange(Effect_List effect, std::function<board_pattern*()> newRange) {defaultEffectsRanges[effect] = std::move(newRange);}
     ~Pieces() override = default;;
 
     [[nodiscard]] piece_move* getCurrentPieceMove() const;
@@ -65,6 +95,9 @@ public:
     [[nodiscard]] bool isKing() const {return pieces_origin == KING;}
 
     void setPiecesOrigin(Pieces_List pieces_origin);
+
+    void activateSpecialEffect();
+
     [[nodiscard]] int getPiecesOrigin() const {return pieces_origin;}
     [[nodiscard]] Characters_List getCharacter() const {return character;}
     [[nodiscard]] bool getIsWhite() const {return isWhite;}
@@ -81,7 +114,7 @@ public:
     [[nodiscard]] int getPieceGameMode() const {return pieceGameMode;}
     virtual bool togglePieceGameMode() {return false;}
     void displayEffects() const;
-    [[nodiscard]] virtual vector<glm::ivec2> getEffectRange(Effect_List effect) {return square_pattern->get_positions(glm::ivec2(coordX,coordY));}
+    [[nodiscard]] virtual board_pattern *getEffectRange(Effect_List effect) {return square_pattern;}
     [[nodiscard]] bool hasThisEffect(Effect_List chosenEffect) const;
     [[nodiscard]] vector<EffectInstance*> getActive_effects() const {return activeEffects;}
     virtual bool passive() {return false;}
@@ -127,7 +160,7 @@ public:
     [[nodiscard]] std::vector<void*> getAllEffectUpdateEvents();
     [[nodiscard]] std::vector<void*> getAllEffectUpdateCastedByMeEvent();
 
-    std::vector<void *> getAllDeathWithEffectCastedByMeEvent();
+    std::vector<void *> getAllDeathWithEffectCastedByMe();
 
     // SpriteTarget
     float getSpriteX() override {return (-0.875f + 0.25f * static_cast<float>(coordY)) * RenderEngine::getWindowInverseAspectRatio();}

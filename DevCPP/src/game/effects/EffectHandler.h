@@ -24,7 +24,7 @@ public:
     static int selectRandomTargetEmptyCells(EffectInstance *effect_instance);
     static int selectRandomTargetNonEmptyCells(EffectInstance *effect_instance);
     static bool selectManualTargetCells(EffectInstance *effect_instance, selection_request_type request);
-    static bool cellIsInRange(const chessboard_cell* cell, EffectInstance *effect_instance);
+    static bool cellIsInRange(const chessboard_cell* cell, const EffectInstance *effect_instance);
 
     static bool applyToTargets(EffectInstance *effect_instance);
     static bool applyBuffToSelf(EffectInstance *effect_instance);
@@ -42,12 +42,16 @@ private:
     static function<bool()> getChangeControlEffect(EffectInstance* effect_instance);
     static function<bool()> getImmunityEffect(EffectInstance* effect_instance);
     static function<bool()> getShieldEffect(EffectInstance* effect_instance);
+
+    static function<bool()> getAlternateRangeEffect(EffectInstance *effect_instance);
+
     static function<bool()> getSuppRangeEffect(EffectInstance* effect_instance);
     static function<bool()> getKillEffect(EffectInstance* effect_instance);
     static function<bool()> getSpawnPieceEffect(EffectInstance* effect_instance);
     static function<bool()> getOneMoreMoveEffect(EffectInstance* effect_instance);
     static function<bool()> getMoveChangingEffect(EffectInstance *effect_instance);
     static function<bool()> getSuppMoveEffect(EffectInstance *effect_instance);
+    static function<bool()> getGivingAOEEffect(EffectInstance *effect_instance);
 };
 
 

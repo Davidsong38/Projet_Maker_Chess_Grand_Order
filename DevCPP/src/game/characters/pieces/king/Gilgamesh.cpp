@@ -9,11 +9,10 @@
 #include "GameEngine.h"
 
 
-vector<glm::ivec2> Gilgamesh::getEffectRange(const Effect_List effect) {
-    vector<glm::ivec2> effect_range;
+board_pattern *Gilgamesh::getEffectRange(const Effect_List effect) {
     if (effect == MOVE_CHANGING)
-        return square_pattern->get_positions(glm::ivec2(coordX, coordY));
-    return effect_range;
+        return square_pattern;
+    return getDefaultEffectsRanges();
 }
 
 bool Gilgamesh::SpellActivationCheck() {

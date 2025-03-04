@@ -20,6 +20,7 @@ class Gilgamesh final: public King{
 public:
     Gilgamesh(const int startX, const int startY, const bool white, const Characters_List hero)
             : King(startX, startY, white, hero)  {
+        defaultEffectsRanges[MOVE_CHANGING] = [this](){return this->getEffectRange(MOVE_CHANGING);};
         addAdditionalUIElement(
             gilgameshTexture,
             glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
@@ -27,7 +28,7 @@ public:
         );
     }
 
-    [[nodiscard]] vector<glm::ivec2> getEffectRange(Effect_List effect) override;
+    [[nodiscard]] board_pattern *getEffectRange(Effect_List effect) override;
     bool passive() override;
     bool canEvolve() override;
     bool evolvedForm() override;

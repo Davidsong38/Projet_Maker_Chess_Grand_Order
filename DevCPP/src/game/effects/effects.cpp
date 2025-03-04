@@ -24,6 +24,7 @@ void loadEffectList() {
     Effect_List_to_string[SPAWN_PIECES] = "spawnPieces";
     Effect_List_to_string[ONE_MORE_MOVE] = "oneMoreTurn";
     Effect_List_to_string[SUPP_MOVE] = "suppMove";
+    Effect_List_to_string[ALTERNATE_RANGE] = "alternateRange";
     Effect_List_to_string[SUPP_RANGE] = "suppRange";
     Effect_List_to_string[MOVE_CHANGING] = "moveChanging";
     Effect_List_to_string[SWITCHING_PLACE] = "switchingPlace";
@@ -46,6 +47,7 @@ void loadEffectList() {
     isBuff_List[SPAWN_PIECES] = true;
     isBuff_List[ONE_MORE_MOVE] = true;
     isBuff_List[SUPP_MOVE] = true;
+    isBuff_List[ALTERNATE_RANGE] = true;
     isBuff_List[SUPP_RANGE] = true;
     isBuff_List[MOVE_CHANGING] = true;
     isBuff_List[SWITCHING_PLACE] = true;
@@ -68,6 +70,7 @@ void loadEffectList() {
     isTriggerEffect_List[SPAWN_PIECES] = true;
     isTriggerEffect_List[ONE_MORE_MOVE] = true;
     isTriggerEffect_List[SUPP_MOVE] = true;
+    isTriggerEffect_List[ALTERNATE_RANGE] = false;
     isTriggerEffect_List[SUPP_RANGE] = false;
     isTriggerEffect_List[MOVE_CHANGING] = false;
     isTriggerEffect_List[SWITCHING_PLACE] = true;

@@ -8,15 +8,15 @@
 #include <GameEngine.h>
 
 
-vector<glm::ivec2> Xu_Fu::getEffectRange(const Effect_List effect) {
+board_pattern *Xu_Fu::getEffectRange(const Effect_List effect) {
     vector<glm::ivec2> effect_range;
     if (effect == IMMORTALITY)
-        return cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
+        return cross_1_pattern;
     if (effect == SHIELD)
-        return cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
+        return cross_1_pattern;
     if (effect == SUPP_RANGE)
-        return cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
-    return effect_range;
+        return cross_1_pattern;
+    return getDefaultEffectsRanges();
 }
 
 bool Xu_Fu::SpellActivationCheck() {
@@ -36,11 +36,11 @@ bool Xu_Fu::passive() {
     if (const int chance = rand() % 100; chance >= shieldChance)
         return true;
     auto *  effect_instance = new EffectInstance(
-        SHIELD,
+        GIVING_AOE,
         this,
         -1,
         1,
-        1
+        -1
     );
     effect_instance->check_condition = [](const void* cell) {
         const auto* piece = static_cast<const chessboard_cell*>(cell)->piece;

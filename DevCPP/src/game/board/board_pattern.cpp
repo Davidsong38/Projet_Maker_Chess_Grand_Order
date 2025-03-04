@@ -15,26 +15,35 @@ board_pattern* cross_3_pattern = new board_pattern();
 
 board_pattern* x_cross_pattern = new board_pattern();
 board_pattern* x_cross_1_pattern = new board_pattern();
+board_pattern* x_cross_2_pattern = new board_pattern();
 board_pattern* x_cross_3_pattern = new board_pattern();
 
 board_pattern* star_pattern = new board_pattern();
 board_pattern* star_1_pattern = new board_pattern();
+board_pattern* star_2_pattern = new board_pattern();
 board_pattern* star_3_pattern = new board_pattern();
 
 board_pattern* square_pattern = new board_pattern();
 board_pattern* square_1_pattern = new board_pattern();
+board_pattern* square_2_pattern = new board_pattern();
 board_pattern* square_3_pattern = new board_pattern();
 
 board_pattern* checker_pattern = new board_pattern();
 board_pattern* checker_1_pattern = new board_pattern();
+board_pattern* checker_2_pattern = new board_pattern();
 board_pattern* checker_3_pattern = new board_pattern();
+board_pattern* checker_4_pattern = new board_pattern();
+
 
 board_pattern* inverse_checker_2_pattern = new board_pattern();
+board_pattern* inverse_checker_3_pattern = new board_pattern();
+board_pattern* inverse_checker_4_pattern = new board_pattern();
 
 board_pattern* knight_pattern = new board_pattern();
 
 board_pattern* arcueid_buff_pattern = new board_pattern();
 board_pattern* kintoki_rider_buff_pattern = new board_pattern();
+board_pattern* nitocris_alter_spawn_pattern = new board_pattern();
 
 board_pattern* scatter_N_pattern = new board_pattern();
 board_pattern* scatter_S_pattern = new board_pattern();
@@ -53,11 +62,13 @@ void init_board_patterns() {
     };
 
     cross_1_pattern->name = "cross_1_pattern";
+    cross_1_pattern->nextSizePattern = cross_2_pattern;
     cross_1_pattern->get_positions = [](const glm::ivec2 pos) {
         return cross_generic_pattern(pos, 1);
     };
 
     cross_2_pattern->name = "cross_2_pattern";
+    cross_2_pattern->nextSizePattern = cross_3_pattern;
     cross_2_pattern->get_positions = [](const glm::ivec2 pos) {
         return cross_generic_pattern(pos, 2);
     };
@@ -73,8 +84,15 @@ void init_board_patterns() {
     };
 
     x_cross_1_pattern->name = "x_cross_1_pattern";
+    x_cross_1_pattern->nextSizePattern = x_cross_2_pattern;
     x_cross_1_pattern->get_positions = [](const glm::ivec2 pos) {
         return x_cross_generic_pattern(pos, 1);
+    };
+
+    x_cross_2_pattern->name = "x_cross_2_pattern";
+    x_cross_2_pattern->nextSizePattern = x_cross_3_pattern;
+    x_cross_2_pattern->get_positions = [](const glm::ivec2 pos) {
+        return x_cross_generic_pattern(pos, 2);
     };
 
     x_cross_3_pattern->name = "x_cross_3_pattern";
@@ -88,8 +106,15 @@ void init_board_patterns() {
     };
 
     star_1_pattern->name = "star_1_pattern";
+    star_1_pattern->nextSizePattern = star_2_pattern;
     star_1_pattern->get_positions = [](const glm::ivec2 pos) {
         return star_generic_pattern(pos, 1);
+    };
+
+    star_2_pattern->name = "star_2_pattern";
+    star_2_pattern->nextSizePattern = star_3_pattern;
+    star_2_pattern->get_positions = [](const glm::ivec2 pos) {
+        return star_generic_pattern(pos, 2);
     };
 
     star_3_pattern->name = "star_3_pattern";
@@ -103,8 +128,15 @@ void init_board_patterns() {
     };
 
     square_1_pattern->name = "square_1_pattern";
+    square_1_pattern->nextSizePattern = square_2_pattern;
     square_1_pattern->get_positions = [](const glm::ivec2 pos) {
         return square_generic_pattern(pos, 1);
+    };
+
+    square_2_pattern->name = "square_2_pattern";
+    square_2_pattern->nextSizePattern = square_3_pattern;
+    square_2_pattern->get_positions = [](const glm::ivec2 pos) {
+        return square_generic_pattern(pos, 2);
     };
 
     square_3_pattern->name = "square_3_pattern";
@@ -118,18 +150,43 @@ void init_board_patterns() {
     };
 
     checker_1_pattern->name = "checker_1_pattern";
+    checker_1_pattern->nextSizePattern = inverse_checker_2_pattern;
     checker_1_pattern->get_positions = [](const glm::ivec2 pos) {
         return checker_generic_pattern(pos, 1);
     };
 
+    checker_2_pattern->name = "checker_2_pattern";
+    checker_2_pattern->nextSizePattern = inverse_checker_3_pattern;
+    checker_2_pattern->get_positions = [](const glm::ivec2 pos) {
+        return checker_generic_pattern(pos, 2);
+    };
+
     checker_3_pattern->name = "checker_3_pattern";
+    checker_3_pattern->nextSizePattern = inverse_checker_4_pattern;
     checker_3_pattern->get_positions = [](const glm::ivec2 pos) {
         return checker_generic_pattern(pos, 3);
     };
 
+    checker_4_pattern->name = "checker_4_pattern";
+    checker_4_pattern->get_positions = [](const glm::ivec2 pos) {
+        return checker_generic_pattern(pos, 4);
+    };
+
     inverse_checker_2_pattern->name = "inverse_checker_2_pattern";
+    inverse_checker_2_pattern->nextSizePattern = checker_3_pattern;
     inverse_checker_2_pattern->get_positions = [](const glm::ivec2 pos) {
         return inverse_checker_generic_pattern(pos, 2);
+    };
+
+    inverse_checker_3_pattern->name = "inverse_checker_3_pattern";
+    inverse_checker_3_pattern->nextSizePattern = checker_4_pattern;
+    inverse_checker_3_pattern->get_positions = [](const glm::ivec2 pos) {
+        return inverse_checker_generic_pattern(pos, 3);
+    };
+
+    inverse_checker_4_pattern->name = "inverse_checker_4_pattern";
+    inverse_checker_4_pattern->get_positions = [](const glm::ivec2 pos) {
+        return inverse_checker_generic_pattern(pos, 4);
     };
 
     knight_pattern->name = "knight_pattern";
@@ -149,6 +206,14 @@ void init_board_patterns() {
         return merge_patterns(
             knight_global_pattern(pos),
             x_cross_generic_pattern(pos, Chessboard::getInstance()->getSize())
+        );
+    };
+
+    nitocris_alter_spawn_pattern->name = "nitocris_alter_spawn_pattern";
+    nitocris_alter_spawn_pattern->get_positions = [](const glm::ivec2 pos) {
+        return merge_patterns(
+            x_cross_generic_pattern(pos,1),
+            cross_generic_pattern(pos,2)
         );
     };
 

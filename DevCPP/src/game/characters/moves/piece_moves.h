@@ -26,6 +26,7 @@ extern piece_move* queen_default_moves;
 extern piece_move* king_default_moves;
 extern piece_move* pawn_default_moves;
 
+extern piece_move* alternate_pawn_moves;
 extern piece_move* super_pawn_moves;
 extern piece_move* ushiwakamaru_moves;
 extern piece_move* arceuid_buff_move;

@@ -8,18 +8,17 @@
 
 #include "EffectHandler.h"
 
-vector<glm::ivec2> Medusa_Saber::getEffectRange(const Effect_List effect) {
-    vector<glm::ivec2> effect_range;
+board_pattern *Medusa_Saber::getEffectRange(const Effect_List effect) {
     if (evolved) {
         if (effect == STUN)
-            return cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
+            return cross_1_pattern;
         if (effect == AOE)
-            return x_cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
+            return x_cross_1_pattern;
     } else {
         if (effect == STUN)
-            return x_cross_1_pattern->get_positions(glm::ivec2(coordX, coordY));
+            return x_cross_1_pattern;
     }
-    return effect_range;
+    return getDefaultEffectsRanges();
 }
 
 bool Medusa_Saber::SpellActivationCheck() {

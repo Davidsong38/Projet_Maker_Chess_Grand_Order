@@ -46,6 +46,7 @@ target_sources(Chess_Grand_Order PRIVATE
         src/game/characters/pieces/king/Gilgamesh.cpp
         src/game/characters/pieces/knight/Kintoki_Rider.cpp
         src/game/characters/pieces/queen/Kukulkan.cpp
+        src/game/characters/pieces/bishop/Tamamo.cpp
         src/game/characters/moves/piece_moves.cpp
         src/game/effects/effects.cpp
         src/game/effects/EffectHandler.cpp

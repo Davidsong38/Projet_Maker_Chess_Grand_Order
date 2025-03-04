@@ -7,34 +7,33 @@
 #include <EffectHandler.h>
 #include <GameEngine.h>
 
-vector<glm::ivec2> Artoria::getEffectRange(const Effect_List effect) {
-    vector<glm::ivec2> effect_range;
+board_pattern *Artoria::getEffectRange(const Effect_List effect) {
     const auto lastMoveEvent = static_cast<const EventMove*>(getLastMoveEvent());
     if (lastMoveEvent == nullptr) {
         ltr_log_warn("Artoria::getEffectRange: hasn't moved yet");
-        return star_pattern->get_positions(glm::ivec2(coordX, coordY));
+        return star_pattern;
     }
     const glm::ivec2 lastPos = lastMoveEvent->getStartPos();
     ltr_log_info("Artoria::getEffectRange: lastMoveEvent->getStartPos() : ", lastPos.x, " ", lastPos.y, " coord : ", coordX, " ", coordY);
     if (effect == AOE) {
         if (lastPos.x < coordX && lastPos.y < coordY)
-            return scatter_SE_pattern->get_positions(glm::ivec2(coordX, coordY));
+            return scatter_SE_pattern;
         if (lastPos.x < coordX && lastPos.y == coordY)
-            return scatter_S_pattern->get_positions(glm::ivec2(coordX, coordY));
+            return scatter_S_pattern;
         if (lastPos.x < coordX && lastPos.y > coordY)
-            return scatter_SW_pattern->get_positions(glm::ivec2(coordX, coordY));
+            return scatter_SW_pattern;
         if (lastPos.x == coordX && lastPos.y < coordY)
-            return scatter_E_pattern->get_positions(glm::ivec2(coordX, coordY));
+            return scatter_E_pattern;
         if (lastPos.x == coordX && lastPos.y > coordY)
-            return scatter_W_pattern->get_positions(glm::ivec2(coordX, coordY));
+            return scatter_W_pattern;
         if (lastPos.x > coordX && lastPos.y < coordY)
-            return scatter_NE_pattern->get_positions(glm::ivec2(coordX, coordY));
+            return scatter_NE_pattern;
         if (lastPos.x > coordX && lastPos.y == coordY)
-            return scatter_N_pattern->get_positions(glm::ivec2(coordX, coordY));
+            return scatter_N_pattern;
         if (lastPos.x > coordX && lastPos.y > coordY)
-            return scatter_NW_pattern->get_positions(glm::ivec2(coordX, coordY));
+            return scatter_NW_pattern;
     }
-    return effect_range;
+    return getDefaultEffectsRanges();
 }
 
 bool Artoria::SpellActivationCheck() {

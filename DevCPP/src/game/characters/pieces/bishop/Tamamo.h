@@ -1,9 +1,11 @@
 //
-// Created by Megaport on 19/02/2025.
+// Created by david on 03/03/2025.
 //
 
-#ifndef MERLIN_H
-#define MERLIN_H
+#ifndef TAMAMO_H
+#define TAMAMO_H
+
+
 
 #include <Pieces.h>
 #include <RenderEngine.h>
@@ -12,17 +14,17 @@
 #include <uiElements.h>
 
 
-class Merlin final : public Bishop {
+class Tamamo_No_Mae final : public Bishop {
     protected :
         bool chooseSpell{false}, passiveUsed{false};
         bool MerlinPowerON{false};
 public:
-    Merlin(const int startX, const int startY, const bool white, const Characters_List hero)
+    Tamamo_No_Mae(const int startX, const int startY, const bool white, const Characters_List hero)
             : Bishop(startX, startY, white, hero) {
-        defaultEffectsRanges[IMMUNITY_AOE] = [this](){return this->getEffectRange(IMMUNITY_AOE);};
-        defaultEffectsRanges[IMMUNITY_EFFECT] = [this](){return this->getEffectRange(IMMUNITY_EFFECT);};
+        defaultEffectsRanges[ALTERNATE_RANGE] = [this](){return this->getEffectRange(ALTERNATE_RANGE);};
+        defaultEffectsRanges[GIVING_AOE] = [this](){return this->getEffectRange(GIVING_AOE);};
         addAdditionalUIElement(
-            merlinTexture,
+            tanamoTexture,
             glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
             this
         );
@@ -37,4 +39,5 @@ public:
 
 
 
-#endif //MERLIN_H
+
+#endif //TAMAMO_H
