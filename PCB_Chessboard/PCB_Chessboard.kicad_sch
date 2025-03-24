@@ -1,0 +1,266 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "a447b29c-a552-49ae-9d58-ae219d627e87")
+	(paper "A4")
+	(lib_symbols)
+	(sheet
+		(at 22.86 19.05)
+		(size 60.96 64.77)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "200e1465-6723-4816-8437-2badde05a71c")
+		(property "Sheetname" "CLRC66303HNY"
+			(at 22.86 18.3384 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "CLRC66303HNY.kicad_sch"
+			(at 22.86 84.4046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "PCB_Chessboard"
+				(path "/a447b29c-a552-49ae-9d58-ae219d627e87"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 173.99 20.32)
+		(size 54.61 63.5)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "50c71c53-9f15-433c-8502-b42c3809cc39")
+		(property "Sheetname" "Expander MCP23017"
+			(at 173.99 19.6084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Expander_MCP23017.kicad_sch"
+			(at 173.99 84.4046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "PCB_Chessboard"
+				(path "/a447b29c-a552-49ae-9d58-ae219d627e87"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 95.25 19.05)
+		(size 66.04 64.77)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "588ad0a2-734f-4df9-bfc4-d7e4281accec")
+		(property "Sheetname" "Multiplexor CD4051"
+			(at 95.25 18.3384 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Multiplexor_CD4051.kicad_sch"
+			(at 95.25 84.4046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "PCB_Chessboard"
+				(path "/a447b29c-a552-49ae-9d58-ae219d627e87"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 96.52 104.14)
+		(size 50.8 52.07)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "7a88c673-09e5-42e3-9d27-a1a6283124ee")
+		(property "Sheetname" "Connector"
+			(at 96.52 103.4284 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Connector.kicad_sch"
+			(at 96.52 156.7946 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "PCB_Chessboard"
+				(path "/a447b29c-a552-49ae-9d58-ae219d627e87"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 171.45 102.87)
+		(size 57.15 53.34)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "8969e6ae-4980-49ab-a809-f2b44f0b6c0e")
+		(property "Sheetname" "LED WS2812B"
+			(at 171.45 102.1584 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "LED_WS2812B.kicad_sch"
+			(at 171.45 156.7946 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "PCB_Chessboard"
+				(path "/a447b29c-a552-49ae-9d58-ae219d627e87"
+					(page "7")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 24.13 104.14)
+		(size 58.42 53.34)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "a3e5427d-f4c8-4419-98b3-41760049d802")
+		(property "Sheetname" "Rasberry Pi"
+			(at 24.13 103.4284 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Rasberry_Pi.kicad_sch"
+			(at 24.13 158.0646 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "PCB_Chessboard"
+				(path "/a447b29c-a552-49ae-9d58-ae219d627e87"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
