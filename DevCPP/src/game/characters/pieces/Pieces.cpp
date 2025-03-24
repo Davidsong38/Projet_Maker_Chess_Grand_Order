@@ -33,7 +33,12 @@ bool Pieces::hasThisEffect(const Effect_List chosenEffect) const {
     return false;
 }
 
-
+EffectInstance* Pieces::getEffectInstanceOf(Effect_List effect) {
+    for (const auto& e : activeEffects)
+        if (e->effect == effect)
+            return e;
+    return nullptr;
+}
 
 
 void Pieces::updateEffectStatus() {
@@ -240,18 +245,15 @@ void Pieces::activateSpecialEffect() {
     if (hasThisEffect(GIVING_AOE) && static_cast<Event*>(events.back())->eventType == EVENT_KILL) {
         const int killType = static_cast<EventKill*>(events.back())->killType;
         if (killType == KILL_NORMAL || killType == KILL_EN_PASSANT) {
-            auto *  effect_instance = new EffectInstance(
-            AOE,
-            this,
-            1,
-            1,
-            -1
-            );
+            auto *effect_instance = static_cast<Pieces*>(getEffectInstanceOf(GIVING_AOE)->caster_piece)->getEffectInstanceGiven(AOE);
             EffectHandler::selectRandomTargetPieces(effect_instance);
             EffectHandler::applyToTargets(effect_instance);
             activateEffect(AOE);
+            activateEffect(GIVING_AOE);
             CheckEffectAmount(AOE);
-            defaultEffectsRanges[AOE] = [this](){return square_pattern; };
+            CheckEffectAmount(GIVING_AOE);
+            if (!hasThisEffect(GIVING_AOE))
+                defaultEffectsRanges[AOE] = [this](){return square_pattern; };
         }
     }
 }

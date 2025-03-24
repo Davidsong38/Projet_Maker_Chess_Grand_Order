@@ -29,12 +29,14 @@ public:
             this
         );
     }
-
+    [[nodiscard]] EffectInstance *getEffectInstanceGiven(Effect_List effect) override;
+    [[nodiscard]] board_pattern *getEffectRangeGiven(Effect_List effect) override;
     [[nodiscard]] board_pattern *getEffectRange(Effect_List effect) override;
     bool passive() override;
     bool canEvolve() override;
     bool evolvedForm() override;
     bool SpellActivationCheck() override;
+
 };
 
 

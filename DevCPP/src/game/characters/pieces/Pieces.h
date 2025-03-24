@@ -117,12 +117,16 @@ public:
     virtual bool togglePieceGameMode() {return false;}
     void displayEffects() const;
     [[nodiscard]] virtual board_pattern *getEffectRange(Effect_List effect) {return square_pattern;}
+    [[nodiscard]] virtual board_pattern *getEffectRangeGiven(Effect_List effect) {return square_pattern;}
+    [[nodiscard]] virtual EffectInstance *getEffectInstanceGiven(Effect_List effect) {return new EffectInstance(AOE,this,-1,3,-1);}
     [[nodiscard]] bool hasThisEffect(Effect_List chosenEffect) const;
+    EffectInstance *getEffectInstanceOf(Effect_List effect);
     [[nodiscard]] vector<EffectInstance*> getActive_effects() const {return activeEffects;}
     virtual bool passive() {return false;}
     virtual bool canEvolve() {return false;}
     virtual bool evolvedForm() {return false;}
     virtual bool SpellActivationCheck() {return true;}
+
 
     void addEffectStatus(const EffectInstance* effect_instance) {deleteEffect(effect_instance->effect); activeEffects.emplace_back(new EffectInstance(*effect_instance));}
     void updateEffectStatus();

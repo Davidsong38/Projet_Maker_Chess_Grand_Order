@@ -14,6 +14,23 @@ board_pattern *Tamamo_No_Mae::getEffectRange(const Effect_List effect) {
     return getDefaultEffectsRanges();
 }
 
+board_pattern *Tamamo_No_Mae::getEffectRangeGiven(const Effect_List effect) {
+    if (effect == AOE)
+        return cross_1_pattern;
+    return getDefaultEffectsRanges();
+}
+
+EffectInstance *Tamamo_No_Mae::getEffectInstanceGiven(Effect_List effect) {
+    return new EffectInstance(
+            AOE,
+            this,
+            -1,
+            1,
+            -1
+            );
+
+}
+
 bool Tamamo_No_Mae::SpellActivationCheck() {
     if (!evolved)
         passive();
@@ -62,7 +79,7 @@ bool Tamamo_No_Mae::evolvedForm() {
             GIVING_AOE,
             this,
             -1,
-            1,
+            2,
             -1
         );
         effect_instance->check_condition = [](const void* cell) {

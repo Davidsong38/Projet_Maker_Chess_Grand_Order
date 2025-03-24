@@ -624,7 +624,8 @@ function<bool()> EffectHandler::getGivingAOEEffect(EffectInstance* effect_instan
             const auto piece = static_cast<Pieces*>(target);
             NB_targetTouched++;
             piece->addEffectStatus(effect_instance);
-            piece->setEffectRange(AOE, [piece]() { return cross_1_pattern; });
+            auto caster = static_cast<Pieces*>(effect_instance->caster_piece);
+            piece->setEffectRange(AOE, [piece,caster]() { return caster->getEffectRangeGiven(AOE); });
             event_effect_applied->addTargetPiece(piece);
         }
         const bool success = NB_targetTouched > 0 || !effect_instance->requires_hitting_something;

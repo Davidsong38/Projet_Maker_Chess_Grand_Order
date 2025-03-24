@@ -32,11 +32,10 @@
   <component name="ChangeListManager">
     <list default="true" id="5ba82fa2-512b-4253-af3b-1ba77aac3bc6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/Pieces.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Tamamo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Tamamo.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Tamamo.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/characters/pieces/bishop/Tamamo.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/effects/EffectHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,17 +52,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
@@ -223,7 +211,11 @@
       <workItem from="1741004696326" duration="23480000" />
       <workItem from="1741040916305" duration="12541000" />
       <workItem from="1741087446969" duration="1865000" />
-      <workItem from="1741114210807" duration="7537000" />
+      <workItem from="1741114210807" duration="7564000" />
+      <workItem from="1741262210087" duration="2747000" />
+      <workItem from="1741266532348" duration="4717000" />
+      <workItem from="1741271537466" duration="3987000" />
+      <workItem from="1742677337651" duration="1748000" />
     </task>
     <servers />
   </component>
