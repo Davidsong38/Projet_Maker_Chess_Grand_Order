@@ -2590,6 +2590,50 @@
 	)
 	(global_label "LED.DIN"
 		(shape input)
+		(at 200.66 105.41 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "00fd861c-06d1-4da7-89c7-cd796327c6b5")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 190.4176 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "SCL"
+		(shape input)
+		(at 200.66 95.25 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "098989b9-a9f7-4a2f-afcd-d715c6700e67")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 194.1672 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "LED.DIN"
+		(shape input)
 		(at 255.27 46.99 180)
 		(fields_autoplaced yes)
 		(effects
@@ -2742,50 +2786,6 @@
 			)
 		)
 	)
-	(global_label "GPIO04"
-		(shape input)
-		(at 200.66 110.49 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "5207166a-69b0-4df4-8354-a550021f3ab8")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 190.7805 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "SCL"
-		(shape input)
-		(at 200.66 102.87 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "59055ac8-c220-40fc-9fbb-a61af5fe127f")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 194.1672 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "LED.DIN"
 		(shape input)
 		(at 254 76.2 180)
@@ -2799,6 +2799,28 @@
 		(uuid "5998ea9a-360b-4389-9866-8e0cf1ec976f")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 243.7576 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "GPIO17"
+		(shape input)
+		(at 200.66 110.49 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "622d8bfa-e35a-42d6-b4d1-010760d67cd8")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 190.7805 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2874,28 +2896,6 @@
 			)
 		)
 	)
-	(global_label "GPIO27"
-		(shape input)
-		(at 200.66 113.03 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "8731d44d-ebce-4cd0-b38a-ea1b2d3a1215")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 190.7805 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "GPIO04"
 		(shape input)
 		(at 255.27 49.53 180)
@@ -2940,6 +2940,28 @@
 			)
 		)
 	)
+	(global_label "GPIO27"
+		(shape input)
+		(at 200.66 113.03 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "94ecde3f-3728-4efa-ab6b-47c133297016")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 190.7805 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "LED.DIN"
 		(shape input)
 		(at 60.96 69.85 180)
@@ -2962,9 +2984,9 @@
 			)
 		)
 	)
-	(global_label "LED.DIN"
+	(global_label "GPIO22"
 		(shape input)
-		(at 200.66 105.41 180)
+		(at 200.66 107.95 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -2972,9 +2994,31 @@
 			)
 			(justify right)
 		)
-		(uuid "99acebc2-5d36-432b-a4dc-f35e2fda04d0")
+		(uuid "97887ff4-f448-49cf-8468-278bc0cc08c6")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 190.4176 105.41 0)
+			(at 190.7805 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "SDA"
+		(shape input)
+		(at 200.66 92.71 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a2331b85-5898-4b62-8ece-c364adb7e4e6")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 194.1067 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3050,28 +3094,6 @@
 			)
 		)
 	)
-	(global_label "SDA"
-		(shape input)
-		(at 200.66 100.33 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "ac0f16b1-3729-4674-9d99-6fbecf78173f")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 194.1067 100.33 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "SCL"
 		(shape input)
 		(at 146.05 67.31 0)
@@ -3112,50 +3134,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "GPIO17"
-		(shape input)
-		(at 200.66 107.95 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "c839827d-e720-4d69-8db0-e730d524b960")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 190.7805 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "GPIO22"
-		(shape input)
-		(at 200.66 115.57 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "d2cdd249-bc11-46eb-b753-126f4b987851")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 190.7805 115.57 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
 				(hide yes)
 			)
 		)
@@ -3217,6 +3195,28 @@
 		(uuid "e581c8ca-0a3d-45fc-9560-caaf869ebd13")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 51.0805 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "GPIO04"
+		(shape input)
+		(at 200.66 115.57 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "f4f4067c-2f05-402f-aad3-03b255f48db6")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 190.7805 115.57 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3628,7 +3628,7 @@
 	)
 	(symbol
 		(lib_id "power:+5V")
-		(at 200.66 92.71 90)
+		(at 200.66 102.87 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3637,7 +3637,7 @@
 		(fields_autoplaced yes)
 		(uuid "514ddf14-8a73-4dfc-957f-1622e68e429c")
 		(property "Reference" "#PWR01"
-			(at 204.47 92.71 0)
+			(at 204.47 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3646,7 +3646,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 196.85 92.7099 90)
+			(at 196.85 102.8699 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3655,7 +3655,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 200.66 92.71 0)
+			(at 200.66 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3664,7 +3664,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 200.66 92.71 0)
+			(at 200.66 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3673,7 +3673,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 200.66 92.71 0)
+			(at 200.66 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3855,7 +3855,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_VH_B7PS-VH_1x07_P3.96mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B7B-XH-A_1x07_P2.50mm_Vertical"
 			(at 259.08 71.12 0)
 			(effects
 				(font
@@ -4319,7 +4319,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 200.66 95.25 90)
+		(at 200.66 100.33 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4328,7 +4328,7 @@
 		(fields_autoplaced yes)
 		(uuid "9abbb6ec-9830-403d-805d-74a8cc0dd9e2")
 		(property "Reference" "#PWR04"
-			(at 204.47 95.25 0)
+			(at 204.47 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4337,7 +4337,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 196.85 95.2499 90)
+			(at 196.85 100.3299 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4346,7 +4346,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 200.66 95.25 0)
+			(at 200.66 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4355,7 +4355,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 200.66 95.25 0)
+			(at 200.66 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4364,7 +4364,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 200.66 95.25 0)
+			(at 200.66 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4576,7 +4576,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_VH_B7PS-VH_1x07_P3.96mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B7B-XH-A_1x07_P2.50mm_Vertical"
 			(at 260.35 41.91 0)
 			(effects
 				(font
@@ -4728,7 +4728,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_VH_B7PS-VH_1x07_P3.96mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B7B-XH-A_1x07_P2.50mm_Vertical"
 			(at 205.74 71.12 0)
 			(effects
 				(font
@@ -5282,7 +5282,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_VH_B7PS-VH_1x07_P3.96mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B7B-XH-A_1x07_P2.50mm_Vertical"
 			(at 208.28 40.64 0)
 			(effects
 				(font
