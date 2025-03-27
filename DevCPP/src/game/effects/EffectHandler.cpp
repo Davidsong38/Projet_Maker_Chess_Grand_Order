@@ -62,6 +62,28 @@ int EffectHandler::selectRandomTargetPieces(EffectInstance* effect_instance) {
     return NB_targetSelected;
 }
 
+int EffectHandler::selectRandomTargetPiecesFromThisPiece(EffectInstance* effect_instance, const Pieces* piece) {
+    board_pattern* effect_range =
+        static_cast<Pieces*>(effect_instance->caster_piece)
+        ->getDefaultEffectsRangesPattern(effect_instance->effect)();
+    const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();
+    std::vector<glm::ivec2> positions = effect_range->get_positions(glm::ivec2(piece->getCoordX(), piece->getCoordY()));
+    shuffle(positions.begin(),positions.end(), default_random_engine(rd_key));
+    int NB_targetSelected = 0;
+    for (const auto &target: positions) {
+        if (
+            effect_instance->NB_Target != -1
+            && NB_targetSelected == effect_instance->NB_Target
+        ) break;
+        Pieces* target_piece = Chessboard::getInstance()->getPieceAt(target.x, target.y);
+        if (!validTargetForEffect(target_piece,effect_instance))
+            continue;
+        NB_targetSelected++;
+        effect_instance->target_pieces.emplace_back(target_piece);
+    }
+    return NB_targetSelected;
+}
+
 int EffectHandler::selectRandomTargetDeadPieces(EffectInstance* effect_instance) {
     auto dead_list = Chessboard::getInstance()->getDeadList();
     const unsigned rd_key = chrono::system_clock::now().time_since_epoch().count();

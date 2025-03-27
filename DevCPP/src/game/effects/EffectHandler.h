@@ -19,6 +19,7 @@ public:
     static bool validTargetForEffect(const Pieces* target_piece, const EffectInstance *effect_instance);
 
     static int selectRandomTargetPieces(EffectInstance *effect_instance);
+    static int selectRandomTargetPiecesFromThisPiece(EffectInstance* effect_instance, const Pieces* piece);
     static int selectRandomTargetDeadPieces(EffectInstance *effect_instance);
     static int selectRandomTargetCells(EffectInstance *effect_instance);
     static int selectRandomTargetEmptyCells(EffectInstance *effect_instance);

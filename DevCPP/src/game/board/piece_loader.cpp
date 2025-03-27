@@ -66,7 +66,7 @@ Characters_List choose_rook(bool isWhite, bool isRight) {
 }
 
 Characters_List choose_king(bool isWhite) {
-    int id_character = GILGAMESH;
+    int id_character = ARTORIA;
     if constexpr (NOT_QUICK_TEST) {
         cout << "Choose" << (isWhite ? " White" : " Black") << " king character: " << endl;
         cin >> id_character;

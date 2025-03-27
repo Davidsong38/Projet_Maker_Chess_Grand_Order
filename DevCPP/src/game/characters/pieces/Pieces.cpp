@@ -246,7 +246,7 @@ void Pieces::activateSpecialEffect() {
         const int killType = static_cast<EventKill*>(events.back())->killType;
         if (killType == KILL_NORMAL || killType == KILL_EN_PASSANT) {
             auto *effect_instance = static_cast<Pieces*>(getEffectInstanceOf(GIVING_AOE)->caster_piece)->getEffectInstanceGiven(AOE);
-            EffectHandler::selectRandomTargetPieces(effect_instance);
+            EffectHandler::selectRandomTargetPiecesFromThisPiece(effect_instance,this);
             EffectHandler::applyToTargets(effect_instance);
             activateEffect(AOE);
             activateEffect(GIVING_AOE);
@@ -263,7 +263,7 @@ void Pieces::CheckEffectAmount(const Effect_List effect) {
         if (eff->effect == effect && eff->isExpired()) {
             if (eff->effect == CHANGE_CONTROL)
                 this->setIsWhite(not this->getIsWhite());
-            if ((eff->effect == MOVE_CHANGING || eff->effect == SUPP_RANGE))
+            if ((eff->effect == MOVE_CHANGING || eff->effect == SUPP_RANGE || eff->effect == ALTERNATE_RANGE))
                 override_piece_move = nullptr;
             auto* event_effect_delete = new EventEffectEnd(eff);
             event_effect_delete->addTargetPiece(this);

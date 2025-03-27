@@ -1,9 +1,9 @@
 //
-// Created by david on 03/03/2025.
+// Created by david on 27/03/2025.
 //
 
-#ifndef TAMAMO_H
-#define TAMAMO_H
+#ifndef OBERON_H
+#define OBERON_H
 
 
 
@@ -14,15 +14,18 @@
 #include <uiElements.h>
 
 
-class Tamamo_No_Mae final : public Bishop {
+class Oberon final : public Bishop {
+protected :
+    int CNT_Success = 0;
 
 public:
-    Tamamo_No_Mae(const int startX, const int startY, const bool white, const Characters_List hero)
+    Oberon(const int startX, const int startY, const bool white, const Characters_List hero)
             : Bishop(startX, startY, white, hero) {
-        defaultEffectsRanges[ALTERNATE_RANGE] = [this](){return this->getEffectRange(ALTERNATE_RANGE);};
+        defaultEffectsRanges[KILLING] = [this](){return this->getEffectRange(KILLING);};
         defaultEffectsRanges[GIVING_AOE] = [this](){return this->getEffectRange(GIVING_AOE);};
+        defaultEffectsRanges[ALLY_TELEPORT] = [this](){return this->getEffectRange(ALLY_TELEPORT);};
         addAdditionalUIElement(
-            tanamoTexture,
+            oberonTexture,
             glm::vec2(PIECE_SIZE * RenderEngine::getWindowInverseAspectRatio(), PIECE_SIZE),
             this
         );
@@ -39,5 +42,4 @@ public:
 
 
 
-
-#endif //TAMAMO_H
+#endif //OBERON_H

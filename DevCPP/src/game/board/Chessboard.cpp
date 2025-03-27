@@ -321,6 +321,8 @@ bool Chessboard::PawnReachingEndOfBoard(Pieces *piece) {
             ltr_log_info(CONSOLE_COLOR_RED, "Pawn reached end of board !!!");
             piece->setPiecesOrigin(QUEEN);
             piece->activateEffect(SUPP_RANGE);
+            piece->activateEffect(ALTERNATE_RANGE);
+            piece->CheckEffectAmount(ALTERNATE_RANGE);
             piece->CheckEffectAmount(SUPP_RANGE);
             piece->deleteEffect(IMMORTALITY);
             return true;
@@ -330,6 +332,8 @@ bool Chessboard::PawnReachingEndOfBoard(Pieces *piece) {
             ltr_log_info(CONSOLE_COLOR_RED, "Pawn reached end of board !!!");
             piece->setPiecesOrigin(QUEEN);
             piece->activateEffect(SUPP_RANGE);
+            piece->activateEffect(ALTERNATE_RANGE);
+            piece->CheckEffectAmount(ALTERNATE_RANGE);
             piece->CheckEffectAmount(SUPP_RANGE);
             piece->deleteEffect(IMMORTALITY);
             return true;

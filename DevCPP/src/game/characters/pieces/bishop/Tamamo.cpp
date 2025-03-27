@@ -42,7 +42,7 @@ bool Tamamo_No_Mae::passive() {
         ALTERNATE_RANGE,
         this,
         -1,
-        -1,
+        1,
         1
     );
     effect_instance->check_condition = [](const void* cell) {
