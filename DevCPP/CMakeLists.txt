@@ -7,6 +7,17 @@ add_executable(Chess_Grand_Order
         src/main.cpp
         src/game/characters/pieces/king/Oberon.cpp
         src/game/characters/pieces/king/Oberon.h
+        src/I2C/I2C_Interface.h
+        src/I2C/linux_I2C.cpp
+        src/I2C/linux_I2C.h
+        src/I2C/windows_I2C.cpp
+        src/I2C/windows_I2C.h
+        src/I2C/MCP23017.cpp
+        src/I2C/MCP23017.h
+        src/I2C/CLRC663.cpp
+        src/I2C/CLRC663.h
+        src/I2C/Chessboard_RFID.cpp
+        src/I2C/Chessboard_RFID.h
 
 
 )

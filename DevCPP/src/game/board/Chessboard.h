@@ -77,6 +77,8 @@ public:
     static bool hasJustFirstMove(Pieces* piece);
     static bool notBrokenMove(const Pieces* piece, const Pieces* target_piece);
     vector<Pieces*> getAllPieces();
+
+
 };
 
 
