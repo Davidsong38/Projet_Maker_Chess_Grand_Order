@@ -20,7 +20,8 @@ public:
 
     bool writeRegister(uint8_t address, uint8_t reg, uint8_t value) override;
     bool readRegister(uint8_t address, uint8_t reg, uint8_t& value) override;
-
+    bool writeData(uint8_t address, const uint8_t* data, size_t length) override;
+    bool readData(uint8_t address, uint8_t* buffer, size_t length) override;
 private:
     int fd_;
 };

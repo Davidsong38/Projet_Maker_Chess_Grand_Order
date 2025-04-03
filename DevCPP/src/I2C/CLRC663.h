@@ -39,6 +39,33 @@ public:
      */
     std::string readTag();
 
+    bool authenticateBlock(uint8_t blockNum, const std::vector<uint8_t> &key, bool useKeyA);
+
+    bool writeBlock(uint8_t blockNum, const std::vector<uint8_t> &data);
+
+    /**
+     * @brief Active l'émetteur RFID.
+     * Configure les registres pour activer l'émetteur à 13,56 MHz.
+     * @return true si l'activation réussit, false sinon.
+     */
+    bool enableTransmitter();
+
+    bool readBlock(int blockNum, std::vector<uint8_t> &buffer);
+
+    /**
+     * @brief Détecte un tag RFID.
+     * Envoie une commande REQA et vérifie si un tag est présent.
+     * @return true si un tag est détecté, false sinon.
+     */
+    bool detectTag();
+
+    /**
+     * @brief Lit l'UID d'un tag détecté.
+     * Récupère l'UID depuis le FIFO du CLRC663.
+     * @return L'UID sous forme de chaîne hexadécimale, ou une chaîne vide en cas d'erreur.
+     */
+    std::string readUID(int blockNum);
+
 private:
     I2C_Interface& i2c_;  // Interface I2C pour la communication
     uint8_t address_;    // Adresse I2C du CLRC663
@@ -59,26 +86,7 @@ private:
     static constexpr uint8_t CMD_REQA = 0x26;         // Commande REQA (détecter un tag)
     static constexpr uint8_t CMD_READ_UID = 0xCA;     // Commande pour lire l'UID (simplifiée)
 
-    /**
-     * @brief Active l'émetteur RFID.
-     * Configure les registres pour activer l'émetteur à 13,56 MHz.
-     * @return true si l'activation réussit, false sinon.
-     */
-    bool enableTransmitter();
 
-    /**
-     * @brief Détecte un tag RFID.
-     * Envoie une commande REQA et vérifie si un tag est présent.
-     * @return true si un tag est détecté, false sinon.
-     */
-    bool detectTag();
-
-    /**
-     * @brief Lit l'UID d'un tag détecté.
-     * Récupère l'UID depuis le FIFO du CLRC663.
-     * @return L'UID sous forme de chaîne hexadécimale, ou une chaîne vide en cas d'erreur.
-     */
-    std::string readUID();
 };
 
 

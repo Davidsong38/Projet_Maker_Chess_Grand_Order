@@ -50,3 +50,31 @@ bool Linux_I2C::readRegister(uint8_t address, uint8_t reg, uint8_t& value) {
     }
     return true;
 }
+
+// Écriture de plusieurs octets (données) sur l'I2C
+bool Linux_I2C::writeData(uint8_t address, const uint8_t* data, size_t length) {
+    if (ioctl(fd_, I2C_SLAVE, address) < 0) {
+        std::cerr << "Failed to set I2C address: " << static_cast<int>(address) << std::endl;
+        return false;
+    }
+
+    if (write(fd_, data, length) != length) {
+        std::cerr << "Failed to write data to I2C device" << std::endl;
+        return false;
+    }
+    return true;
+}
+
+// Lecture de plusieurs octets (données) depuis l'I2C
+bool Linux_I2C::readData(uint8_t address, uint8_t* buffer, size_t length) {
+    if (ioctl(fd_, I2C_SLAVE, address) < 0) {
+        std::cerr << "Failed to set I2C address: " << static_cast<int>(address) << std::endl;
+        return false;
+    }
+
+    if (read(fd_, buffer, length) != length) {
+        std::cerr << "Failed to read data from I2C device" << std::endl;
+        return false;
+    }
+    return true;
+}

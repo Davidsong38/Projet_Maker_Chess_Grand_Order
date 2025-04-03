@@ -30,20 +30,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ba82fa2-512b-4253-af3b-1ba77aac3bc6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/I2C/CLRC663.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/I2C/CLRC663.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/I2C/Chessboard_RFID.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/I2C/Chessboard_RFID.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/I2C/I2C_Interface.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/I2C/MCP23017.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/I2C/MCP23017.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/I2C/linux_I2C.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/I2C/linux_I2C.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/I2C/windows_I2C.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/I2C/windows_I2C.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/board/Chessboard.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/board/Chessboard.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/I2C/CLRC663.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/I2C/CLRC663.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/I2C/CLRC663.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/I2C/CLRC663.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/I2C/Chessboard_RFID.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/I2C/Chessboard_RFID.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/I2C/Chessboard_RFID.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/I2C/Chessboard_RFID.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/I2C/I2C_Interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/I2C/I2C_Interface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/I2C/linux_I2C.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/I2C/linux_I2C.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/I2C/linux_I2C.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/I2C/linux_I2C.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,15 +124,15 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Chess_Grand_Order">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Unnamed" type="CMakeListConfigurationType" factoryName="CMakeListConfigurationFactory">
       <method v="2" />
     </configuration>
     <configuration name="Chess_Grand_Order" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Chess_Grand_Order" TARGET_NAME="Chess_Grand_Order" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Chess_Grand_Order" RUN_TARGET_NAME="Chess_Grand_Order">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -234,7 +228,8 @@
       <workItem from="1742677337651" duration="1748000" />
       <workItem from="1743060060223" duration="11954000" />
       <workItem from="1743402004779" duration="6772000" />
-      <workItem from="1743411046449" duration="4197000" />
+      <workItem from="1743411046449" duration="4304000" />
+      <workItem from="1743660832023" duration="12521000" />
     </task>
     <servers />
   </component>

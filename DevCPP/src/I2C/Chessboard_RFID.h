@@ -22,7 +22,7 @@ private:
     CLRC663& rfid_;
     std::array<std::string, 16> chessboard_rfid_;
 
-    std::string tagToPiece(const std::string& uid);
+    static std::string tagToPiece(const std::string& uid);
 };
 
 #endif //CHESSBOARD_RFID_H
